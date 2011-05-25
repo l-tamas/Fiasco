@@ -1,0 +1,123 @@
+# This file is part of FIASCO («F»ractal «I»mage «A»nd «S»equence «CO»dec)
+# Copyright (C) 1994-2000 Ullrich Hafner <hafner@bigfoot.de>
+#
+# $Id: configure.in,v 5.4 2000/10/22 10:46:54 hafner Exp hafner $
+# $Revision: 5.4 $, $State: Exp $, $Date: 2000/10/22 10:46:54 $
+# 
+# Process this file with autoconf to produce a configure script.
+
+AC_INIT(system.fiascorc)
+AM_INIT_AUTOMAKE(fiasco, 1.3)
+AM_CONFIG_HEADER(config.h)
+
+# Important programs:
+AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+AC_PROG_CC
+
+# Compiler Flags
+AC_SUBST(INCLUDES)  
+#INCLUDES='-ansi -pedantic -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -DFIASCO_SHARE=\"$(pkgdatadir)\" -I$(top_srcdir) -I$(top_srcdir)/lib -I$(top_srcdir)/input -I$(top_srcdir)/output -I$(top_srcdir)/codec'
+INCLUDES='-DFIASCO_SHARE=\"$(pkgdatadir)\" -I$(top_srcdir) -I$(top_srcdir)/lib -I$(top_srcdir)/input -I$(top_srcdir)/output -I$(top_srcdir)/codec'
+
+# Checks whether shifting of signed integers works: -1 << 3 = -8 .
+AC_CACHE_CHECK(whether shifting of signed integers works,
+ac_cv_signed_shift,
+[AC_TRY_RUN([main () {
+   exit ((-1 << 2) == -4 && (-4 >> 2) == -1);
+}], ac_cv_signed_shift=no, ac_cv_signed_shift=yes, ac_cv_signed_shift=yes)])
+if test $ac_cv_signed_shift = yes; then
+  AC_DEFINE(HAVE_SIGNED_SHIFT)
+fi
+
+AC_CACHE_CHECK(whether CLOCKS_PER_SEC is defined,
+ac_cv_clocks_per_sec,
+[AC_TRY_COMPILE([#include <time.h>],[exit (CLOCKS_PER_SEC);], ac_cv_clocks_per_sec=yes, ac_cv_clocks_per_sec=no)])
+if test $ac_cv_clocks_per_sec = no; then
+  AC_DEFINE(CLOCKS_PER_SEC, 100)
+fi
+AC_C_BIGENDIAN
+AC_CHECK_SIZEOF(char)
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(int)
+
+if test [$ac_cv_sizeof_char != 1] -o [$ac_cv_sizeof_short != 2] -o [$ac_cv_sizeof_int != 4] ; then
+  echo "FIASCO requires that sizeof(char)==1, sizeof(short)==2 and sizeof(int)==4"
+  echo "configure failed."
+  exit 1
+fi
+
+# Checks for X11
+
+AC_PATH_XTRA
+if test -z "$no_x" ; then
+#  Checks for X11 shared memory extensions
+  save_cflags="$CFLAGS"
+  CFLAGS="$CFLAGS $X_CFLAGS"
+  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+  AC_CHECK_HEADERS(X11/extensions/XShm.h)
+  CFLAGS="$save_cflags"
+  if test "$ac_cv_header_X11_extensions_XShm_h" = "yes"; then
+    save_ldflags="$LDFLAGS"
+    LDFLAGS="$LDFLAGS $X_LIBS"
+    AC_CHECK_LIB(Xext, XShmQueryExtension,
+                 [XEXT_LIB="-lXext"; INCLUDES="-D_SVID_SOURCE -DUSE_SHM $INCLUDES"],
+		 [], [$X_PRE_LIBS -lX11 $X_EXTRA_LIBS])
+    LDFLAGS="$save_ldflags"
+  fi
+  DFIASCO_EXTRA_LIBS="buttons.o display.o"
+  DFIASCO_EXTRA_SOURCES="buttons.c display.c"
+  LIB_X11="-lX11"
+fi
+AC_SUBST(XEXT_LIB)
+AC_SUBST(LIB_X11)
+AC_SUBST(DFIASCO_EXTRA_LIBS)
+AC_SUBST(DFIASCO_EXTRA_SOURCES)
+
+#  Checks for GTK+ library.
+AM_PATH_GTK(1.2.0,[AFIASCO="afiasco" AC_SUBST(AFIASCO)])
+
+#  Checks for math library.
+AC_CHECK_LIB(m, log)
+if test "$ac_cv_lib_m_log" = "no"; then
+  echo "FIASCO requires math library!"
+  echo "It was not found on your system."
+  echo "configure failed."
+  exit 1
+fi
+
+#  Checks for programs
+AC_PATH_PROG(xfig, xfig)
+if test -n "$xfig"; then
+        AC_DEFINE_UNQUOTED(XFIG, "$xfig", [Define path of xfig utility])
+fi
+AC_PATH_PROG(xmag, xmag)
+if test -n "$xmag"; then
+        AC_DEFINE_UNQUOTED(XMAG, "$xmag", [Define path of xmag utility])
+fi
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(assert.h features.h setjmp.h string.h sys/time.h unistd.h)
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+
+# Checks for library functions.
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS(log2 memmove strdup strcasecmp)
+
+AC_OUTPUT(Makefile data/Makefile doc/Makefile lib/Makefile input/Makefile output/Makefile codec/Makefile bin/Makefile, [test -z "$CONFIG_HEADERS" || echo timestamp > stamp-h])
+
+if test "$ac_cv_header_setjmp_h" != "yes"; then
+  echo
+  echo "WARNING:"
+  echo "Error handling of FIASCO library requires ANSI-C setjmp.h header file!"
+  echo "If you are using the FIASCO library, exit() is now called in case of errors."
+  echo "Please send me a mail (hafner@bigfoot.de) with the output of"
+  echo "the configure script."
+  echo
+fi
+

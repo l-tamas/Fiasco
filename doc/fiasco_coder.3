@@ -1,0 +1,106 @@
+.\" $Id: fiasco_coder.3,v 1.2 2000/10/28 17:39:32 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_coder
+\- compress image files to a FIASCO file
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "int "
+.fi
+.BI "fiasco_coder (char const * const * "image_names ,
+.fi
+.BI "              const char * "fiasco_name ,
+.fi
+.BI "              float "quality ,
+.fi
+.BI "              const fiasco_c_options_t * "options );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco-coder()\fP function compresses the image file(s) given
+by the list of \fIimage_names\fP and creates the new FIASCO output file
+\fIfiasco_name\fP. Besides the approximation \fIquality\fP, several
+compression parameters can be adjusted by the class \fBoptions\fP (see
+fiasco_c_options_new(3)).
+
+.SH ARGUMENTS
+
+.TP
+image_names
+NULL terminated array of image filenames to process. If the first
+array element is "-" or a NULL pointer then FIASCO reads the image
+from standard input. Each array element either has to be an image
+filename or a template of the form:
+
+.ce
+prefix[start-end{+,-}step]suffix
+
+Templates are useful when compressing video streams: e.g., if the template
+"img0[12-01-2].pgm" is given as array element, then FIASCO compresses the
+images img012.pgm, img010.pgm, ..., img002.pgm (in this order).
+
+If a filename is a relative path then the images are searched for in
+the current directory and in the (colon-separated) list of directories
+given by the environment variable \fBFIASCO_IMAGES\fP.
+
+.TP
+fiasco_name
+Name of the FIASCO output file. If the name is "-" or NULL then the
+file is produced on standard output.
+
+If \fIfiasco_name\fP is a relative path and the environment variable
+\fBFIASCO_DATA\fP is a (colon-separated) list of directories, then the
+output file is written to the first (writable) directory of this
+list. Otherwise, the current directory is used to store the output
+file.
+
+.TP
+quality
+Defines the quality of compression. Quality has to be a positive
+value, its typical range is 1.0 (worst) to 100.0 (best). Larger values
+are also allowed - at the cost of exploding encoding times.
+
+.TP
+options
+This "class" encapsulates the various coding and decoding
+parameters. Use the functions fiasco_c_options_new(3) and
+fiasco_c_options_delete(3) to create and delete an object of this
+class. Several member functions (see fiasco_c_options(3)) are
+available to change the default values.
+
+.SH RETURN VALUE
+The function \fBfiasco_coder()\fP returns 1 if the FIASCO file has
+been successfully written. If an error has been catched during
+compression, 0 is returned - use the function
+fiasco_get_error_message(3) to get the last error message of FIASCO.
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Search path for image files. Default is "./".
+.TP
+.B FIASCO_DATA
+Search and save path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_c_options_new "(3), " fiasco_c_options_delete (3), 
+.br
+.BR fiasco_c_options "(3), " fiasco_get_error_message (3)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

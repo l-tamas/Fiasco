@@ -1,0 +1,35 @@
+--- MISCELLANEOUS ---
+AUTHORS          - authors of the WFA project
+TAGS             - Tag table of sources and headers
+TODO             - List of things to do
+compile.sh       - configure and compile sources
+
+--- SUBDIRS ---
+bin/             - FIASCO Binaries cfiasco and dfiasco
+codec/           - FIASCO coder and decoder library
+data/            - FIASCO initial basis files
+input/           - FIASCO file input functions
+lib/             - Compression library
+output/          - FIASCO file output functions
+
+--- HEADERS ---
+acconfig.h       - Prototypes and macros
+config.h         - Prototypes and macros
+
+--- DOCUMENTATION ---
+INSTALL          - Installation instructions for the code in this directory
+MANIFEST         - List of files in this directory
+README           - Important information about FIASCO
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+config.h.in      - Configuration template for autoconf
+configure        - Script to configure sources
+configure.in     - Configuration template for autoconf
+install-sh       - Shell-script version of UNIX install command
+mkinstalldirs    - Make dirs recursively 
+stamp-h.in       - Configuration template for autoconf
+system.fiascorc  - Systemwide configuration for FIASCO binaries  
+

@@ -1,0 +1,95 @@
+.\" $Id: fiasco_image_new.3,v 1.2 2000/06/14 19:26:06 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_image_new, fiasco_image_delete, fiasco_image_get_width,
+.B  fiasco_image_get_height,  fiasco_image_is_color
+\- handle FIASCO image objects
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_image_t *"
+.fi
+.BI "fiasco_image_new (const char * "filename );
+.sp
+.BI "void"
+.fi
+.BI "fiasco_image_delete (fiasco_image_t * "image );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_image_get_width (const fiasco_image_t * "image );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_image_get_height (const fiasco_image_t * "image );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_image_is_color (const fiasco_image_t * "image );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_image_new()\fP function reads the given image file and
+allocates and initializes a FIASCO image object. Use the function
+fiasco_renderer_new(3) to create a renderer object that converts the
+FIASCO image to the desired image format.
+
+The function \fBfiasco_image_delete()\fP deletes the image object and
+frees the image buffer. 
+
+Image geometry and type are accessible through member functions
+\fBfiasco_image_get_width()\fP,
+\fBfiasco_image_get_height()\fP,
+and \fBfiasco_image_is_color()\fP. 
+
+.SH ARGUMENTS
+
+.TP
+image
+The image "class" encapsulates the FIASCO image object. It is used to
+store the pixel values of the decoded or read image.
+
+.TP
+filename
+Image filename to process. If \fIfilename\fP is "-" or a NULL pointer
+then the image is read from standard input. If a filename is a
+relative path then the images are searched for in the current
+directory and in the (colon-separated) list of directories given by
+the environment variable \fBFIASCO_IMAGES\fP.
+
+.SH RETURN VALUE
+The function \fBfiasco_image_new()\fP returns a pointer to the newly
+allocated image object. If an error has been catched, a NULL pointer
+is returned.
+
+The function \fBfiasco_image_get_width()\fP returns the width of the
+image. If an error has been catched, 0 is returned.
+
+The function \fBfiasco_image_get_height()\fP returns the height of the
+image. If an error has been catched, 0 is returned.
+
+The function \fBfiasco_image_is_color()\fP returns 0 if the image
+object is a grayscale image, otherwise a non-zero value is returned.
+
+In case of an error in one of the above functions, use the function
+fiasco_get_error_message(3) to get a string with the last error
+message of FIASCO.
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_decoder_get_frame "(3), " fiasco_get_error_message (3)
+.BR fiasco_renderer_new (3)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

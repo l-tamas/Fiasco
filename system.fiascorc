@@ -1,0 +1,127 @@
+#
+#  system.wfarc:	Resource file WFA coder
+# 
+#  Written by:		Ullrich Hafner
+#		
+#  This file is part of FIASCO («F»ractal «I»mage «A»nd «S»equence «CO»dec)
+#  Copyright (C) 1994-2000 Ullrich Hafner <hafner@bigfoot.de>
+
+#
+#  $Date: 2000/07/16 17:40:03 $
+#  $Author: hafner $
+#  $Revision: 5.4 $
+#  $State: Exp $
+
+#
+# Options for FIASCO coder `cfiasco':
+#
+
+# Initial basis to start with
+# small.fco:  domains 1, x, y
+# medium.fco: domains 1, x, y and 129 additional images
+# large.fco: domains 1, x, y and 226 additional images
+basis-name = small.fco
+
+# Limit the number of elements in the dictionary by `dictionary-size' 
+# The smaller the value is the faster the coder runs and the worse
+# the image quality will be.  
+dictionary-size = 10000
+
+# Optimization level
+#  0: standard approximation method, process blocks of level [6, 10],
+#     use up to 3 dictionary vectors
+#  1: standard approximation method, process blocks of level [4, 12],
+#     use up to 5 dictionary vectors
+#  2: significantly increases the approximation quality,
+#     running time is twice as high as with the standard method
+#  3: hardly increases the approximation quality of method 2, 
+#     running time is twice as high as with method 21
+#     (this method just remains for completeness)
+optimize = 0
+
+# Approximation quality (typical range = [1-100]) 
+quality = 20.0                    
+
+# Smoothing factor (range = [0-100])
+quality = 70                    
+
+# For compression of chroma bands the dictionary can be reduced to
+# the best #`chroma-dictionary' elements.
+# Furthermore, the quality of the approximation is decreased
+# 'chroma-qfactor' times.
+chroma-dictionary = 40
+chroma-qfactor    = 2
+
+# Verbosity level
+# 0 no debug output
+# 1 some verbosity and statistics of the output size
+# 2 lots of debug information and log-files are written
+verbose = 1
+
+# Set exponent and method of image tiling
+# 0   image is processed in normal bintree order
+# >0  image is subdivided into 2^`tiling-exponent' tiles. 
+# Set type of image tiling
+# asc-variance  Tiles with large variances are processed first
+# desc-variance Tiles with small variances are processed first
+# asc-spiral    Tiles are process in spiral order starting in the middle
+# desc-spiral   Tiles are process in spiral order starting at the border
+tiling-exponent = 4
+tiling-method   = desc-variance
+
+# Quantization parameters define the accuracy of coefficients quantization.
+# DC coefficients (of the constant dictionary vector f(x,y) = 1) are quantized
+# to values of the interval [-`dc-rpf-range', `dc-rpf-range'] using
+# #`dc-rpf-mantissa' bits. All other quantized coefficients are quantized in
+# an analogous way using the parameters `rpf-range' and `rpf-mantissa'.
+rpf-mantissa    = 3
+rpf-range       = 1.5
+dc-rpf-mantissa = 5
+dc-rpf-range    = 1
+
+# Search for prediction (coarse approximation or motion compensation)
+# on all levels between minlevel and maxlevel
+min-level = 6
+max-level = 10
+
+# Set various parameters used for video compensation.
+# 'fps' defines the frame rate which should be
+# used when the video is decoded. This value has no effect during coding,
+# it is just passed to the FIASCO output file.
+# 'framerate' is used by the decoder and overrides the stored framerate
+# if set to a value not 0
+# If 'half-pixel' is set then half pixel precise
+# motion compensated prediction is used.
+# If 'cross-B-search' is set then the fast Cross-B-Search algorithm is
+# used to determine the motion vectors of interpolated prediction. Otherwise
+# exhaustive search (in the given search range) is used.
+# If 'B-as-past-ref' is set then B frames are allowed to be used
+# for B frame predicion.
+fps            = 25
+half-pixel     = NO
+cross-B-search = NO
+B-as-past-ref  = NO
+
+# Set `pattern' of input frames.
+# `pattern' has to be a sequence of the following
+# characters (case insensitive):
+# 'i' intra frame
+# 'p' predicted frame
+# 'b' bidirectional predicted frame
+# E.g. pattern = 'IBBPBBPBB'
+#
+# When coding video frames the prediction type of input frame N is determined
+# by reading `pattern' [N] (`pattern' is periodically extended).
+
+pattern = ippppppppp
+
+#
+# Options for FIASCO decoder `dfiasco':
+#
+
+smoothing = -1 # use value stored in FIASCO file
+framerate = -1 # use value stored in FIASCO file
+double    = NO
+reduced   = NO
+panel     = NO
+enlarge   = 0

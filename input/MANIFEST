@@ -1,0 +1,30 @@
+--- DOCUMENTATION ---
+MANIFEST         - List of files in this directory
+
+--- HEADERS ---
+basis.h          - Prototypes and macros
+matrices.h       - Prototypes and macros
+mc.h             - Prototypes and macros
+nd.h             - Prototypes and macros
+read.h           - Prototypes and macros
+tree.h           - Prototypes and macros
+weights.h        - Prototypes and macros
+
+--- SOURCES ---
+basis.c          - Support for basis files linked with the excetutable
+matrices.c       - Input of transition matrices
+mc.c             - Input of motion compensation stuff
+nd.c             - Input of coefficients of nondeterminsmn approximation
+read.c           - Input of WFA files
+tree.c           - Input of bintree partitioning
+weights.c	 - Input of weights
+
+--- MISCELLANEOUS ---
+TAGS             - Tag table of sources and headers
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+basis.c.in       - Configuration template for autoconf
+

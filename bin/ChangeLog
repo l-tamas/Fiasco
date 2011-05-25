@@ -1,0 +1,115 @@
+2000-11-27  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* lib/dither.c: fixed bug in 24bpp mode dithering
+
+2000-10-28  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* doc/fiasco_decoder_new.3, doc/fiasco_coder.3, doc/Makefile.am,
+	codec/options.h, codec/options.c, codec/dfiasco.c, codec/cwfa.h,
+	codec/coder.c, bin/dwfa.c, bin/cwfa.c, fiasco.h: Split option
+	class into decoder and coder option class.
+
+2000-10-22  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* fiasco.h: Fixed some typos.
+
+	* configure.in, fiasco.spec: Version upgrade.
+
+	* doc/fiasco_options_new.3, doc/fiasco_decoder_new.3:
+	Documentation updates (FIASCO title and comment).
+
+	* codec/decoder.[hc], codec/coder.c, bin/background.c: Fixed
+	smoothing bug.
+
+	* lib/image.[hc]: Added copy constructor (clone_image)
+
+2000-07-18  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* fiasco.spec: version upgrade
+
+	* bin/Makefile.am: Added missing header files.
+
+	* bin/fiasco2fiasco.c: Added title and comment options.
+
+	* README: Update new tools.
+
+	* doc/efiasco.1, doc/cfiasco.1: Added title and comment options.
+
+	* codec/wfalib.c: Bugfix: initialize title and comment with empty
+	string.
+
+	* output/write.c, input/read.c, codec/wfalib.c, codec/wfa.h,
+	codec/options.h, codec/options.c, codec/dfiasco.c, codec/coder.c,
+	bin/dwfa.c, bin/cwfa.c, fiasco.h: Added title and comment
+	attributes for FIASCO streams.
+
+2000-07-16  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* system.fiascorc: Added framerate and smoothing.
+
+	* bin/twfa.c: Bugfix: error handling.
+
+	* bin/dwfa.c: Changed framerate from unsigned to it (default -1).
+
+	* bin/fiasco2fiasco.c: Added output file option.
+
+2000-07-15  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* configure.in: Added configuration section for afiasco (gtk+,
+	xmag, xfig)
+
+	* bin/Makefile.am: Added tools [abe]fiasco
+
+	* fiasco.h: Changed smoothing from unsigned to int.
+
+	* AUTHORS: Added Martin Grimm and - author of bfiasco
+
+	* codec/options.h, codec/options.c, codec/dfiasco.h,
+	codec/dfiasco.c, codec/decoder.h, codec/decoder.c: Changed
+	smoothing from unsinged to int. A -1 indicates that the value
+	stored in the FIASCO file should be used.
+
+	* codec/wfa.h, codec/subdivide.c, codec/coder.c: Removed max_edges
+	from wfainfo structure.
+
+	* lib/image.c: Added descriptive error messages.
+
+	* output/write.h, output/write.c, input/read.c: Byte alignment of
+	FIASCO stream after frame header.
+
+	* bin/dwfa.c: Set smoothing to -1 to use smoothing value stored in
+	a FIASCO file.
+
+	* bin/params.c: Print newline before options.
+
+2000-07-07  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* lib/bit-io.c: Increased bit buffer by a factor of 4.
+
+2000-07-06  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* codec/coder.c: Multiplied quality option by two: i.e., quality
+	50 in FIASCO 1.0 is quality 25 in FIASCO 1.1
+
+2000-07-04  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* tools/xwfa.h, tools/xwfa.c, tools/callbacks.c: Toggle
+	sensitiveness of prev and next frame buttons if required
+
+	* tools/*.c: Added visualization tool afiasco.
+
+2000-07-03  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* bin/display.c: Choose the right visual if the X11 screen offers
+	multiple visuals.
+
+	* bin/dwfa.c, system.fiascorc: Renamed decoder `fps' attribute to
+	`framerate' since default values differ - 0 is used for the
+	decoder and 25 for the coder
+	
+	* bin/dwfa.c: fixed bug when saving videos to disk
+
+
+2000-06-25  Ullrich Hafner  <hafner@bigfoot.de>
+
+	* FIASCO 1.0 has been released

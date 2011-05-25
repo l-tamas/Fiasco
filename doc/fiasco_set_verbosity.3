@@ -1,0 +1,46 @@
+.\" $Id: fiasco_set_verbosity.3,v 1.1 2000/06/06 20:55:05 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_get_verbosity, fiasco_set_verbosity
+\- get or set verbosity of FIASCO library
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_verbosity_e"
+.fi
+.BI "fiasco_get_verbosity (void);"
+.sp
+.BI "void"
+.fi
+.BI "fiasco_set_verbosity (fiasco_verbosity_e "level );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_get_verbosity()\fP function returns the current
+verbosity level of the FIASCO library. Conversely, the function
+\fBfiasco_set_verbosity()\fP sets the verbosity of the FIASCO library
+to the given \fIlevel\fP.
+
+.SH RETURN VALUE
+The function \fBfiasco_get_verbosity()\fP returns the current
+verbosity level. Level either is \fBFIASCO_NO_VERBOSITY\fP (no output at
+all), \fBFIASCO_SOME_VERBOSITY\fP (show progress meter) or
+\fBFIASCO_ULTIMATE_VERBOSITY\fP (show debugging output).
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_coder (3), fiasco_decoder (3)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

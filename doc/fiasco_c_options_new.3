@@ -1,0 +1,432 @@
+.\" $Id: fiasco_c_options_new.3,v 1.1 2000/10/28 17:35:06 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B fiasco_c_options_new, fiasco_c_options_delete,
+.B fiasco_c_options_set_progress_meter, fiasco_c_options_set_basisfile,
+.B fiasco_c_options_set_smoothing, fiasco_c_options_set_tiling, 
+.B fiasco_c_options_set_chroma_quality, fiasco_c_options_set_optimizations,
+.B fiasco_c_options_set_prediction, fiasco_c_options_set_video_param,
+.B fiasco_c_options_set_quantization, fiasco_c_options_set_frame_pattern
+.B fiasco_c_options_set_title, fiasco_c_options_set_comment
+\- define additional options of FIASCO coder and decoder 
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_c_options_t *"
+.fi
+.BI "fiasco_c_options_new"
+.fi
+.BI "   (void);"
+.sp
+.BI "void"
+.fi
+.BI "fiasco_c_options_delete"
+.fi
+.BI "   (fiasco_c_options_t * "options );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_basisfile"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    const char * "filename );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_chroma_quality"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    float "quality_factor ,
+.fi
+.BI "    unsigned "dictionary_size );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_comment"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    const char * "comment );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_frame_pattern"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    const char * "pattern );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_optimizations"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    unsigned "min_block_level ,
+.fi
+.BI "    unsigned "max_block_level ,
+.fi
+.BI "    unsigned "max_elements ,
+.fi
+.BI "    unsigned "dictionary_size ,
+.fi
+.BI "    unsigned "optimization_level );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_quantization"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    unsigned "mantissa ,
+.fi
+.BI "    fiasco_rpf_range_e "range ,
+.fi
+.BI "    unsigned "dc_mantissa ,
+.fi
+.BI "    fiasco_rpf_range_e "dc_range );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_prediction"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    int "intra_prediction ,
+.fi
+.BI "    unsigned "min_block_level ,
+.fi
+.BI "    unsigned "max_block_level );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_progress_meter"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    fiasco_progress_e "type );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_smoothing"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    unsigned "smoothing );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_tiling"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    fiasco_tiling_e "method ,
+.fi
+.BI "    unsigned "exponent );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_title"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    const char * "title );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_c_options_set_video_param"
+.fi
+.BI "   (fiasco_c_options_t * "options ,
+.fi
+.BI "    unsigned "frames_per_second ,
+.fi
+.BI "    int "half_pixel_prediction ,
+.fi
+.BI "    int "cross_B_search ,
+.fi
+.BI "    int "B_as_past_ref );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_c_options_new()\fP function allocates and initializes a
+FIASCO options object which is used to control additional compression
+ parameters.
+
+Conversely, the function \fBfiasco_c_options_delete()\fP discards the
+given FIASCO coder options object.
+
+Several member functions are available to modify the default behavior
+of the FIASCO coder.
+
+\fBfiasco_c_options_set_smoothing()\fP sets the
+\fIsmoothing\fP-percentage along partitioning borders when the image
+is regenerated; default is 70. This value is stored in the FIASCO file
+and is used as default smoothing percentage in the decoder.
+
+\fBfiasco_c_options_set_frame_pattern()\fP sets the type of inter frame
+compression which should be applied to individual frames of a video
+stream; default is "IPPPPPPPPP". 
+
+\fBfiasco_c_options_set_tiling()\fP sets \fImethod\fP and \fIexponent\fP
+of the image tiling algorithm which runs as initial step of the
+encoder; by default the image is subdivided into 16 tiles which
+are sorted by decreasing variance. 
+
+\fBfiasco_c_options_set_basisfile()\fP sets the \fIfilename\fP of
+the FIASCO initial basis (codebook of dictionary vectors); default is
+"small.fco". 
+
+\fBfiasco_c_options_set_chroma_quality()\fP sets the quality used when
+coding the chroma channels of a color image to the term "\fIquality\fP
+of luminance / \fIquality_factor\fP"; default is 2. Moreover, the size
+of the codebook is limited by \fIdictionary_size\fP; default is 40
+elements. 
+
+\fBfiasco_c_options_set_comment()\fP sets a \fIcomment\fP string to be
+stored in the FIASCO file; default is the empty string. 
+
+\fBfiasco_c_options_set_title()\fP sets a \fItitle\fP string to be
+stored in the FIASCO file; default is the empty string. 
+
+\fBfiasco_c_options_set_optimizations()\fP toggles various coding
+optimizations. E.g., the size of the dictionary (default is 10000),
+the subset of dictionary elements to use for an individual
+approximation (default is 5), the size of the image blocks to consider
+(4x4, ..., 64x64), and some additional low level
+optimizations (default level is 1). 
+
+\fBfiasco_c_options_set_prediction()\fP enables an additional intra
+block prediction by using a DC component approximation. By giving
+levels \fImin_block_level\fP and \fImax_block_level\fP the prediction
+can be limited to a small range of blocks only. By default, this
+method is disabled. 
+
+\fBfiasco_c_options_set_video_param()\fP defines the framerate (default
+is 25) and toggles whether to use half pixel precise motion
+compensated prediction (disabled by default), whether to determine
+motion vectors of interpolated prediction with the Cross-B-Search
+algorithm (disabled by default), and whether to allow B frames to be
+used for B frame predicion (disabled by default).
+
+\fBfiasco_c_options_set_quantization()\fP defines the quantization
+parameters of the approximation coefficients. By default the range of
+DC coefficients is [-1,+1] using a mantissa of 5 bits (and one sign
+bit). By default, all other coefficients are quantized with 3 mantissa
+bits in the interval [-1.5,+1.5].
+
+\fBfiasco_c_options_set_progress_meter()\fP sets the type of progress
+meter to be used during coding. By default, an RPM style progress bar
+using 50 hash marks (####) is used.
+
+.SH ARGUMENTS
+.TP
+options
+This object encapsulates various coding parameters.  
+
+.TP
+smoothing
+This percentage (range is 0 - i.e., no smoothing - to 100) defines how
+much the regenerated image is smoothed along the partitioning borders.
+
+.TP
+method
+Defines the algorithm which should be used to sort the image tiles
+which are generated in the initial coding step. If \fImethod\fP is
+\fBFIASCO_VARIANCE_ASC\fP then the tiles are sorted by variance - the
+first tile has the lowest variance. Conversely, when using
+\fBFIASCO_VARIANCE_DSC\fP the first tile has the largest variance. If
+\fImethod\fP is \fBFIASCO_SPIRAL_ASC\fP then the tiles are sorted like
+a spiral starting in the middle of the image. Conversely, when using
+\fBFIASCO_SPIRAL_DSC\fP the tiles are sorted like a spiral starting in
+the upper left corner.
+
+.TP
+exponent
+This value sets the number of image tiles - which are generated in the
+initial step of the encoder - to 2^\fIexponent\fP.
+
+.TP
+title
+This value is the title string of the FIASCO file. It is displayed, e.g.,
+in the window title of the decoder.
+
+.TP
+comment
+This value defines an optional comment to be stored in the FIASCO file.
+
+.TP
+pattern
+This string defines the sequence of frame types. Character \fIn\fP of
+the string defines the type of frame \fIn\fP (\fIpattern\fP is
+periodically extended). Three different frame types are available
+(case insensitive): choose 'i' for intra-frames (no inter frame
+prediction is used), 'p' for predicted frames (a frame of the
+past is used for prediction), or 'b' for bi-directional predicted
+frames (both a frame of the past and the future is used for
+prediction).
+
+.TP
+filename
+The initial basis (codebook) of the coder is loaded from this
+(ASCII) file. Files that already come with FIASCO are "small.fco" (3 elements),
+"medium.fco" (132 elements), and "large.fco" (219 elements). 
+
+.TP
+quality_factor
+When coding chroma channels (Cb and Cr band) the approximation quality
+is determined by the term `quality of Y component' / \fIquality_factor\fP.
+
+.TP
+dictionary_size
+FIASCO uses a dictionary (codebook) of variable size to approximate
+individual image blocks. The size of the codebook can be limited by
+\fIdictionary_size\fP to reduce the coding time, however, at the cost
+of decreasing quality. 
+
+.TP
+min_block_level
+During coding only those image blocks are considered for approximation
+(or prediction) which binary tree level is larger than
+\fImin_block_level\fP (minimum value is 3). (Since FIASCO internally
+works with binary trees, the size of an image block is determined by
+the \fIlevel\fP of the corresponding binary tree). Refer to following
+table to convert these values:
+
+.ce
+level | width | height
+.fi
+------+-------+--------
+.fi
+  0   |    1  |    1  
+.fi
+  1   |    1  |    2  
+.fi
+  2   |    2  |    2  
+.fi
+  3   |    2  |    4  
+.fi
+  4   |    4  |    4  
+.fi
+  5   |    4  |    8  
+.fi
+  6   |    8  |    8  
+.fi
+  7   |    8  |   16
+.fi
+------+-------+--------
+.fi
+The larger this value is the faster the coder runs but the worse the
+image quality will be.
+
+.TP
+max_block_level
+During coding only those image blocks are considered for approximation
+(or prediction) which binary tree level is smaller than
+\fImax_block_level\fP. The smaller this value is the faster the coder
+runs but the worse the image quality will be.
+
+.TP
+max_elements
+This value defines how many dictionary elements can be
+used to approximate an individual image block. The smaller this positive
+value (range is 1 to 5) is the faster the coder runs but the worse the
+image quality will be. 
+
+.TP
+optimization_level
+Additional low level optimizations are available by setting
+\fIoptimization_level\fP to one of the following values:
+.fi
+0 standard approximation method
+.fi
+1 slightly increases the approximation quality, running time is
+twice as high as with the standard method 
+.fi
+2 hardly increases the approximation quality of method 1, running time
+is twice as high as with method 1 (this method just remains for
+completeness) 
+.fi
+
+.TP
+intra_prediction
+If \fIintra_prediction\fP is set to a non-zero value then an
+additional block prediction of intra-frames is enabled. For some
+images, the image quality is slightly improved, however, at the cost of
+a significantly increased running time of the coder. 
+
+.TP
+frames_per_second
+This value defines the frame rate, i.e., how many frames per second
+should be displayed. This value has no effect during coding, it is just
+passed to the FIASCO output file where it is read and used by the
+decoder.
+
+.TP
+half_pixel_prediction
+A non-zero value enables half pixel precise motion compensated
+prediction. 
+
+.TP
+cross_B_search
+A non-zero value enables the fast Cross-B-Search algorithm to determine
+the motion vectors of an interpolated prediction. Otherwise,
+exhaustive search (in the given search range) is used. 
+
+.TP
+B_as_past_ref
+A non-zero value allows not only I- and P-frames but also B-frames to be
+used for a forward or bi-directional predicion.
+
+.TP
+mantissa, range
+Approximation coefficients are quantized to a small number of
+values (in fixed point format) in the interval [-\fIrange\fP,
++\fIrange\fP]. The number of \fImantissa\fP bits defines the accuracy of
+quantization.
+
+.TP
+dc_mantissa, dc_range
+Approximation coefficients of the DC component are quantized in a
+different way: the number of mantissa bits is given by
+\fIdc_mantissa\fP whereas the quantization interval is given by
+[-\fIdc_range\fP, +\fBdc_range\fP].
+
+.TP
+type
+This value sets the \fItype\fP of progress meter which should be used
+during coding. The following types are available:
+.fi
+\fBFIASCO_PROGRESS_NONE\fP:  no output at all
+.fi
+\fBFIASCO_PROGRESS_BAR\fP: print hash marks (###)
+\fBFIASCO_PROGRESS_PERCENT\fP: percentage meter (50%)
+
+.SH RETURN VALUES
+The function \fBfiasco_c_options_new()\fP returns a pointer to the
+newly allocated coder option object. If an error has been catched, a
+NULL pointer is returned.
+
+All set functions return 1 on success and 0 if an error has been
+catched.  
+
+In case of an error, use the function fiasco_get_error_message(3) to
+get a string with the last error message of FIASCO.
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_decoder "(3), " fiasco_coder (3)
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

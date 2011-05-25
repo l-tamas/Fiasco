@@ -1,0 +1,43 @@
+.\" $Id: bfiasco.1,v 1.1 2000/07/16 17:35:46 hafner Exp $
+.TH bfiasco 1 "July, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  bfiasco
+\- show binary tree of a FIASCO stream
+
+.SH SYNOPSIS
+.B  bfiasco \fP[\fIoption\fP]... [\fIfilename\fP]...
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBbfiasco\fP\| reads the FIASCO stream \fIfilename\fP and generates
+a figure (in XFIG format) to visualizes the binary tree partitioning
+of the compressed image. Rather than invoking \|\fBbfiasco\fP\| on the
+command line the analysis tool \|\fBafiasco\fP\|(1) should be used: by
+dragging mouse button 2 the region of interest is selected. Then all
+\|\fBbfiasco\fP\| options can be specified in the binary tree popup
+window.
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_DATA
+Search path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR afiasco "(1), " cfiasco "(1), " dfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Martin Grimm <grimm@informatik.uni-wuerzburg.de>

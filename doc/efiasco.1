@@ -1,0 +1,74 @@
+.\" $Id: efiasco.1,v 1.2 2000/07/18 16:44:18 hafner Exp $
+.TH efiasco 1 "July, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  efiasco
+\- edit and concatenate FIASCO files
+
+.SH SYNOPSIS
+.B  efiasco \fP[\fIoption\fP]... \fIfilename\fP...
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBefiasco\fP\| concatenates the FIASCO stream(s)
+\fIfilename\fP... and produces a new FIASCO stream on standard
+output. Header information (title, smoothing, framerate etc.) can be
+changed by using the options described below.
+
+.SH OPTIONS
+All option names may be abbreviated; for example, --output may be
+written --outp or --ou. For all options an one letter short option
+is provided. Mandatory or optional arguments to long options are
+mandatory or optional for short options, too. Both short and long
+options are case sensitive.
+
+.TP
+\fB\-o\fP \fIoutput-file\fP, \fB\-\-output-name=\fIname\fP
+Write FIASCO output to the named file, not to standard output.
+
+If \fIname\fP is a relative path and the environment variable
+\fBFIASCO_DATA\fP is a (colon-separated) list of directories, then the
+output file is written to the first (writable) directory of this
+list. Otherwise, the current directory is used to store the output
+file.
+
+.TP
+\fB\-s\fP \fIN\fP, \fB\-\-smoothing=\fIN\fP
+Smooth decompressed image(s) along the partitioning borders by the
+given amount \fIN\fP. \fIN\fP is 0 (minimum) to 100 (maximum). 
+
+.TP
+\fB\-F\fP \fIN\fP, \fB\-\-framerate=\fIN\fP
+Set number of frames per second to \fIN\fP. 
+
+.TP
+\fB\-t\fP \fItext\fP, \fB\-\-title=\fItext\fP
+Set title of FIASCO stream to \fItext\fP. 
+
+.TP
+\fB\-c\fP \fItext\fP, \fB\-\-comment=\fItext\fP
+Set comment of FIASCO stream to \fItext\fP. 
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_DATA
+Search path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR cfiasco "(1), " dfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Martin Grimm <grimm@informatik.uni-wuerzburg.de>

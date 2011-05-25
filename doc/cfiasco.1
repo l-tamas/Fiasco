@@ -1,0 +1,307 @@
+.\" $Id: cfiasco.1,v 1.6 2000/07/18 16:44:17 hafner Exp $
+.TH cfiasco 1 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  cfiasco
+\- Compress image files to a FIASCO file
+
+.SH SYNOPSIS
+.B  cfiasco \fP[\fIoption\fP]... [\fIfilename\fP]...
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBcfiasco\fP\| compresses the named image file(s), or the
+standard input if no file is named, and produces a FIASCO file on the
+standard output. The input images have to be in raw pgm(5) or ppm(5)
+format.
+
+.SH OPTIONS
+All option names may be abbreviated; for example, --optimize may be
+written --optim or --opt. For most options an one letter short option
+is provided. Mandatory or optional arguments to long options are
+mandatory or optional for short options, too. Both short and long
+options are case sensitive.
+
+The basic options are:
+
+.TP
+\fB\-i\fP \fIname\fP, \fB\-\-input-name=\fIname\fP
+Compress the named image(s), not standard input. The only supported
+image format is the raw pgm(5) or ppm(5) format. If \fIname\fP is -,
+read standard input.  \fIname\fP either has to be an image
+filename or a template of the form:
+
+.ce
+prefix[start-end{+,-}step]suffix
+
+Templates are useful when compressing video streams: e.g., if the template
+"img0[12-01-2].pgm" is given, then \|\fBcfiasco\fP\| compresses the
+images img012.pgm, img010.pgm, ..., img002.pgm.
+
+If \fIname\fP is a relative path then the images are searched for in
+the current directory and in the (colon-separated) list of directories
+given by the environment variable \fBFIASCO_IMAGES\fP.
+
+.TP
+\fB\-o\fP \fIoutput-file\fP, \fB\-\-output-name=\fIname\fP
+Write FIASCO output to the named file, not to standard output.
+
+If \fIname\fP is a relative path and the environment variable
+\fBFIASCO_DATA\fP is a (colon-separated) list of directories, then the
+output file is written to the first (writable) directory of this
+list. Otherwise, the current directory is used to store the output
+file.
+
+.TP
+\fB\-q\fP \fIN\fP, \fB\-\-quality=\fIN\fP
+Set quality of compression to \fIN\fP. Quality is 1 (worst) to 100
+(best); default is 20.
+
+.TP
+\fB\-t\fP \fItext\fP, \fB\-\-title=\fItext\fP
+Set title of FIASCO stream to \fItext\fP. 
+
+.TP
+\fB\-c\fP \fItext\fP, \fB\-\-comment=\fItext\fP
+Set comment of FIASCO stream to \fItext\fP. 
+
+.TP
+\fB\-v\fP, \fB\-\-version
+Print \|\fBcfiasco\fP\| version number, then exit.
+
+.TP
+\fB\-V\fP \fIN\fP, \fB\-\-verbose \fIN\fP
+Set level of verbosity to \fIN\fP. Level is 0 (no output at all), 1
+(show progress meter), or 2 (show detailed compression statistics);
+default is 1.
+
+.TP
+\fB\-\-progress-meter \fIN\fP
+Set type of progress-meter to \fIN\fP. The following types are
+available; default is 1: 
+
+\fB0\fP: no progress meter
+
+\fB1\fP: RPM style progress bar using 50 hash marks
+
+\fB2\fP: percentage meter
+
+.TP
+\fB\-f\fP \fIname\fP, \fB\-\-config=\fIname\fP
+Load parameter file \fIname\fP to initialize the options of
+\|\fBcfiasco\fP\|. See file \fIsystem.fiascorc\fP for an example of the
+syntax. Options of \|\fBcfiasco\fP\| are set by any of
+the following methods (in the specified order):
+
+1.) Global ressource file \fIsystem.fiascorc\fP
+
+2.) $HOME/.fiascorc
+
+3.) command line
+
+4.) --config=\fIname\fP
+
+.TP
+\fB\-h\fP, \fB\-\-info
+Print brief help, then exit.
+
+.TP
+\fB\-H\fP, \fB\-\-help
+Print detailed help, then exit.
+
+.TP
+The options for advanced users are:
+
+.TP
+\fB\-\-basis-name=\fIname\fP
+Preload compression basis \fIname\fP into FIASCO. The basis \fIname\fP
+provides the initial compression dictionary.  Either use one of the
+files "small.fco", "medium.fco", or "large.fco" that come with
+\|\fBcfiasco\fP\| or create a new ASCII basis file.
+   
+.TP
+\fB\-z\fP \fIN\fP, \fB\-\-optimize=\fIN\fP
+Set optimization level to \fIN\fP. Level is 0 (fastes) to 3 (slowest);
+default is 1. Be warned, the encoding time dramatically increased when
+\fIN\fP=2 or \fIN\fP=3 while the compression performance only slightly
+improves.
+
+.TP
+\fB\-\-prediction
+Use additional predictive coding. If this optimization is enabled then
+the image is compressed in two steps. In the first step, a coarse
+approximation of the image is computed using large unichrome
+blocks. Finally, the delta image is computed and the prediction error
+is approximated using the standard FIASCO algorithm.
+
+.TP
+\fB\-\-dictionary-size=\fIN\fP
+Set size of dictionary that is used when coding the luminance
+band to \fIN\fP; default is 10000, i.e., the dictionary is not
+restricted.
+
+.TP
+\fB\-\-chroma-dictionary=\fIN\fP
+Set size of dictionary that is used when coding chroma bands to
+\fIN\fP; default is 40. 
+
+.TP
+\fB\-\-chroma-qfactor=\fIN\fP
+Reduce the quality of chroma band compression \fIN\fP-times with
+respect to the user defined quality \fIq\fP of the luminance
+band compression (\fB\-\-quality\fP=\fIq\fP); default is 2.
+
+.TP
+\fB\-\-tiling-exponent=\fIN\fP
+Subdivide the image into 2^\fIN\fP tiles prior coding; default is 4,
+i.e. the image is subdivided into 16 tiles. The processing order of
+the individual tiles is defined by the option
+\fB\-\-tiling-method=\fIname\fP. 
+
+.TP
+\fB\-\-tiling-method=\fIname\fP
+Order the individual image tiles (the image is subdivided into; see
+option \fB\-\-tiling-exponent=\fP\fIN\fP) by method \fIname\fP; default
+is "desc-variance".
+
+\fBdesc-variance\fP: Tiles with small variances are processed first.
+
+\fBasc-variance\fP: Tiles with large variances are processed first.
+
+\fBdesc-spiral\fP: Tiles are process in spiral order starting in the
+middle. 
+
+\fBasc-spiral\fP: Tiles are process in spiral order starting at the
+border.
+
+.TP
+\fB\-\-rpf-mantissa=\fIN\fP
+Use \fIN\fP mantissa bits for quantized coefficients.
+
+.TP
+\fB\-\-dc-rpf-mantissa=\fIN\fP
+Use \fIN\fP mantissa bits for quantized DC coefficients.
+
+.TP
+\fB\-\-rpf-range=\fIN\fP
+Coefficients outside the quantization interval [-\fIN\fP,+\fIN\fP] are
+set to zero.
+
+.TP
+\fB\-\-dc-rpf-range=\fIN\fP
+DC coefficients outside the quantization interval [-\fIN\fP,+\fIN\fP] are
+set to zero.
+
+.TP
+Additional options for video compression are:
+
+.TP
+\fB\-\-smooth=\fIN\fP
+Smooth decompressed reference frames along the partitioning borders by
+the given amount \fIN\fP. \fIN\fP is 0 (no smoothing) to 100; default
+is 70. This factor is stored in the FIASCO file. 
+
+.TP
+\fB\-\-min-level=\fIN\fP
+Start prediction (motion compensated prediction or additional prediction) on
+block level \fIN\fP; default is level 6. I.e., motion compensation is
+applied to all image blocks of at least 8x8 pixels (binary tree level
+\fIN\fP=6), 16x8 (\fIN\fP=7), 16x16 (\fIN\fP=8), etc.
+
+.TP
+\fB\-\-max-level=\fIN\fP
+Stop prediction (motion compensated prediction or additional prediction) on
+block level \fIN\fP; default is level 10. I.e., motion compensation is
+applied to all image blocks of at most 16x16 pixels (\fIN\fP=8),
+32x16 (\fIN\fP=9), 32x32 (\fIN\fP=10), etc.
+
+.TP
+\fB\-\-half-pixel
+Use half pixel precise motion compensation.
+
+.TP
+\fB\-\-fps=\fIN\fP
+Set number of frames per second to \fIN\fP. This value is stored in
+the FIASCO output file and is used in the decoder dfiasco(1) to control the
+framerate.
+
+.TP
+\fB\-\-pattern=\fItype\fP
+Defines the type of inter frame compression which should be applied to
+individual frames of a video stream. \fItype\fP is a sequence of
+characters; default is "IPPPPPPPPP". Element \fBN\fP defines the type
+of predicting which should be used for frame \fBN\fP; the frame type
+pattern is periodically extended. Valid characters are:
+
+\fBI\fP: intra frame, i.e., no motion compensated prediction is used at
+all.
+
+\fBP\fP: predicted frame, i.e., a previously encoded frame is used for
+prediction (forward prediction).
+
+\fBB\fP: bidirectional predicted frame, i.e., not only a previously
+shown frame but also a frame of the future is used for prediction
+(forward, backward or interpolated prediction). 
+
+.TP
+\fB\-\-cross-B-search
+Instead of using exhaustive search the "Cross-B-Search" algorithm
+is used to find the best interpolated prediction of B-frames.
+
+.TP
+\fB\-\-B-as-past-ref
+Also use previously encoded B-frames when prediction the current
+frame. If this option is not set, only I- and P-frames are used to
+predict the current frame.
+
+.SH EXAMPLES
+.TP
+cfiasco < foo.ppm >foo.wfa
+Compress the still image "foo.ppm" to the FIASCO file "foo.wfa" using
+the default options.
+
+.TP
+cfiasco --half-pixel --pattern="IBBPBBPBB" --fps 15 -o video.wfa foo0*.ppm 
+Compress the video frames "foo0*.ppm" to the FIASCO file "video.wfa" using
+half pixel precise motion compensation at a frame rate of 15 frames
+per second. Intra frame 1 is used to predict P-frame 4, frames 1 and 4
+are used to predict B-frames 2 and 3, and so on. Frame 10 is again an
+intra-frame.
+.RE
+
+.SH FILES
+.PD 0
+.TP
+.I system.fiascorc
+The systemwide initialization file.
+.TP
+.I $HOME/.fiascorc
+The personal initialization file.
+.PD
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Search path for image files. Default is "./".
+.TP
+.B FIASCO_DATA
+Search and save path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR dfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

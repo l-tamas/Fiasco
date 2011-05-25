@@ -1,0 +1,51 @@
+---------------------------------------------------------------------------
+	 FIASCO («F»ractal «I»mage «A»nd «S»equence «CO»dec)
+		       Copyright (C) 1994-2000
+     Ullrich Hafner <hafner@bigfoot.de>, http://ulli.linuxave.net
+			     Version 1.0
+---------------------------------------------------------------------------
+
+FIASCO is an image and video compression system based on fractal
+coding which outperforms the well known JPEG and MPEG
+standards. FIASCO has been developed during my Ph.D. thesis "Low
+Bit-Rate Image and Video Coding with Weighted Finite Automata", Mensch
+& Buch Verlag, ISBN 3-89820-002-7.
+
+Some information about the FIASCO compression library:
+The library consists of the five "classes"
+
+	- fiasco_coder: used to encode a still image or a sequence of
+	  frames to a FIASCO stream, see fiasco_coder(3) or the file
+	  bin/cwfa.c for details.
+
+	- fiasco_decoder: used to decode the individual frames step by
+	  step, see fiasco_decoder(3) or the file bin/dwfa.c for
+	  details. 
+
+	- fiasco_image: internal representation of an decoded FIASCO
+	  image, see fiasco_image(3) or the file bin/dwfa.c for
+	  details. 
+
+	- fiasco_renderer: used to render the generated image object
+	  to one of the supported X11 output formats, see
+	  fiasco_render(3) or the files bin/dwfa.c or bin/pnmpsnr.c for
+	  details.
+
+	- fiasco_options: used to control various decoder and encoder
+	  options, see fiasco_options(3) or the files bin/cwfa.c,
+	  bin/dwfa.c or bin/pnmpsnr.c for details.
+
+
+Since the coder doesn't store any internal information, the only
+method of this class is the function fiasco_coder ().
+
+For all other classes, a new object is created with the
+fiasco_[object]_new () function, e.g., fiasco_decoder_new () creates a
+new fiasco_decoder_t object. Each object has to be deleted manually by
+calling the destructor fiasco_[object]_delete () (or by calling the
+method object->delete (object)). If you prefer C++ calls: every
+function of the type fiasco_[object]_[method] can be called via
+[object]->[method] ([object], args), too.
+
+Note: PLEASE use only functions, which are noted in the fiasco.h file
+(i.e., all functions and types with the prefix fiasco_)!

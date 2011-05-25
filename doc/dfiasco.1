@@ -1,0 +1,168 @@
+.\" $Id: dfiasco.1,v 1.3 2000/07/16 17:35:11 hafner Exp $
+.TH dfiasco 1 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  dfiasco
+\- Decompress and display a FIASCO file
+
+.SH SYNOPSIS
+.B  dfiasco \fP[\fIoption\fP]... [\fIfilename\fP]...
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBdfiasco\fP\| decompresses the named FIASCO file(s), or the
+standard input if no file is named, and displays the image or video in
+a X11 window. Alternatively, if option \fB\-o\fP is specified, the
+decompressed images are written to image files in raw pgm(5) or ppm(5)
+format.
+
+.SH OPTIONS
+All option names may be abbreviated; for example, --output may be
+written --outp or --ou. For all options an one letter short option
+is provided. Mandatory or optional arguments to long options are
+mandatory or optional for short options, too. Both short and long
+options are case sensitive.
+
+.TP
+\fB\-o\fP[\fIname\fP], \fB\-\-output=\fP[\fIname\fP]
+Write decompressed image to the named file \fIname\fP.ppm (color
+image) or \fIname\fP.pgm, do not display the image in a window. If
+\fIname\fP=- then produce the image file on the standard output. The
+optional argument \fIname\fP can be omitted, then the input filename
+is used as basename with the suffix .ppm or .pgm. In case of video
+streams, the frames are stored in the files \fIname\fP.\fBN\fP.ppm
+where \fBN\fP is the frame number (of the form 00..0 - 99..9); output
+on the standard output is not possible with video streams.
+
+If \fIname\fP is a relative path and the environment variable
+\fBFIASCO_IMAGES\fP is a (colon-separated) list of directories, then
+the output file(s) are written to the first (writable) directory of
+this list. Otherwise, the current directory is used to store the
+output file(s).
+
+.TP
+\fB\-z\fP, \fB\-\-fast\fP
+Decompress images in the 4:2:0 format; i.e., each chroma channel is
+decompressed to an image of halved width and height. Use this option
+on slow machines when the desired frame rate is not achieved; the
+output quality is only slightly decreased. 
+
+.TP
+\fB\-d\fP, \fB\-\-double\fP
+Double the size of the X11 window both in width and height; no pixel
+interpolation is used, each pixel is just replaced by four identical
+pixels.
+ 
+.TP
+\fB\-p\fP, \fB\-\-panel\fP
+Show a panel with play, stop, pause, record and exit buttons to
+control the display of videos. When pressing the record button, all
+frames are decompressed and stored in memory. The other buttons work
+in the usual way.
+ 
+.TP
+\fB\-m\fP \fIN\fP, \fB\-\-magnify=\fIN\fP
+Set magnification of the decompressed image. Positive values enlarge
+and negative values reduce the image width and height by a factor of
+2^|\fIN\fP|.
+
+.TP
+\fB\-s\fP \fIN\fP, \fB\-\-smoothing=\fIN\fP
+Smooth decompressed image(s) along the partitioning borders by the
+given amount \fIN\fP. \fIN\fP is 0 (minimum) to 100 (maximum). When
+using this option, the smoothing value specified in the FIASCO file is
+overridden.
+
+.TP
+\fB\-F\fP \fIN\fP, \fB\-\-framerate=\fIN\fP
+Set number of frames per second to \fIN\fP. When using this option,
+the frame rate specified in the FIASCO file is overridden.
+
+.TP
+\fB\-v\fP, \fB\-\-version
+Print \|\fBdfiasco\fP\| version number, then exit.
+
+.TP
+\fB\-f\fP \fIname\fP, \fB\-\-config=\fIname\fP
+Load parameter file \fIname\fP to initialize the options of
+\|\fBdfiasco\fP\|. See file \fIsystem.fiascorc\fP for an example of the
+syntax. Options of \|\fBdfiasco\fP\| are set by any of
+the following methods (in the specified order):
+
+1.) Global ressource file \fIsystem.fiascorc\fP
+
+2.) $HOME/.fiascorc
+
+3.) command line
+
+4.) --config=\fIname\fP
+
+.TP
+\fB\-h\fP, \fB\-\-info
+Print brief help, then exit.
+
+.TP
+\fB\-H\fP, \fB\-\-help
+Print detailed help, then exit.
+
+
+.SH EXAMPLES
+.TP
+dfiasco < foo.wfa
+Decompress the FIASCO file "foo.wfa" and display the image in a window.
+
+.TP
+dfiasco -o foo1.wfa foo2.wfa
+Decompress the FIASCO files "foo1.wfa" and "foo2.wfa" and write the
+frames to the image files "foo1.wfa.ppm" and "foo2.wfa.ppm".
+
+.TP
+dfiasco -oimage foo1.wfa
+Decompress the FIASCO file "foo1.wfa" and write all 15
+frames to the image files "image.00.ppm", ... , "image.14.ppm".
+
+.TP
+dfiasco --fast --magnify=-1 --double video.wfa
+Decompress the FIASCO file "video.wfa" and display the frames in a
+window. The decompression speed is as fast as possible: the image is
+decompressed (in 4:2:0 format) at a quarter of its original size; then
+the image is enlarged again by pixel doubling. 
+
+.RE
+
+.SH FILES
+.PD 0
+.TP
+.I system.fiascorc
+The systemwide initialization file.
+.TP
+.I $HOME/.fiascorc
+The personal initialization file.
+.PD
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Save path for image files. Default is "./".
+.TP
+.B FIASCO_DATA
+Search path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR cfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

@@ -1,0 +1,14 @@
+Wfa
+2					# 2 states are in the basis
+1 1					# use all states for a linear comb.
+64 64				        # final distribution
+
+1					# f(x, y) = x
+0 2 0.5
+1 2 0.5 
+1 0 0.5
+-1
+2					# f(x, y) = y
+0 1 1.0 
+1 1 1.0 
+-1

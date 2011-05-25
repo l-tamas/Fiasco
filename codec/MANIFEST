@@ -1,0 +1,50 @@
+--- DOCUMENTATION ---
+MANIFEST         - List of files in this directory
+
+--- HEADERS ---
+approx.h         - Prototypes and macros
+bintree.h        - Prototypes and macros
+coder.h          - Prototypes and macros
+coeff.h          - Prototypes and macros
+control.h        - Prototypes and macros
+cwfa.h           - Prototypes and macros
+decoder.h        - Prototypes and macros
+dfiasco.h        - Prototypes and macros
+domain-pool.h    - Prototypes and macros
+ip.h             - Prototypes and macros
+motion.h         - Prototypes and macros
+mwfa.h           - Prototypes and macros
+options.h        - Prototypes and macros
+prediction.h     - Prototypes and macros
+subdivide.h      - Prototypes and macros
+tiling.h         - Prototypes and macros
+wfa.h	         - Prototypes and macros
+wfalib.h         - Prototypes and macros
+
+--- SOURCES ---
+approx.c         - Approximation of range images with matching pursuit
+bintree.c        - Bintree model of WFA tree
+coder.c          - WFA coder toplevel functions
+coeff.c          - Matching pursuit coefficients probability model
+control.c        - Control unit of WFA structure
+cwfa.c           - Main function of coding process 
+domain-pool.c    - Domain pool administration
+decoder.c        - Decoding of an image represented by a WFA
+dfiasco.c        - Decoder public interface
+ip.c             - Inner products
+motion.c         - Motion compensation code for coder 
+mwfa.c           - Motion compensation 
+options.c        - FIASCO options handling
+prediction.c     - Range image prediction with motion compensation or non-det.
+subdivide.c      - Range subdivision
+tiling.c         - Image tiling (permutation)
+wfalib.c         - WFA library functions both for encoding and decoding
+
+--- MISCELLANEOUS ---
+TAGS             - Tag table of sources and headers
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+

@@ -1,0 +1,33 @@
+--- DOCUMENTATION ---
+MANIFEST         - List of files in this directory
+
+--- HEADERS ---
+arith.h          - Prototypes and macros
+bit-io.h         - Prototypes and macros
+dither.h         - Prototypes and macros
+error.h          - Prototypes and macros
+image.h          - Prototypes and macros
+list.h           - Prototypes and macros
+macros.h         - Prototypes and macros
+misc.h           - Prototypes and macros
+rpf.h            - Prototypes and macros
+types.h          - Prototypes and macros
+
+--- SOURCES ---
+arith.c          - Adaptive arithmetic coding and decoding
+bit-io.c         - Buffered bit oriented file input/output
+dither.c	 - Various dithering routines
+error.c          - Error handling
+image.c          - Image handling (allocation, I/O, ...)
+list.c           - List operations
+misc.c           - Some useful functions
+rpf.c            - Conversion routines of float to reduced precision format
+
+--- MISCELLANEOUS ---
+TAGS             - Tag table of sources and headers
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+

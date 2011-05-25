@@ -1,0 +1,29 @@
+--- DOCUMENTATION ---
+MANIFEST         - List of files in this directory
+cfiasco.1	 - FIASCO coder manual page	
+
+--- HEADERS ---
+binerror.h       - Prototypes and macros
+buttons.h        - Prototypes and macros
+display.h        - Prototypes and macros
+getopt.h         - Prototypes and macros
+params.h         - Prototypes and macros
+
+--- SOURCES ---
+binerror.c       - Error handling for binaries
+buttons.c        - Draw MWFA player buttons in X11 window
+cwfa.c           - FIASCO coder
+display.c        - X11 display of frames
+dwfa.c           - FIASCO decoder
+getopt.c         - Getopt for GNU
+getopt1.c        - Getopt for GNU (long options)
+params.c         - Parameter file and command line parsing
+
+--- MISCELLANEOUS ---
+TAGS             - Tag table of sources and headers
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+

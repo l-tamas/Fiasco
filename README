@@ -1,0 +1,109 @@
+---------------------------------------------------------------------------
+	 FIASCO («F»ractal «I»mage «A»nd «S»equence «CO»dec)
+		       Copyright (C) 1994-2000
+     Ullrich Hafner <hafner@bigfoot.de>, http://ulli.linuxave.net
+---------------------------------------------------------------------------
+
+FIASCO is an image and video compression system based on fractal
+coding which outperforms the well known JPEG and MPEG
+standards. FIASCO has been developed during my Ph.D. thesis "Low
+Bit-Rate Image and Video Coding with Weighted Finite Automata", Mensch
+& Buch Verlag, ISBN 3-89820-002-7.
+
+FIASCO consists of the following components:
+
+afiasco
+	An X11 application to analyse and visualize a compressed image,
+        see separate manual page afiasco(1) for details.
+
+bfiasco
+	A tool to generate the binary tree of the compressed image,
+        see separate manual page bfiasco(1) for details.
+
+cfiasco
+	Command line application to compress images and videos, see
+        separate manual page cfiasco(1) for details. (File extension for
+        FIASCO files: .fco)
+
+dfiasco
+	An X11 application to decompress and display images and videos,
+        see separate manual page dfiasco(1) for details.
+
+efiasco
+	A tool to edit and concatenate several FIASCO streams,
+        see separate manual page efiasco(1) for details.
+
+libfiasco.so
+fiasco.h
+	A compression library to provide compression and decompression
+	of FIASCO files for other applications, see separate README
+	file doc/README.LIB or manual pages fiasco_coder(3),
+	fiasco_decoder(3) for details.
+
+gimpplugin
+	A plugin for GIMP 1.1.x to read FIASCO images and movies
+
+FIASCO is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2 of the License, or (at your
+option) any later version.
+
+FIASCO is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License
+along with FIASCO; if not, write to the Free Software Foundation,
+Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+---------------------------------------------------------------------------
+  Low Bit-Rate Image and Video Coding with Weighted Finite Automata
+
+			       ABSTRACT
+---------------------------------------------------------------------------
+
+Recently, the need for efficient image compression systems can be
+seen, e.g., in the rapidly growing field of world wide web
+applications: not only still pictures but also small video sequences
+are used to enhance the design of private and commercial web pages.
+However, the speed of most internet connections is very limited, so
+the amount of data to be transmitted must be dramatically reduced in
+order to give a practical solution. 
+  
+Weighted Finite Automata (WFA) exploit self-similarities within single
+pictures and also sequences of pictures to remove spatial, spectral
+and temporal redundancies. Their implementation combines techniques
+from hierarchical methods related to quadtrees, vector-quantization,
+matching pursuit, and fractal coding.
+
+This thesis discusses important modifications of the original WFA
+codec introduced by Culik and Kari which, in total, increase the
+compression performance for low bit-rates to be on a par with
+state-of-the-art codecs like embedded zerotree wavelet coding for
+still images or H.263+ for video streams.
+
+A crucial aspect during the development of our codec was the
+performance of the matching pursuit algorithm used to generate an
+approximation of the sub-images: we must carefully choose the set of
+dictionary vectors as well as the quantization parameters of the
+approximation coefficients. Last but not least, all coefficients and
+indices must be efficiently stored using specially tuned models.
+			      
+Not as crucial as the latter aspect but still important is the degree
+of nondeterminism used by a WFA. We show that without nondeterminism
+the approximation quality will quickly degenerate, but, on the other
+hand, only a very restricted usage of nondeterminism can be stored
+efficiently.
+			      
+Finally, the application to video coding is investigated in detail.
+We show that due to their simple mathematical structure, WFA provide
+an ideal platform for efficient hybrid compression methods. So we
+combined a hierarchical block based motion-compensation with the still
+picture coder to form an efficient video codec. After all, we
+optimized the run-time of the WFA video decoder to provide real-time
+software decoding on most personal computer platforms.
+
+---------------------------------------------------------------------------
+
+---------------------------------------------------------------------------

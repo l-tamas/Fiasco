@@ -1,0 +1,194 @@
+.\" $Id: fiasco_decoder_new.3,v 1.5 2000/10/28 17:39:32 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_decoder_new, fiasco_decoder_delete,
+.B fiasco_decoder_write_frame, fiasco_decoder_get_frame,
+.B fiasco_decoder_get_length, fiasco_decoder_get_rate,
+.B fiasco_decoder_get_width, fiasco_decoder_get_height
+.B fiasco_decoder_get_title, fiasco_decoder_get_comment
+.B fiasco_decoder_is_color
+\- decompress a FIASCO file
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_decoder_t *"
+.fi
+.BI "fiasco_decoder_new (const char * "fiasco_name ,
+.fi
+.BI "                    const fiasco_d_options_t * "options );
+.sp
+.BI "void"
+.fi
+.BI "fiasco_decoder_delete (fiasco_decoder_t * "decoder );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_decoder_write_frame (fiasco_decoder_t * "decoder ,
+.fi
+.BI "                            const char * "image_name );
+.sp
+.BI "fiasco_image_t *"
+.fi
+.BI "fiasco_decoder_get_frame (fiasco_decoder_t * "decoder );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_decoder_get_length (fiasco_decoder_t * "decoder );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_decoder_get_rate (fiasco_decoder_t * "decoder );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_decoder_get_width (fiasco_decoder_t * "decoder );
+.sp
+.BI "unsigned"
+.fi
+.BI "fiasco_decoder_get_height (fiasco_decoder_t * "decoder );
+.sp
+.BI "const char *"
+.fi
+.BI "fiasco_decoder_get_title (fiasco_decoder_t * "decoder );
+.sp
+.BI "const char *"
+.fi
+.BI "fiasco_decoder_get_comment (fiasco_decoder_t * "decoder );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_decoder_is_color (fiasco_decoder_t * "decoder );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_decoder_new()\fP function initializes the decompression
+of FIASCO file \fIfiasco_name\fP. Several decompression parameters
+can be adjusted by the class \fIoptions\fP (see
+fiasco_d_options_new(3)).
+
+The individual frames of a FIASCO video can be decompressed by calling
+successively either function \fBfiasco_decoder_write_frame()\fP or
+\fBfiasco_decoder_get_frame()\fP.
+
+The function \fBfiasco_decoder_write_frame()\fP decompresses the
+current frame and writes it in raw pgm(5) or ppm(5) format to the file
+\fIimage_name\fP. If \fIimage_name\fP=- or a NULL pointer then the
+image file is produced on the standard output. If \fIimage_name\fP is a
+relative path and the environment variable \fBFIASCO_IMAGES\fP is a
+(colon-separated) list of directories, then the output file is
+written to the first (writable) directory of this list. Otherwise, the
+current directory is used to store the file.
+
+The function \fBfiasco_decoder_get_frame()\fP decompresses the
+current frame and returns the computed image object. Use the function
+fiasco_renderer_new(3) to create a renderer object that converts the
+FIASCO image to the desired format. 
+
+After all frames have been decompressed, the function
+\fBfiasco_decoder_delete()\fP should be called to close the input file
+and to free temporarily allocated memory.
+
+Number of available frames, frame rate and frames geometry, type of the
+FIASCO file are accessible through member functions
+\fBfiasco_decoder_get_length()\fP,
+\fBfiasco_decoder_get_rate()\fP,  
+\fBfiasco_decoder_get_width()\fP,
+\fBfiasco_decoder_get_height()\fP,
+and \fBfiasco_decoder_is_color()\fP. Use \fBfiasco_decoder_get_title()\fP,
+\fBfiasco_decoder_get_comment()\fP to read title and comment strings of the
+FIASCO file. 
+
+.SH ARGUMENTS
+
+.TP
+fiasco_name
+Filename of the FIASCO input file. If \fIfiasco_name\fP is a NULL pointer
+or "-" then the decoder reads from standard input. If the file is not
+found in the current directory and the environment variable
+\fBFIASCO_DATA\fP is a (colon-separated) list of directories, then the
+input file is searched for in these directories, too.
+
+.TP
+options
+This "class" encapsulates the various coding and decoding
+parameters. Use the functions fiasco_d_options_new(3) and
+fiasco_d_options_delete(3) to create and delete an object of this
+class. Several member functions (see fiasco_d_options(3)) are
+available to change the default values.
+
+.TP
+decoder
+The decoder "class" encapsulates the FIASCO decoder. It is used to
+store the internal state of the decoder.
+
+.SH RETURN VALUES
+The function \fBfiasco_decoder_new()\fP returns a pointer to the newly
+allocated decoder object. If an error has been catched, a NULL pointer
+is returned.
+
+The function \fBfiasco_decoder_write_frame()\fP returns 1 if the file
+has been successfully written. Otherwise, the function returns 0.
+
+The function \fBfiasco_decoder_get_frame()\fP returns a pointer to the
+newly allocated FIASCO image object. If an error has been catched, a NULL
+pointer is returned.
+
+The function \fBfiasco_decoder_get_length()\fP returns the number of
+frames of the FIASCO file. If an error has been catched, 0 is
+returned. 
+
+The function \fBfiasco_decoder_get_rate()\fP returns the
+framerate (number of frames per second) of the FIASCO file. If an
+error has been catched, 0 is returned.
+
+The function \fBfiasco_decoder_get_width()\fP returns the width of the
+decoded frames of the FIASCO file. If an error has been catched, 0 is
+returned.
+
+The function \fBfiasco_decoder_get_height()\fP returns the height of the
+decoded frames of the FIASCO file. If an error has been catched, 0 is
+returned.
+
+The function \fBfiasco_decoder_get_title()\fP returns an optional
+title of the FIASCO file. If an error has been catched, 0 is returned.
+
+The function \fBfiasco_decoder_get_comment()\fP returns an optional
+comment of the FIASCO file. If an error has been catched, 0 is returned.
+
+The function \fBfiasco_decoder_is_color()\fP returns 0 if the decoded
+frames are grayscale images, otherwise a non-zero value is
+returned.
+
+In case of an error in one of the above functions, use the function
+fiasco_get_error_message(3) to get a string describing the last error
+message of FIASCO.
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Search path for image files. Default is "./".
+.TP
+.B FIASCO_DATA
+Search and save path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_d_options_new "(3), " fiasco_d_options_delete (3), 
+.br
+.BR fiasco_d_options "(3), " fiasco_get_error_message (3)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

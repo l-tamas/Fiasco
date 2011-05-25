@@ -1,0 +1,27 @@
+--- DOCUMENTATION ---
+MANIFEST         - List of files in this directory
+
+--- HEADERS ---
+matrices.h       - Prototypes and macros
+mc.h             - Prototypes and macros
+nd.h             - Prototypes and macros
+tree.h           - Prototypes and macros
+weights.h        - Prototypes and macros
+write.h          - Prototypes and macros
+
+--- SOURCES ---
+matrices.c       - Output of transition matrices
+mc.c             - Output of motion compensation stuff
+nd.c             - Output of coefficients of nondeterminsmn approximation
+tree.c           - Output of bintree partitioning
+weights.c	 - Output of weights
+write.c          - Output of WFA files
+
+--- MISCELLANEOUS ---
+TAGS             - Tag table of sources and headers
+
+--- CONFIGURATION ---
+Makefile         - Instructions for make
+Makefile.am      - Makefile.in template for automake
+Makefile.in      - Makefile template for autoconf
+

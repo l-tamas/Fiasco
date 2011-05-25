@@ -1,0 +1,46 @@
+.\" $Id: pnmpsnr.1,v 1.2 2000/07/16 17:39:32 hafner Exp $
+.TH pnmpsnr 1 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  pnmpsnr
+\- Compute peak signal-to-noise ratio (PSNR) between images
+
+.SH SYNOPSIS
+.B  pnmpsnr \fIoriginal\fP \fIcompressed\fP
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBpnmpsnr\fP\| computes the peak signal-to-noise ratio (PSNR)
+between images \fIoriginal\fP and \fIcompressed\fP. This metric is
+typically used in image compression papers to rate the distortion
+between original and decoded image. The input images have to be
+in raw pgm(5) or ppm(5) format.
+
+.SH EXAMPLES
+.TP
+pnmerr original.ppm decoded.ppm 
+Evaluates the distortion of the decoded image "decoded.ppm" with
+respect to the original image "original.ppm".
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Load path for image files. Default is "./".
+
+.SH "SEE ALSO"
+.br
+.BR dfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

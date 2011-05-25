@@ -1,0 +1,122 @@
+.\" $Id: fiasco_d_options_new.3,v 1.1 2000/10/28 17:35:12 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_d_options_new, fiasco_d_options_set_magnification,
+.B fiasco_d_options_delete, fiasco_d_options_set_smoothing
+.B fiasco_d_options_set_4_2_0_format
+\- define additional options of FIASCO decoder 
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_d_options_t *"
+.fi
+.BI "fiasco_d_options_new"
+.fi
+.BI "   (void);"
+.sp
+.BI "void"
+.fi
+.BI "fiasco_d_options_delete"
+.fi
+.BI "   (fiasco_d_options_t * "options );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_d_options_set_4_2_0_format"
+.fi
+.BI "   (fiasco_d_options_t * "options ,
+.fi
+.BI "    int "format );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_d_options_set_magnification"
+.fi
+.BI "   (fiasco_d_options_t * "options ,
+.fi
+.BI "    int "level );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_d_options_set_smoothing"
+.fi
+.BI "   (fiasco_d_options_t * "options ,
+.fi
+.BI "    unsigned "smoothing );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_d_options_new()\fP function allocates and initializes a
+FIASCO options object which is used to control additional
+decompression parameters.
+
+Conversely, the function \fBfiasco_d_options_delete()\fP discards the
+given FIASCO decoder options object.
+
+Several member functions are available to modify the default behavior
+of the FIASCO decoder.
+
+\fBfiasco_d_options_set_smoothing()\fP sets the
+\fIsmoothing\fP-percentage along partitioning borders when the images
+are regenerated; default is 70.
+
+\fBfiasco_d_options_set_magnification()\fP sets the \fImagnification\fP
+of the regenerated image; default is 0, i.e., the image geometry is
+not changed.
+
+\fBfiasco_d_options_set_4_2_0_format()\fP defines whether the decoder
+should use the default 4:4:4 format or the 4:2:0 format. The latter
+one significantly reduces the decoding time at the cost of some
+additional blocking artefacts.
+
+.SH ARGUMENTS
+.TP
+options
+This object encapsulates various decoding parameters.  
+
+.TP
+smoothing
+This percentage (range is 0 - i.e., no smoothing - to 100) defines how
+much the regenerated image is smoothed along the partitioning borders.
+
+.TP
+level
+This value gives the magnification of the decoded image with respect
+to the original size. Positive values increase and negative values
+decrease the width and height of the image by a factor of
+2^abs(\fIlevel\fP).
+
+.TP
+format
+If \fIformat\fP is 0 then the 4:4:4 color image format is used, i.e.,
+the chroma channel are of the same size as the luminance. Otherwise,
+the 4:2:0 format is used. Then, width and height of each chroma
+channel is only one half of the width and height of the luminance.
+
+.SH RETURN VALUES
+The function \fBfiasco_d_options_new()\fP returns a pointer to the
+newly allocated decoder option object. If an error has been catched, a
+NULL pointer is returned.
+
+All set functions return 1 on success and 0 if an error has been
+catched.  
+
+In case of an error, use the function fiasco_get_error_message(3) to
+get a string with the last error message of FIASCO.
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_decoder "(3), " fiasco_coder (3)
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

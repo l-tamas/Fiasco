@@ -1,0 +1,125 @@
+.\" $Id: fiasco_renderer_new.3,v 1.2 2000/06/14 18:58:35 hafner Exp $
+.TH fiasco 3 "April, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  fiasco_renderer_new, fiasco_renderer_delete
+\- convert a FIASCO image object to an X11 XImage
+
+.SH SYNOPSIS
+.B #include <fiasco.h>
+.sp
+.BI "fiasco_renderer_t *"
+.fi
+.BI "fiasco_renderer_new (unsigned long "red_mask ,
+.fi
+.BI "                     unsigned long "green_mask ,
+.fi
+.BI "                     unsigned long "blue_mask ,
+.fi
+.BI "                     unsigned "bpp ,
+.fi
+.BI "                     int "double_resolution );
+.sp
+.BI "void"
+.fi
+.BI "fiasco_renderer_delete (fiasco_renderer_t * "renderer );
+.sp
+.BI "int"
+.fi
+.BI "fiasco_renderer_render (const fiasco_renderer_t * "renderer ,
+.fi
+.BI "                        unsigned char * "data );
+.fi
+.BI "                        const fiasco_image_t * "fiasco_image );
+.fi
+
+.SH DESCRIPTION
+The \fBfiasco_renderer_new()\fP function allocates and initializes a
+renderer object which has to be used to convert an internal FIASCO
+image object to one of the supported X11 formats. Currently, the FIASCO
+image can be rendered to an X11 XImage of either 16, 24, or 32 bits
+per pixel. Additional formats will be supported upon request.  
+
+Function \fBfiasco_renderer_render()\fP is used to convert the given
+FIASCO image object to the specified format. 
+
+After all frames are rendered, the function
+\fBfiasco_renderer_delete()\fP should be called to free temporarily
+allocated memory and to discard the renderer object.
+
+Note that the FIASCO renderer class is not restricted to X11 images: a
+FIASCO image object can be converted to an image data array of the
+form RGBRGB... by setting \fIred_mask\fP=0xff0000,
+\fIgreen_mask\fP=0xff00, \fIblue_mask\fP=0xff, and \fIbpp\fP=24.
+
+.SH ARGUMENTS
+
+.TP
+bpp
+Determines the number of bits of a single pixel of the X11 XImage
+structure (see XCreateImage(3)). If the XImage is already allocated
+then the value XImage->bits_per_pixel should be used. Currently, 16,
+24, and 32 bits per pixel are supported.
+
+.TP
+red_mask
+Determines which bits of a pixel should be used for the red
+component. If the XImage is already allocated then the value
+XImage->red_mask should be used. E.g., if \fIbpp=16\fP and
+\fIred_mask=0xf800\fP then each pixel is stored with two bytes. The
+red component uses bits 11-15, the remaining green and blue components
+use bits 0-10.
+
+.TP
+green_mask
+Determines which bits of a pixel should be used for the green
+component. If the XImage is already allocated then the value
+XImage->green_mask should be used.
+
+.TP
+blue_mask
+Determines which bits of a pixel should be used for the blue
+component. If the XImage is already allocated then the value
+XImage->blue_mask should be used.
+
+.TP
+data
+A pointer to the image data. If the XImage is already allocated then
+the value XImage->data should be used. This array has to be large
+enough to hold the decoded image at the given size (geometry and bits
+per pixel).
+
+.TP
+fiasco_image
+This object represents the decoded image which has been
+created by the FIASCO functions fiasco_decoder_get_frame(3) or
+fiasco_image_new(3).
+
+.SH RETURN VALUE
+The function \fBfiasco_renderer_new()\fP returns a pointer to the newly
+allocated renderer object. If an error has been catched, a NULL pointer
+is returned.
+
+The function \fBfiasco_renderer_render()\fP returns 1 if the image
+has been successfully converted. Otherwise, the function returns 0.
+
+In case of an error in one of the above functions, use the function
+fiasco_get_error_message(3) to get a string with the last error
+message of FIASCO.
+
+.SH "SEE ALSO"
+.br
+.BR fiasco_decoder_get_frame "(3), " fiasco_get_error_message (3)
+.BR fiasco_image_new (3)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

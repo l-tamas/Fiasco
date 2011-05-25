@@ -1,0 +1,90 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define if you don't have vprintf but do have _doprnt.  */
+#undef HAVE_DOPRNT
+
+/* Define if you have the vprintf function.  */
+#undef HAVE_VPRINTF
+
+/* Define to `unsigned' if <sys/types.h> doesn't define.  */
+#undef size_t
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if you can safely include both <sys/time.h> and <time.h>.  */
+#undef TIME_WITH_SYS_TIME
+
+/* Define if your processor stores words with the most significant
+   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
+#undef WORDS_BIGENDIAN
+
+/* Define if the X Window System is missing or not being used.  */
+#undef X_DISPLAY_MISSING
+
+/* Define if shifting of signed integers works */
+#undef HAVE_SIGNED_SHIFT
+
+/* Define if you don't have the CLOCKS_PER_SEC define in <time.h>. */
+#undef CLOCKS_PER_SEC
+
+/* The number of bytes in a char.  */
+#undef SIZEOF_CHAR
+
+/* The number of bytes in a int.  */
+#undef SIZEOF_INT
+
+/* The number of bytes in a short.  */
+#undef SIZEOF_SHORT
+
+/* Define if you have the log2 function.  */
+#undef HAVE_LOG2
+
+/* Define if you have the memmove function.  */
+#undef HAVE_MEMMOVE
+
+/* Define if you have the strcasecmp function.  */
+#undef HAVE_STRCASECMP
+
+/* Define if you have the strdup function.  */
+#undef HAVE_STRDUP
+
+/* Define if you have the <X11/extensions/XShm.h> header file.  */
+#undef HAVE_X11_EXTENSIONS_XSHM_H
+
+/* Define if you have the <assert.h> header file.  */
+#undef HAVE_ASSERT_H
+
+/* Define if you have the <features.h> header file.  */
+#undef HAVE_FEATURES_H
+
+/* Define if you have the <setjmp.h> header file.  */
+#undef HAVE_SETJMP_H
+
+/* Define if you have the <string.h> header file.  */
+#undef HAVE_STRING_H
+
+/* Define if you have the <sys/time.h> header file.  */
+#undef HAVE_SYS_TIME_H
+
+/* Define if you have the <unistd.h> header file.  */
+#undef HAVE_UNISTD_H
+
+/* Define if you have the m library (-lm).  */
+#undef HAVE_LIBM
+
+/* Name of package */
+#undef PACKAGE
+
+/* Version number of package */
+#undef VERSION
+
+/* Define path of xfig utility */
+#undef XFIG
+
+/* Define path of xmag utility */
+#undef XMAG
+

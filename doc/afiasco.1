@@ -1,0 +1,43 @@
+.\" $Id: afiasco.1,v 1.1 2000/07/16 17:35:51 hafner Exp $
+.TH afiasco 1 "July, 2000" "FIASCO" "Fractal Image And Sequence COdec"
+
+.SH NAME
+.B  afiasco
+\- analysis tool to visualize a FIASCO stream
+
+.SH SYNOPSIS
+.B  afiasco \fP[\fIfiasco-file\fP [\fIimage-file\fP]]
+
+.ad b
+.hy 1
+.SH DESCRIPTION
+\|\fBafiasco\fP\| analyses and visualizes the FIASCO stream
+\fIfiasco-file\fP: binary tree partitioning, range approximation,
+initial basis, approximation, prediction, etc. If \fIimage-file\fP
+is given then the approximation error is additionally shown.
+
+.SH ENVIRONMENT
+.PD 0
+.TP
+.B FIASCO_IMAGES
+Load path for image files. Default is "./".
+.TP
+.B FIASCO_DATA
+Search path for FIASCO files. Default is "./".
+.PD 
+
+.SH "SEE ALSO"
+.br
+.BR cfiasco "(1), " dfiasco (1)
+.br
+
+Ullrich Hafner, Juergen Albert, Stefan Frank, and Michael Unger.
+\fBWeighted Finite Automata for Video Compression\fP, IEEE Journal on
+Selected Areas In Communications, January 1998
+.br
+Ullrich Hafner. \fBLow Bit-Rate Image and Video Coding with Weighted
+Finite Automata\fP, Ph.D. thesis, Mensch & Buch Verlag, ISBN
+3-89820-002-7, October 1999.
+
+.SH AUTHOR
+Ullrich Hafner <hafner@bigfoot.de>

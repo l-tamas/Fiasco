@@ -1,0 +1,21 @@
+user visible changes since FIASCO 1.2:
+	* Fixed 24bpp rendering (required for any type of plugins)
+	* Added GIMP plugin (read FIASCO images and videos)
+
+user visible changes since FIASCO 1.1:
+	* Fixed smoothing bug
+	* Split option class into decoder and coder option class
+
+user visible changes since FIASCO 1.0:
+	* New title and comment attributes in FIASCO stream
+	* Added GTK+ based analysis tool afiasco
+	* Added binary tree visualization tool bfiasco
+	* Added FIASCO file editor efiasco
+	* Fixed some bugs:
+		- Choose the right visual if the X11 screen offers
+		  multiple  visuals.
+		- Renamed decoder `fps' and 'smooth' attribute to
+		  `framerate' and `smoothing' since
+		  default values differ.
+		- Don't crash when saving videos to disk.
+		- Use user defined basis when specified.
