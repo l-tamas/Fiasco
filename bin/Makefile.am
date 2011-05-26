@@ -2,7 +2,7 @@
 ##
 ## Makefile.am:	WFA binaries			uh, Fri Aug  2 1996
 ##
-## This file is part of FIASCO («F»ractal «I»mage «A»nd «S»equence «CO»dec)
+## This file is part of FIASCO ([F]ractal [I]mage [A]nd [S]equence [CO]dec)
 ## Copyright (C) 1994-2000 Ullrich Hafner <hafner@bigfoot.de>
 ##
 ## $Date: 2000/07/18 19:41:57 $
