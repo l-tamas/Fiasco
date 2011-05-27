@@ -23,6 +23,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <errno.h>
 
 #if STDC_HEADERS
 #	include <stdarg.h>
