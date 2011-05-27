@@ -10,7 +10,7 @@
 ## $Revision: 5.1 $
 ##
 
-ACLOCAL_AMFLAGS  = -I /usr/local/share/aclocal
+ACLOCAL_AMFLAGS  = -I m4
 
 SUBDIRS = data doc lib input output codec bin
 

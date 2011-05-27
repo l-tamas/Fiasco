@@ -7,6 +7,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT(system.fiascorc)
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE(fiasco, 1.3)
 AM_CONFIG_HEADER(config.h)
 
@@ -46,36 +47,6 @@ if test [$ac_cv_sizeof_char != 1] -o [$ac_cv_sizeof_short != 2] -o [$ac_cv_sizeo
   echo "configure failed."
   exit 1
 fi
-
-# Checks for X11
-
-AC_PATH_XTRA
-if test -z "$no_x" ; then
-#  Checks for X11 shared memory extensions
-  save_cflags="$CFLAGS"
-  CFLAGS="$CFLAGS $X_CFLAGS"
-  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
-  AC_CHECK_HEADERS(X11/extensions/XShm.h)
-  CFLAGS="$save_cflags"
-  if test "$ac_cv_header_X11_extensions_XShm_h" = "yes"; then
-    save_ldflags="$LDFLAGS"
-    LDFLAGS="$LDFLAGS $X_LIBS"
-    AC_CHECK_LIB(Xext, XShmQueryExtension,
-                 [XEXT_LIB="-lXext"; INCLUDES="-D_SVID_SOURCE -DUSE_SHM $INCLUDES"],
-		 [], [$X_PRE_LIBS -lX11 $X_EXTRA_LIBS])
-    LDFLAGS="$save_ldflags"
-  fi
-  DFIASCO_EXTRA_LIBS="buttons.o display.o"
-  DFIASCO_EXTRA_SOURCES="buttons.c display.c"
-  LIB_X11="-lX11"
-fi
-AC_SUBST(XEXT_LIB)
-AC_SUBST(LIB_X11)
-AC_SUBST(DFIASCO_EXTRA_LIBS)
-AC_SUBST(DFIASCO_EXTRA_SOURCES)
-
-#  Checks for GTK+ library.
-AM_PATH_GTK(1.2.0,[AFIASCO="afiasco" AC_SUBST(AFIASCO)])
 
 #  Checks for math library.
 AC_CHECK_LIB(m, log)

@@ -35,7 +35,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = output
+bin_PROGRAMS = bfiasco$(EXEEXT) cfiasco$(EXEEXT) dfiasco$(EXEEXT) \
+	efiasco$(EXEEXT) pnmpsnr$(EXEEXT)
+subdir = bin
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -46,11 +48,38 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LTLIBRARIES = $(noinst_LTLIBRARIES)
-libfiasco_output_la_LIBADD =
-am_libfiasco_output_la_OBJECTS = matrices.lo mc.lo nd.lo tree.lo \
-	weights.lo write.lo
-libfiasco_output_la_OBJECTS = $(am_libfiasco_output_la_OBJECTS)
+am__installdirs = "$(DESTDIR)$(bindir)"
+PROGRAMS = $(bin_PROGRAMS)
+am_bfiasco_OBJECTS = binerror.$(OBJEXT) fig.$(OBJEXT) getopt.$(OBJEXT) \
+	getopt1.$(OBJEXT) lctree.$(OBJEXT) params.$(OBJEXT) \
+	tlist.$(OBJEXT) twfa.$(OBJEXT)
+bfiasco_OBJECTS = $(am_bfiasco_OBJECTS)
+bfiasco_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(bfiasco_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am_cfiasco_OBJECTS = binerror.$(OBJEXT) cwfa.$(OBJEXT) \
+	getopt.$(OBJEXT) getopt1.$(OBJEXT) params.$(OBJEXT)
+cfiasco_OBJECTS = $(am_cfiasco_OBJECTS)
+cfiasco_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(cfiasco_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am_dfiasco_OBJECTS = binerror.$(OBJEXT) dwfa.$(OBJEXT) \
+	getopt.$(OBJEXT) getopt1.$(OBJEXT) params.$(OBJEXT)
+dfiasco_OBJECTS = $(am_dfiasco_OBJECTS)
+dfiasco_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(dfiasco_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am_efiasco_OBJECTS = binerror.$(OBJEXT) fiasco2fiasco.$(OBJEXT) \
+	getopt.$(OBJEXT) getopt1.$(OBJEXT) params.$(OBJEXT)
+efiasco_OBJECTS = $(am_efiasco_OBJECTS)
+efiasco_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(efiasco_LDFLAGS) \
+	$(LDFLAGS) -o $@
+am_pnmpsnr_OBJECTS = pnmpsnr.$(OBJEXT) binerror.$(OBJEXT)
+pnmpsnr_OBJECTS = $(am_pnmpsnr_OBJECTS)
+pnmpsnr_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(pnmpsnr_LDFLAGS) \
+	$(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -64,8 +93,10 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libfiasco_output_la_SOURCES)
-DIST_SOURCES = $(libfiasco_output_la_SOURCES)
+SOURCES = $(bfiasco_SOURCES) $(cfiasco_SOURCES) $(dfiasco_SOURCES) \
+	$(efiasco_SOURCES) $(pnmpsnr_SOURCES)
+DIST_SOURCES = $(bfiasco_SOURCES) $(cfiasco_SOURCES) \
+	$(dfiasco_SOURCES) $(efiasco_SOURCES) $(pnmpsnr_SOURCES)
 HEADERS = $(noinst_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -185,10 +216,30 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xfig = @xfig@
 xmag = @xmag@
-noinst_LTLIBRARIES = libfiasco-output.la
-libfiasco_output_la_SOURCES = matrices.c mc.c nd.c tree.c weights.c write.c 
-noinst_HEADERS = matrices.h mc.h nd.h tree.h weights.h write.h
-EXTRA_DIST = MANIFEST		
+bfiasco_SOURCES = binerror.c fig.c  getopt.c getopt1.c lctree.c \
+			params.c tlist.c twfa.c
+
+bfiasco_LDADD = ../codec/libfiasco.la
+bfiasco_DEPENDENCIES = ../codec/libfiasco.la
+bfiasco_LDFLAGS = -static
+cfiasco_SOURCES = binerror.c cwfa.c getopt.c getopt1.c params.c
+cfiasco_LDADD = ../codec/libfiasco.la
+cfiasco_DEPENDENCIES = ../codec/libfiasco.la
+cfiasco_LDFLAGS = -static
+dfiasco_SOURCES = binerror.c dwfa.c getopt.c getopt1.c params.c
+dfiasco_LDADD = ../codec/libfiasco.la
+dfiasco_DEPENDENCIES = ../codec/libfiasco.la
+dfiasco_LDFLAGS = -static
+efiasco_SOURCES = binerror.c fiasco2fiasco.c getopt.c getopt1.c params.c
+efiasco_LDADD = ../codec/libfiasco.la 
+efiasco_DEPENDENCIES = ../codec/libfiasco.la
+efiasco_LDFLAGS = -static
+pnmpsnr_SOURCES = pnmpsnr.c binerror.c
+pnmpsnr_LDADD = ../codec/libfiasco.la 
+pnmpsnr_DEPENDENCIES = ../codec/libfiasco.la
+pnmpsnr_LDFLAGS = -static
+noinst_HEADERS = getopt.h params.h binerror.h fig.h tlist.h twfa.h /
+EXTRA_DIST = MANIFEST
 all: all-am
 
 .SUFFIXES:
@@ -202,9 +253,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu output/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu bin/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu output/Makefile
+	  $(AUTOMAKE) --gnu bin/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -223,17 +274,64 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	for p in $$list; do echo "$$p $$p"; done | \
+	sed 's/$(EXEEXT)$$//' | \
+	while read p p1; do if test -f $$p || test -f $$p1; \
+	  then echo "$$p"; echo "$$p"; else :; fi; \
+	done | \
+	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
+	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
+	sed 'N;N;N;s,\n, ,g' | \
+	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
+	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
+	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
+	    else { print "f", $$3 "/" $$4, $$1; } } \
+	  END { for (d in files) print "f", d, files[d] }' | \
+	while read type dir files; do \
+	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
+	    test -z "$$files" || { \
+	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
+	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
+	    } \
+	; done
 
-clean-noinstLTLIBRARIES:
-	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-	@list='$(noinst_LTLIBRARIES)'; for p in $$list; do \
-	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
-	  test "$$dir" != "$$p" || dir=.; \
-	  echo "rm -f \"$${dir}/so_locations\""; \
-	  rm -f "$${dir}/so_locations"; \
-	done
-libfiasco-output.la: $(libfiasco_output_la_OBJECTS) $(libfiasco_output_la_DEPENDENCIES) 
-	$(LINK)  $(libfiasco_output_la_OBJECTS) $(libfiasco_output_la_LIBADD) $(LIBS)
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
+	files=`for p in $$list; do echo "$$p"; done | \
+	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
+	      -e 's/$$/$(EXEEXT)/' `; \
+	test -n "$$list" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(bindir)" && rm -f $$files
+
+clean-binPROGRAMS:
+	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
+bfiasco$(EXEEXT): $(bfiasco_OBJECTS) $(bfiasco_DEPENDENCIES) 
+	@rm -f bfiasco$(EXEEXT)
+	$(bfiasco_LINK) $(bfiasco_OBJECTS) $(bfiasco_LDADD) $(LIBS)
+cfiasco$(EXEEXT): $(cfiasco_OBJECTS) $(cfiasco_DEPENDENCIES) 
+	@rm -f cfiasco$(EXEEXT)
+	$(cfiasco_LINK) $(cfiasco_OBJECTS) $(cfiasco_LDADD) $(LIBS)
+dfiasco$(EXEEXT): $(dfiasco_OBJECTS) $(dfiasco_DEPENDENCIES) 
+	@rm -f dfiasco$(EXEEXT)
+	$(dfiasco_LINK) $(dfiasco_OBJECTS) $(dfiasco_LDADD) $(LIBS)
+efiasco$(EXEEXT): $(efiasco_OBJECTS) $(efiasco_DEPENDENCIES) 
+	@rm -f efiasco$(EXEEXT)
+	$(efiasco_LINK) $(efiasco_OBJECTS) $(efiasco_LDADD) $(LIBS)
+pnmpsnr$(EXEEXT): $(pnmpsnr_OBJECTS) $(pnmpsnr_DEPENDENCIES) 
+	@rm -f pnmpsnr$(EXEEXT)
+	$(pnmpsnr_LINK) $(pnmpsnr_OBJECTS) $(pnmpsnr_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -241,12 +339,18 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/matrices.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mc.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nd.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/weights.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/write.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/binerror.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cwfa.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dwfa.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fiasco2fiasco.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fig.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getopt1.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lctree.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/params.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pnmpsnr.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tlist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/twfa.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -359,8 +463,11 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(PROGRAMS) $(HEADERS)
 installdirs:
+	for dir in "$(DESTDIR)$(bindir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -388,8 +495,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
-	mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -415,7 +521,7 @@ install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am:
+install-exec-am: install-binPROGRAMS
 
 install-html: install-html-am
 
@@ -455,23 +561,25 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-binPROGRAMS
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-noinstLTLIBRARIES ctags distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
+	clean-generic clean-libtool ctags distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
 	install-html-am install-info install-info-am install-man \
 	install-pdf install-pdf-am install-ps install-ps-am \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-binPROGRAMS
 
+			lctree.h ttypes.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
