@@ -39,15 +39,6 @@
 #include "params.h"
 #include "fiasco.h"
 
-#ifndef X_DISPLAY_MISSING
-
-#	include "display.h"
-#	include "buttons.h"
-
-static x11_info_t *xinfo = NULL;
-
-#endif /* not X_DISPLAY_MISSING */
-
 /*****************************************************************************
 
 				prototypes
@@ -63,15 +54,6 @@ video_decoder (const char *wfa_name, const char *image_name, bool_t panel,
 static void
 get_output_template (const char *image_name, const char *wfa_name,
 		     bool_t color, char **basename, char **suffix);
-
-#ifndef X_DISPLAY_MISSING
-
-static void
-show_stored_frames (unsigned char * const *frame_buffer, int last_frame,
-		    x11_info_t *xinfo, binfo_t *binfo, size_t size,
-		    unsigned frame_time);
-
-#endif /* not X_DISPLAY_MISSING */
 
 /*****************************************************************************
 
@@ -112,13 +94,8 @@ main (int argc, char **argv)
 
 param_t params [] =
 {
-#ifdef X_DISPLAY_MISSING
   {"output", "FILE", 'o', PSTR, {0}, "-",
    "Write raw PNM frame(s) to `%s'."},
-#else  /* not X_DISPLAY_MISSING */
-  {"output", "FILE", 'o', POSTR, {0}, NULL,
-   "Write raw PNM frame(s) to INPUT.ppm/pgm [or `%s']."},
-#endif /* not X_DISPLAY_MISSING */
   {"double", NULL, 'd', PFLAG, {0}, "FALSE",
    "Interpolate images to double size before display."},
   {"fast", NULL, 'r', PFLAG, {0}, "FALSE",
@@ -151,17 +128,9 @@ checkargs (int argc, char **argv, bool_t *double_resolution, bool_t *panel,
    int optind;				/* last processed commandline param */
 
    optind = parseargs (params, argc, argv,
-#ifdef X_DISPLAY_MISSING
 		       "Decode FIASCO-FILEs and write frame(s) to disk.",
-#else  /* not X_DISPLAY_MISSING */
-		       "Decode and display FIASCO-FILEs using X11.",
-#endif /* not X_DISPLAY_MISSING */
 		       "With no FIASCO-FILE, or if FIASCO-FILE is -, "
 		       "read standard input.\n"
-#ifndef X_DISPLAY_MISSING
-		       "With --output=[FILE] specified, "
-		       "write frames without displaying them.\n\n"
-#endif  /* not X_DISPLAY_MISSING */
 		       "Environment:\n"
 		       "FIASCO_DATA   Search path for automata files. "
 		       "Default: ./\n"
@@ -207,12 +176,6 @@ static void
 video_decoder (const char *wfa_name, const char *image_name, bool_t panel,
 	       bool_t double_resolution, int fps, fiasco_d_options_t *options)
 {
-#ifndef X_DISPLAY_MISSING
-   fiasco_renderer_t  *renderer     = NULL;
-   unsigned char     **frame_buffer = NULL;
-   binfo_t  	      *binfo 	    = NULL; /* buttons info */
-#endif /* not X_DISPLAY_MISSING */
-   
    do
    {
       unsigned  	width, height, frames, n;
@@ -274,115 +237,10 @@ video_decoder (const char *wfa_name, const char *image_name, bool_t panel,
 	    if (!fiasco_decoder_write_frame (decoder_state, filename))
 	       error (fiasco_get_error_message ());
 	 }
-#ifndef X_DISPLAY_MISSING
-	 else
-	 {
-	    fiasco_image_t *frame;
-	    
-	    if (!(frame = fiasco_decoder_get_frame (decoder_state)))
-	       error (fiasco_get_error_message ());
-	    
-	    if (frames == 1)
-	       panel = NO;
-
-	    if (xinfo == NULL)		/* initialize X11 window */
-	    {
-	       const char *title = fiasco_decoder_get_title (decoder_state);
-	       char 	   titlename [MAXSTRLEN];
-
-	       
-	       sprintf (titlename, "dfiasco " VERSION ": %s",
-			strlen (title) > 0 ? title : wfa_name);
-	       xinfo = open_window (titlename, "dfiasco",
-				    (width  << (double_resolution ? 1 : 0)),
-				    (height << (double_resolution ? 1 : 0))
-				    + (panel ? 30 : 0));
-	       alloc_ximage (xinfo, width  << (double_resolution ? 1 : 0),
-			     height << (double_resolution ? 1 : 0));
-	       if (panel)		/* initialize button panel */
-		  binfo = init_buttons (xinfo, n, frames, 30, 10);
-	       renderer = fiasco_renderer_new (xinfo->ximage->red_mask,
-					       xinfo->ximage->green_mask,
-					       xinfo->ximage->blue_mask,
-					       xinfo->ximage->bits_per_pixel,
-					       double_resolution);
-	       if (!renderer)
-		  error (fiasco_get_error_message ());
-	    }
-	    renderer->render (renderer, xinfo->pixels, frame);
-	    frame->delete (frame);
-	    
-	    if (frame_buffer != NULL) /* store next frame */
-	    {
-	       size_t size = (width  << (double_resolution ? 1 : 0))
-			     * (height << (double_resolution ? 1 : 0))
-			     * (xinfo->ximage->depth <= 8
-				? sizeof (byte_t)
-				: (xinfo->ximage->depth <= 16
-				   ? sizeof (u_word_t)
-				   : sizeof (unsigned int)));
-
-	       frame_buffer [n] = malloc (size);
-	       if (!frame_buffer [n])
-		  error ("Out of memory.");
-	       memcpy (frame_buffer [n], xinfo->pixels, size);
-
-	       if (n == frames - 1)
-	       {
-		  show_stored_frames (frame_buffer, frames - 1,
-				      xinfo, binfo, size, frame_time);
-		  break;
-	       }
-	    }
-
-	    display_image (0, 0, xinfo);
-	    if (frames == 1)
-	       wait_for_input (xinfo);
-	    else if (panel)
-	    {
-	       check_events (xinfo, binfo, n, frames);
-	       if (binfo->pressed [QUIT_BUTTON]) /* start from beginning */
-		  break;
-	       if (binfo->pressed [STOP_BUTTON]) /* start from beginning */
-		  n = frames;
-	       
-	       if (binfo->pressed [RECORD_BUTTON] && frame_buffer == NULL)
-	       {
-		  n = frames;
-		  frame_buffer = calloc (frames, sizeof (unsigned char *));
-		  if (!frame_buffer)
-		     error ("Out of memory.");
-	       }
-	    }
-	    while (prg_timer (&fps_timer, STOP) < frame_time) /* wait */
-	       ;
-	 }
-#endif /* not X_DISPLAY_MISSING */	 
       }
       free (filename);
-   
       fiasco_decoder_delete (decoder_state);
-   } while (panel
-
-#ifndef X_DISPLAY_MISSING
-	    && !binfo->pressed [QUIT_BUTTON]
-#endif /* not X_DISPLAY_MISSING */
-	    
-	    );
-
-#ifndef X_DISPLAY_MISSING
-   if (renderer)
-      renderer->delete (renderer);
-
-   if (!image_name)
-   {
-      close_window (xinfo);
-      free (xinfo);
-      xinfo = NULL;
-      if (binfo)
-	 free (binfo);
-   }
-#endif /* not X_DISPLAY_MISSING */
+   } while (panel);
 }
 
 static void
@@ -427,49 +285,3 @@ get_output_template (const char *image_name, const char *wfa_name,
       *suffix = strdup (color ? "ppm" : "pgm");
 }
 
-#ifndef X_DISPLAY_MISSING
-
-static void
-show_stored_frames (unsigned char * const *frame_buffer, int last_frame,
-		    x11_info_t *xinfo, binfo_t *binfo, size_t size,
-		    unsigned frame_time)
-/*
- *  After a WFA video stream has been saved, all frames have been
- *  decoded and stored in memory. These frames are then displayed
- *  in an endless loop.
- *
- *  This function never returns, the program is terminated if the
- *  STOP button is pressed.
- */
-{
-   int n = last_frame;			/* frame number */
-   
-   while (1)
-   {
-      clock_t fps_timer;		/* frames per second timer struct */
-      
-      prg_timer (&fps_timer, START);
-      
-      display_image (0, 0, xinfo);
-      check_events (xinfo, binfo, n, last_frame + 1);
-
-      if (binfo->pressed [STOP_BUTTON])
-	 n = 0;
-      else if (binfo->pressed [QUIT_BUTTON])
-	 break;
-      else if (binfo->pressed [PLAY_BUTTON])
-	 n++;
-      else if (binfo->pressed [RECORD_BUTTON]) /* REWIND is mapped RECORD */
-	 n--;
-      if (n < 0)
-	 n = last_frame;
-      if (n > last_frame)
-	 n = 0;
-
-      memcpy (xinfo->pixels, frame_buffer [n], size);
-      while (prg_timer (&fps_timer, STOP) < frame_time) /* wait */
-	 ;
-   };
-}
-
-#endif /* not X_DISPLAY_MISSING */
