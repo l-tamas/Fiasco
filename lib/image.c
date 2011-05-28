@@ -207,7 +207,7 @@ alloc_image (unsigned width, unsigned height, bool_t color, format_e format)
    image->format 	  = format;
    image->reference_count = 1;
    
-   strcpy (image->id, "IFIASCO");
+   image->id = strdup ("IFIASCO");
 
    for (band = first_band (color); band <= last_band (color); band++)
       if (format == FORMAT_4_2_0 && band != Y)
@@ -266,6 +266,8 @@ free_image (image_t *image)
 	 return;			/* image is still referenced */
       else
       {
+	 Free(image->id);
+
 	 color_e band;
 
 	 for (band  = first_band (image->color);
