@@ -205,10 +205,8 @@ video_decoder (const char *wfa_name, const char *image_name, bool_t panel,
 			   fiasco_decoder_is_color (decoder_state),
 			   &basename, &suffix);
 
-      filename = calloc (strlen (basename) + strlen (suffix) + 2
+      filename = Calloc (strlen (basename) + strlen (suffix) + 2
 			 + 10 + (int) (log10 (frames) + 1), sizeof (char));
-      if (!filename)
-	 error ("Out of memory.");
 
       for (n = 0; n < frames; n++)
       {

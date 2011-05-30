@@ -48,14 +48,9 @@ fiasco_c_options_new (void)
  *	pointer to the new option structure
  */
 {
-   c_options_t 	      *options = calloc (1, sizeof (c_options_t));
-   fiasco_c_options_t *public  = calloc (1, sizeof (fiasco_c_options_t));
+   c_options_t 	      *options = Calloc (1, sizeof (c_options_t));
+   fiasco_c_options_t *public  = Calloc (1, sizeof (fiasco_c_options_t));
 
-   if (!options || !public)
-   {
-      set_error (_("Out of memory."));
-      return NULL;
-   }
    public->private 	      = options;
    public->delete 	      = fiasco_c_options_delete;
    public->set_tiling 	      = fiasco_c_options_set_tiling;
@@ -736,14 +731,9 @@ fiasco_d_options_new (void)
  *	pointer to the new option structure
  */
 {
-   d_options_t 	      *options = calloc (1, sizeof (d_options_t));
-   fiasco_d_options_t *public  = calloc (1, sizeof (fiasco_d_options_t));
+   d_options_t 	      *options = Calloc (1, sizeof (d_options_t));
+   fiasco_d_options_t *public  = Calloc (1, sizeof (fiasco_d_options_t));
 
-   if (!options || !public)
-   {
-      set_error (_("Out of memory."));
-      return NULL;
-   }
    public->private 	      = options;
    public->delete 	      = fiasco_d_options_delete;
    public->set_smoothing      = fiasco_d_options_set_smoothing;

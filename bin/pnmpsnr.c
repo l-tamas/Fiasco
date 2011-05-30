@@ -68,12 +68,10 @@ main (int argc, char **argv)
       error ("Image width and height have to be positive.");
    if (!(renderer = fiasco_renderer_new (0xff0000L, 0xff00L, 0xffL, 24, 0)))
       error (fiasco_get_error_message ());
-   b1 = buffer1 = calloc (img1->get_width (img1) * img1->get_height (img1) * 3,
+   b1 = buffer1 = Calloc (img1->get_width (img1) * img1->get_height (img1) * 3,
 			  sizeof (char));
-   b2 = buffer2 = calloc (img1->get_width (img1) * img1->get_height (img1) * 3,
+   b2 = buffer2 = Calloc (img1->get_width (img1) * img1->get_height (img1) * 3,
 			  sizeof (char));
-   if (!buffer1 || !buffer2)
-      error ("Out of memory.");
    if (!renderer->render (renderer, buffer1, img1))
       error (fiasco_get_error_message ());
    if (!renderer->render (renderer, buffer2, img2))
