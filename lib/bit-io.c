@@ -120,8 +120,8 @@ open_file (const char *filename, const char *env_var, openmode_e mode)
    do 
    {
       if (ext_filename) 
-	 Free (ext_filename);
-      ext_filename =  Calloc (strlen (path) + strlen (filename) + 2,
+	 fiasco_free (ext_filename);
+      ext_filename =  fiasco_calloc (strlen (path) + strlen (filename) + 2,
 			      sizeof (char));
       strcpy (ext_filename, path); 
       if (*(ext_filename + strlen (ext_filename) - 1) != '/')
@@ -137,8 +137,8 @@ open_file (const char *filename, const char *env_var, openmode_e mode)
    if (fp == NULL)
    {
       if (ext_filename) 
-	 Free (ext_filename);
-      ext_filename =  Calloc (strlen (FIASCO_SHARE) + strlen (filename) + 2,
+	 fiasco_free (ext_filename);
+      ext_filename =  fiasco_calloc (strlen (FIASCO_SHARE) + strlen (filename) + 2,
 			      sizeof (char));
       strcpy (ext_filename, FIASCO_SHARE); 
       if (*(ext_filename + strlen (ext_filename) - 1) != '/')
@@ -146,7 +146,7 @@ open_file (const char *filename, const char *env_var, openmode_e mode)
       strcat (ext_filename, filename);
       fp = fopen (ext_filename, mode == READ_ACCESS ? read_mode : write_mode);
    }
-   Free (env_path);
+   fiasco_free (env_path);
    
    return fp;
 }
@@ -164,7 +164,7 @@ open_bitfile (const char *filename, const char *env_var, openmode_e mode)
  *      otherwise the program is terminated.
  */
 {
-   bitfile_t *bitfile = Calloc (1, sizeof (bitfile_t));
+   bitfile_t *bitfile = fiasco_calloc (1, sizeof (bitfile_t));
    
    bitfile->file = open_file (filename, env_var, mode);
 
@@ -189,7 +189,7 @@ open_bitfile (const char *filename, const char *env_var, openmode_e mode)
       error ("Unknow file access mode '%d'.", mode);
    
    bitfile->bits_processed = 0;
-   bitfile->buffer         = Calloc (BUFFER_SIZE, sizeof (byte_t));
+   bitfile->buffer         = fiasco_calloc (BUFFER_SIZE, sizeof (byte_t));
    bitfile->ptr            = bitfile->buffer;
 
    return bitfile;
@@ -334,9 +334,9 @@ close_bitfile (bitfile_t *bitfile)
 		BUFFER_SIZE - bitfile->bytepos, bytes);
    }
    fclose (bitfile->file);
-   Free (bitfile->buffer);
-   Free (bitfile->filename);
-   Free (bitfile);
+   fiasco_free (bitfile->buffer);
+   fiasco_free (bitfile->filename);
+   fiasco_free (bitfile);
 }
 
 unsigned

@@ -38,9 +38,9 @@
 enum action_e {START, STOP};
 
 void *
-Calloc (size_t n, size_t size);
+fiasco_calloc (size_t n, size_t size);
 void
-Free (void *memory);
+fiasco_free (void *ptr);
 unsigned
 prg_timer (clock_t *ptimer, enum action_e action);
 int 

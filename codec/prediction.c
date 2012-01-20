@@ -164,14 +164,14 @@ predict_range (real_t max_costs, real_t price, range_t *range, wfa_t *wfa,
 	 for (level = c->options.images_level + 1;
 	      level <= c->options.lc_max_level; level++)
 	    if (sd->ip_states_state [level] != NULL)
-	       Free (sd->ip_states_state [level]);
+	       fiasco_free (sd->ip_states_state [level]);
 	 if (sd->images_of_state != NULL)
-	    Free (sd->images_of_state);
+	    fiasco_free (sd->images_of_state);
 	 if (sd->inner_products != NULL)
-	    Free (sd->inner_products);
+	    fiasco_free (sd->inner_products);
       }
       if (states < rec_states)
-	 Free (rec_state_data);
+	 fiasco_free (rec_state_data);
       c->domain_pool->model_free (rec_domain_model);
       c->d_domain_pool->model_free (rec_d_domain_model);
       c->coeff->model_free (rec_coeff_model);
@@ -271,7 +271,7 @@ mc_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
    range_t   prange = *range;
    unsigned  width  = width_of_level (range->level);
    unsigned  height = height_of_level (range->level);
-   word_t   *mcpe   = Calloc (width * height, sizeof (word_t));
+   word_t   *mcpe   = fiasco_calloc (width * height, sizeof (word_t));
 
    /*
     *  If we are at the bottom level of the mc tree:
@@ -297,7 +297,7 @@ mc_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
       unsigned  state;
       real_t  	mvt, mvc;
       
-      c->pixels = Calloc (width * height, sizeof (real_t));
+      c->pixels = fiasco_calloc (width * height, sizeof (real_t));
       cut_to_bintree (c->pixels, mcpe, width, height, 0, 0, width, height);
    
       /*
@@ -309,7 +309,7 @@ mc_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
 	 {
 	    ipi [state] = c->ip_images_state[state];
 	    c->ip_images_state[state]
-	       = Calloc (size_of_tree (c->products_level), sizeof (real_t));
+	       = fiasco_calloc (size_of_tree (c->products_level), sizeof (real_t));
 	 }
 
       mvc = prange.mv_coord_bits;
@@ -359,15 +359,15 @@ mc_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
       for (state = 0; state <= last_state; state++)
 	 if (need_image (state, wfa))
 	 {
-	    Free (c->ip_images_state[state]);
+	    fiasco_free (c->ip_images_state[state]);
 	    c->ip_images_state[state] = ipi [state];
 	 }
-      Free (c->pixels);
+      fiasco_free (c->pixels);
    }
    else
       costs = MAXCOSTS;
    
-   Free (mcpe);
+   fiasco_free (mcpe);
 
    return costs;
 }
@@ -424,7 +424,7 @@ nd_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
 	 real_t w = - lrange.weight [0] * c->images_of_state [0][0];
 		     
 	 src = c->pixels + range->address * size_of_level (range->level); 
-	 dst = c->pixels = pixels = Calloc (width * height, sizeof (real_t));
+	 dst = c->pixels = pixels = fiasco_calloc (width * height, sizeof (real_t));
 
 	 for (n = width * height; n; n--)
 	    *dst++ = *src++ + w;
@@ -450,7 +450,7 @@ nd_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
 	 {
 	    ipi [state] = c->ip_images_state[state];
 	    c->ip_images_state[state]
-	       = Calloc (size_of_tree (c->products_level), sizeof (real_t));
+	       = fiasco_calloc (size_of_tree (c->products_level), sizeof (real_t));
 	 }
       
       compute_ip_images_state (rrange.image, rrange.address, rrange.level,
@@ -459,7 +459,7 @@ nd_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
       costs += subdivide (max_costs - costs, band, y_state, &rrange, wfa, c,
 			  NO, YES);
       
-      Free (pixels);
+      fiasco_free (pixels);
 
       if (costs < max_costs && ischild (rrange.tree)) /* use prediction */
       {
@@ -493,7 +493,7 @@ nd_prediction (real_t max_costs, real_t price, unsigned band, int y_state,
       for (state = 0; state <= last_state; state++)
 	 if (need_image (state, wfa))
 	 {
-	    Free (c->ip_images_state [state]);
+	    fiasco_free (c->ip_images_state [state]);
 	    c->ip_images_state [state] = ipi [state];
 	 }
    }
@@ -520,7 +520,7 @@ store_state_data (unsigned from, unsigned to, unsigned max_level,
    if (to < from)
       return NULL;			/* nothing to do */
    
-   data = Calloc (to - from + 1, sizeof (state_data_t));
+   data = fiasco_calloc (to - from + 1, sizeof (state_data_t));
    
    for (state = from; state <= to; state++)
    {
@@ -592,10 +592,10 @@ restore_state_data (unsigned from, unsigned to, unsigned max_level,
       wfa->domain_type [state]        = sd->domain_type;
       
       if (c->images_of_state [state] != NULL)
-	 Free (c->images_of_state [state]);
+	 fiasco_free (c->images_of_state [state]);
       c->images_of_state [state] = sd->images_of_state;
       if (c->ip_images_state [state] != NULL)
-	 Free (c->ip_images_state [state]);
+	 fiasco_free (c->ip_images_state [state]);
       c->ip_images_state [state] = sd->inner_products;
 
       for (label = 0; label < MAXLABELS; label++)
@@ -619,11 +619,11 @@ restore_state_data (unsigned from, unsigned to, unsigned max_level,
 	   level++)
       {
 	 if (c->ip_states_state [state][level] != NULL)
-	    Free (c->ip_states_state [state][level]);
+	    fiasco_free (c->ip_states_state [state][level]);
 	 c->ip_states_state [state][level] = sd->ip_states_state [level];
       }
    }
 
-   Free (data);
+   fiasco_free (data);
    wfa->states = to + 1;
 }

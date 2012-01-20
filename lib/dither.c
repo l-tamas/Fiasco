@@ -270,17 +270,17 @@ fiasco_renderer_delete (fiasco_renderer_t *renderer)
    {
       renderer_private_t *private = (renderer_private_t *) renderer->private;
 
-      Free (private->Cr_g_tab - (1024 + 128));
-      Free (private->Cr_r_tab - (1024 + 128));
-      Free (private->Cb_g_tab - (1024 + 128));
-      Free (private->Cb_b_tab - (1024 + 128));
-      Free (private->r_table - 1024);
-      Free (private->g_table - 1024);
-      Free (private->b_table - 1024);
-      Free (private->y_table - (1024 + 128));
+      fiasco_free (private->Cr_g_tab - (1024 + 128));
+      fiasco_free (private->Cr_r_tab - (1024 + 128));
+      fiasco_free (private->Cb_g_tab - (1024 + 128));
+      fiasco_free (private->Cb_b_tab - (1024 + 128));
+      fiasco_free (private->r_table - 1024);
+      fiasco_free (private->g_table - 1024);
+      fiasco_free (private->b_table - 1024);
+      fiasco_free (private->y_table - (1024 + 128));
 
-      Free (private);
-      Free (renderer);
+      fiasco_free (private);
+      fiasco_free (renderer);
    }
 }
 

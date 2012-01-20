@@ -72,7 +72,7 @@ read_tree (wfa_t *wfa, tiling_t *tiling, bitfile_t *input)
       unsigned total = (wfa->states - wfa->basis_states) * MAXLABELS;
       unsigned scale = total / 20;
 
-      bitstring = Calloc (total, sizeof (byte_t));
+      bitstring = fiasco_calloc (total, sizeof (byte_t));
       decode_tree (input, bitstring, total, scale, 1, 11);
    }
    
@@ -85,7 +85,7 @@ read_tree (wfa_t *wfa, tiling_t *tiling, bitfile_t *input)
       unsigned 	label;
       byte_t   *buffer = bitstring;	/* pointer to decoded data */
       
-      bfo_tree = Calloc (wfa->states * MAXLABELS, sizeof (word_t));
+      bfo_tree = fiasco_calloc (wfa->states * MAXLABELS, sizeof (word_t));
       for (state = 0, next = 1; state < next; state++)
 	 for (label = 0; label < MAXLABELS; label++)
 	    bfo_tree [state][label] = *buffer++ ? next++ : RANGE;
@@ -103,8 +103,8 @@ read_tree (wfa_t *wfa, tiling_t *tiling, bitfile_t *input)
 				      0, 0, &dst_state, bfo_tree, wfa, tiling);
    }
 
-   Free (bitstring);
-   Free (bfo_tree);
+   fiasco_free (bitstring);
+   fiasco_free (bfo_tree);
 }
 
 /*****************************************************************************

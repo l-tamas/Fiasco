@@ -78,7 +78,7 @@ alloc_video (bool_t store_wfa)
  *	pointer to the new video structure
  */
 {
-   video_t *video = Calloc (1, sizeof (video_t));
+   video_t *video = fiasco_calloc (1, sizeof (video_t));
    
    video->future_display = -1;
    video->display        = 0;
@@ -127,7 +127,7 @@ free_video (video_t *video)
    if (video->wfa_future)
       free_wfa (video->wfa_future);
 
-   Free (video);
+   fiasco_free (video);
 }
 
 image_t *
@@ -551,7 +551,7 @@ decode_state (unsigned state, unsigned level, wfa_t *wfa)
  */
 {
    word_t  *domains [2];
-   image_t *img = Calloc (1, sizeof (image_t));
+   image_t *img = fiasco_calloc (1, sizeof (image_t));
 
    /*
     *  Generate a new state with a 1.0 transition to 'state'
@@ -581,7 +581,7 @@ decode_state (unsigned state, unsigned level, wfa_t *wfa)
 	 src += width_of_level (level);
 	 dst += img->width;
       }
-      Free (domains [0]);
+      fiasco_free (domains [0]);
    }
 
    return img;
@@ -622,7 +622,7 @@ decode_range (unsigned range_state, unsigned range_label, unsigned range_level,
 		       range_level + 1, NO, wfa);
    compute_state_images (range_level + 1, images, offsets, wfa);
 
-   range = Calloc (size_of_level (range_level), sizeof (word_t));
+   range = fiasco_calloc (size_of_level (range_level), sizeof (word_t));
 
    if ((range_level & 1) == 0)		/* square image */
    {
@@ -904,8 +904,8 @@ alloc_state_images (word_t ***images, u_word_t **offsets, const image_t *frame,
    u_word_t  *offs;			/* ptr to list of offsets */
    unsigned   level;			/* counter */
    
-   simg	= Calloc (wfa->states * (max_level + 1), sizeof (word_t *));
-   offs	= Calloc (wfa->states * (max_level + 1), sizeof (u_word_t));
+   simg	= fiasco_calloc (wfa->states * (max_level + 1), sizeof (word_t *));
+   offs	= fiasco_calloc (wfa->states * (max_level + 1), sizeof (u_word_t));
 
    /*
     *  Initialize buffers for those state images which are at 'max_level'.
@@ -965,7 +965,7 @@ alloc_state_images (word_t ***images, u_word_t **offsets, const image_t *frame,
 		      *  Allocate new image block.
 		      */
 		     simg [child + (level - 1) * wfa->states]
-			= Calloc (size_of_level (level - 1), sizeof (word_t));
+			= fiasco_calloc (size_of_level (level - 1), sizeof (word_t));
 		     offs [child + (level - 1) * wfa->states]
 			= width_of_level (level - 1);
 		  }
@@ -1006,7 +1006,7 @@ alloc_state_images (word_t ***images, u_word_t **offsets, const image_t *frame,
 		      && !simg [domain + (level - 1) * wfa->states])
 		  {
 		     simg [domain + (level - 1) * wfa->states]
-			= Calloc (size_of_level (level - 1), sizeof (word_t));
+			= fiasco_calloc (size_of_level (level - 1), sizeof (word_t));
 		     offs [domain + (level - 1) * wfa->states]
 			= width_of_level (level - 1);
 		  }
@@ -1079,7 +1079,7 @@ free_state_images (unsigned max_level, bool_t color, word_t **state_image,
 		  if (isedge (wfa->into[state][label][0])
 		      && (state_image [child + (level - 1) * wfa->states]
 			  != &marker))
-		     Free (state_image [child + (level - 1) * wfa->states]);
+		     fiasco_free (state_image [child + (level - 1) * wfa->states]);
 		  state_image [child + (level - 1) * wfa->states] = &marker;
 	       }
       /*
@@ -1098,13 +1098,13 @@ free_state_images (unsigned max_level, bool_t color, word_t **state_image,
 		      && (state_image [domain + (level - 1) * wfa->states]
 			  != &marker))
 		  {
-		     Free (state_image [domain + (level - 1) * wfa->states]);
+		     fiasco_free (state_image [domain + (level - 1) * wfa->states]);
 		     state_image [domain + (level - 1) * wfa->states]
 			= &marker;
 		  }
    }
-   Free (state_image);
-   Free (offset);
+   fiasco_free (state_image);
+   fiasco_free (offset);
 }
 
 static void
@@ -1515,7 +1515,7 @@ duplicate_state_image (const word_t *domain, unsigned offset, unsigned level)
    word_t *dst, *pixels;
    int	   y, n;
 
-   dst = pixels = Calloc (size_of_level (level), sizeof (word_t));
+   dst = pixels = fiasco_calloc (size_of_level (level), sizeof (word_t));
 
    if (domain)
       for (y = height_of_level (level); y; y--)

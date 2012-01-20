@@ -103,13 +103,13 @@ alloc_motion (const wfa_info_t *wi)
    unsigned range_size = wi->half_pixel
 			 ? square (wi->search_range)
 			 : square (2 * wi->search_range);
-   motion_t *mt        = Calloc (1, sizeof (motion_t));
+   motion_t *mt        = fiasco_calloc (1, sizeof (motion_t));
    
    mt->original = NULL;
    mt->past     = NULL;
    mt->future   = NULL;
-   mt->xbits 	= Calloc (2 * wi->search_range, sizeof (real_t));
-   mt->ybits 	= Calloc (2 * wi->search_range, sizeof (real_t));
+   mt->xbits 	= fiasco_calloc (2 * wi->search_range, sizeof (real_t));
+   mt->ybits 	= fiasco_calloc (2 * wi->search_range, sizeof (real_t));
 
    for (dx = -wi->search_range; dx < (int) wi->search_range; dx++)
    {
@@ -118,13 +118,13 @@ alloc_motion (const wfa_info_t *wi)
 	 = mv_code_table [dx + wi->search_range][1];
    }
    
-   mt->mc_forward_norms = Calloc (MAXLEVEL, sizeof (real_t *));
-   mt->mc_backward_norms = Calloc (MAXLEVEL, sizeof (real_t *));
+   mt->mc_forward_norms = fiasco_calloc (MAXLEVEL, sizeof (real_t *));
+   mt->mc_backward_norms = fiasco_calloc (MAXLEVEL, sizeof (real_t *));
    
    for (level = wi->p_min_level; level <= wi->p_max_level; level++)
    {
-      mt->mc_forward_norms  [level] = Calloc (range_size, sizeof (real_t));
-      mt->mc_backward_norms [level] = Calloc (range_size, sizeof (real_t));
+      mt->mc_forward_norms  [level] = fiasco_calloc (range_size, sizeof (real_t));
+      mt->mc_backward_norms [level] = fiasco_calloc (range_size, sizeof (real_t));
    }
 
    return mt;
@@ -144,18 +144,18 @@ free_motion (motion_t *mt)
 {
    unsigned level;
 
-   Free (mt->xbits);
-   Free (mt->ybits);
+   fiasco_free (mt->xbits);
+   fiasco_free (mt->ybits);
    for (level = 0; level < MAXLEVEL; level++)
    {
       if (mt->mc_forward_norms [level])
-	 Free (mt->mc_forward_norms [level]);
+	 fiasco_free (mt->mc_forward_norms [level]);
       if (mt->mc_backward_norms [level])
-	 Free (mt->mc_backward_norms [level]);
+	 fiasco_free (mt->mc_backward_norms [level]);
    }
-   Free (mt->mc_forward_norms);
-   Free (mt->mc_backward_norms);
-   Free (mt);
+   fiasco_free (mt->mc_forward_norms);
+   fiasco_free (mt->mc_backward_norms);
+   fiasco_free (mt);
 }
 
 void
@@ -169,9 +169,9 @@ subtract_mc (image_t *image, const image_t *past, const image_t *future,
  */
 {
    unsigned  state, label;
-   word_t   *mcblock1 = Calloc (size_of_level (wfa->wfainfo->p_max_level),
+   word_t   *mcblock1 = fiasco_calloc (size_of_level (wfa->wfainfo->p_max_level),
 				sizeof (word_t));
-   word_t   *mcblock2 = Calloc (size_of_level (wfa->wfainfo->p_max_level),
+   word_t   *mcblock2 = fiasco_calloc (size_of_level (wfa->wfainfo->p_max_level),
 				sizeof (word_t));
 
    for (state = wfa->basis_states; state < wfa->states; state++)
@@ -300,8 +300,8 @@ subtract_mc (image_t *image, const image_t *past, const image_t *future,
 	    }
 	 }
 
-   Free (mcblock1);
-   Free (mcblock2);
+   fiasco_free (mcblock1);
+   fiasco_free (mcblock2);
 }
 
 void
@@ -320,7 +320,7 @@ find_P_frame_mc (word_t *mcpe, real_t price, range_t *range,
 {
    unsigned  width   = width_of_level (range->level);
    unsigned  height  = height_of_level (range->level);
-   word_t   *mcblock = Calloc (width * height, sizeof (word_t));
+   word_t   *mcblock = fiasco_calloc (width * height, sizeof (word_t));
    
    range->mv_tree_bits = 1;
    range->mv.type      = FORWARD;
@@ -341,7 +341,7 @@ find_P_frame_mc (word_t *mcpe, real_t price, range_t *range,
    get_mcpe (mcpe, mt->original, range->x, range->y, width, height,
 	     mcblock, NULL);
 
-   Free (mcblock);
+   fiasco_free (mcblock);
 }
 
 void
@@ -378,8 +378,8 @@ find_B_frame_mc (word_t *mcpe, real_t price, range_t *range,
    int	      ibx, iby;			/* coordinates back. INTERPOLATED mc */
    unsigned   width    = width_of_level (range->level);
    unsigned   height   = height_of_level (range->level);
-   word_t    *mcblock1 = Calloc (width * height, sizeof (word_t));
-   word_t    *mcblock2 = Calloc (width * height, sizeof (word_t));
+   word_t    *mcblock1 = fiasco_calloc (width * height, sizeof (word_t));
+   word_t    *mcblock2 = fiasco_calloc (width * height, sizeof (word_t));
    
    /*
     *  Forward interpolation: use past frame as reference
@@ -543,8 +543,8 @@ find_B_frame_mc (word_t *mcpe, real_t price, range_t *range,
 	 break;
    }
 
-   Free (mcblock1);
-   Free (mcblock2);
+   fiasco_free (mcblock1);
+   fiasco_free (mcblock2);
 }
 
 void
@@ -566,7 +566,7 @@ fill_norms_table (unsigned x0, unsigned y0, unsigned level,
    unsigned  index   = 0;		/* index of motion vector */
    unsigned  width   = width_of_level (level);
    unsigned  height  = height_of_level (level);
-   word_t   *mcblock = Calloc (width * height, sizeof (word_t));
+   word_t   *mcblock = fiasco_calloc (width * height, sizeof (word_t));
 
    sr = wi->half_pixel ? wi->search_range / 2 :  wi->search_range;
    
@@ -603,7 +603,7 @@ fill_norms_table (unsigned x0, unsigned y0, unsigned level,
 	  }
        }
 
-   Free (mcblock);
+   fiasco_free (mcblock);
 }
 
 /*****************************************************************************
@@ -675,7 +675,7 @@ mcpe_norm (const image_t *original, unsigned x0, unsigned y0, unsigned width,
 {
    unsigned  n;
    real_t    norm = 0;
-   word_t   *mcpe = Calloc (width * height, sizeof (word_t));
+   word_t   *mcpe = fiasco_calloc (width * height, sizeof (word_t));
    word_t   *ptr  = mcpe;
    
    get_mcpe (mcpe, original, x0, y0, width, height, mcblock1, mcblock2);
@@ -683,7 +683,7 @@ mcpe_norm (const image_t *original, unsigned x0, unsigned y0, unsigned width,
    for (n = height * width; n; n--, ptr++) 
       norm += square (*ptr / 16);
    
-   Free (mcpe);
+   fiasco_free (mcpe);
    
    return norm;
 }
@@ -752,7 +752,7 @@ find_best_mv (real_t price, const image_t *original, const image_t *reference,
    {
       int	rx, ry;			/* halfpixel refinement */
       unsigned	bestrx, bestry;		/* coordinates of best mv */
-      word_t   *mcblock = Calloc (width * height, sizeof (word_t));
+      word_t   *mcblock = fiasco_calloc (width * height, sizeof (word_t));
       
       bestrx = bestry = 0;
       for (rx = -1; rx <= 1; rx++)
@@ -794,7 +794,7 @@ find_best_mv (real_t price, const image_t *original, const image_t *reference,
       *mx += bestrx;
       *my += bestry;
 
-      Free (mcblock);
+      fiasco_free (mcblock);
    } /* halfpixel */
 	     
    *bits = mt->xbits [*mx + sr * bitshift] + mt->ybits [*my + sr * bitshift];
@@ -826,7 +826,7 @@ find_second_mv (real_t price, const image_t *original,
    int       x, y;			/* coordinates of motion vector */
    int       y0, y1, x0, x1;		/* start/end coord. of search range */
    unsigned  bitshift;			/* half_pixel coordinates multiplier */
-   word_t   *mcblock2 = Calloc (width * height, sizeof (word_t));
+   word_t   *mcblock2 = fiasco_calloc (width * height, sizeof (word_t));
 
    sr = wi->search_range;
 
@@ -875,7 +875,7 @@ find_second_mv (real_t price, const image_t *original,
 
    *bits = mt->xbits [*mx + sr] + mt->ybits [*my + sr];
 
-   Free (mcblock2);
+   fiasco_free (mcblock2);
 
    return mincosts;
 }

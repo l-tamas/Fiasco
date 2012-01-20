@@ -243,14 +243,14 @@ checkargs (int argc, char **argv, char const ***image_template,
 	 error ("Multiple image_template arguments."
 		"\nOption -i %s already specified!", image_name);
 
-      *image_template = Calloc (argc - optind + 1, sizeof (char *));
+      *image_template = fiasco_calloc (argc - optind + 1, sizeof (char *));
       for (i = 0; optind < argc; i++, optind++)
 	 (*image_template) [i] = argv [optind];
       (*image_template) [i] = NULL;
    }
    else					/* option -i image_name */
    {
-      *image_template = Calloc (2, sizeof (char *));
+      *image_template = fiasco_calloc (2, sizeof (char *));
       (*image_template) [0] = image_name;
       (*image_template) [1] = NULL;
    }

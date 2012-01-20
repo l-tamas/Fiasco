@@ -206,7 +206,7 @@ encode_nd_coefficients (unsigned total, const wfa_t *wfa, bitfile_t *output)
       unsigned	state, label, edge;
       word_t	domain;
       
-      ptr = coefficients  = Calloc (total, sizeof (unsigned));
+      ptr = coefficients  = fiasco_calloc (total, sizeof (unsigned));
 
       for (state = wfa->basis_states; state < wfa->states; state++)
 	 for (label = 0; label < MAXLABELS; label++)
@@ -237,7 +237,7 @@ encode_nd_coefficients (unsigned total, const wfa_t *wfa, bitfile_t *output)
 		     bits_processed (output) - bits, total,
 		     total ? ((bits_processed (output) - bits)
 			      / (double) total) : 0);
-      Free (coefficients);
+      fiasco_free (coefficients);
    }
 }
 

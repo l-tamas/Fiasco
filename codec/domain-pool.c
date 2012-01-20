@@ -308,9 +308,9 @@ qac_model_alloc (unsigned max_domains)
 
    init_matrix_probabilities ();
 
-   model 	      = Calloc (1, sizeof (qac_model_t));
-   model->index       = Calloc (max_domains, sizeof (word_t));
-   model->states      = Calloc (max_domains, sizeof (word_t));
+   model 	      = fiasco_calloc (1, sizeof (qac_model_t));
+   model->index       = fiasco_calloc (max_domains, sizeof (word_t));
+   model->states      = fiasco_calloc (max_domains, sizeof (word_t));
    model->y_index     = 0;
    model->n	      = 0;
    model->max_domains = max_domains;
@@ -321,9 +321,9 @@ qac_model_alloc (unsigned max_domains)
 static void
 qac_model_free (void *model)
 {
-   Free (((qac_model_t *) model)->index);
-   Free (((qac_model_t *) model)->states);
-   Free (model);
+   fiasco_free (((qac_model_t *) model)->index);
+   fiasco_free (((qac_model_t *) model)->states);
+   fiasco_free (model);
 }
 
 static void *
@@ -353,7 +353,7 @@ qac_generate (unsigned level, int y_state, const wfa_t *wfa, const void *model)
    if (y_state >= 0 && !usedomain (y_state, wfa)) /* don't use y-state */
       y_state = -1;
    
-   domains = Calloc (qac_model->n + 2, sizeof (word_t));
+   domains = fiasco_calloc (qac_model->n + 2, sizeof (word_t));
 
    memcpy (domains, qac_model->states, qac_model->n * sizeof (word_t));
 
@@ -480,22 +480,22 @@ qac_chroma (unsigned max_domains, const wfa_t *wfa, void *model)
    {
       word_t   *domains;
       unsigned  n, new, old;
-      word_t   *states = Calloc (max_domains, sizeof (word_t));
-      word_t   *index  = Calloc (max_domains, sizeof (word_t));
+      word_t   *states = fiasco_calloc (max_domains, sizeof (word_t));
+      word_t   *index  = fiasco_calloc (max_domains, sizeof (word_t));
    
       domains = compute_hits (wfa->basis_states, wfa->states - 1,
 			      max_domains, wfa);
       for (n = 0; n < max_domains && domains [n] >= 0; n++)
 	 states [n] = domains [n];
       max_domains = min (max_domains, n);
-      Free (domains);
+      fiasco_free (domains);
 
       for (old = 0, new = 0; new < max_domains && old < qac_model->n; old++)
 	 if (qac_model->states [old] == states [new])
 	    index [new++] = qac_model->index [old];
 
-      Free (qac_model->states);
-      Free (qac_model->index);
+      fiasco_free (qac_model->states);
+      fiasco_free (qac_model->index);
       qac_model->states      = states;
       qac_model->index       = index;
       qac_model->n           = max_domains;
@@ -530,7 +530,7 @@ static word_t *
 const_generate (unsigned level, int y_state, const wfa_t *wfa,
 		const void *model)
 {
-   word_t *domains = Calloc (2, sizeof (word_t));
+   word_t *domains = fiasco_calloc (2, sizeof (word_t));
    
    domains [0] = 0;
    domains [1] = -1;
@@ -588,7 +588,7 @@ uniform_generate (unsigned level, int y_state, const wfa_t *wfa,
 		  const void *model)
 {
    unsigned  state, n;
-   word_t   *domains = Calloc (wfa->states + 1, sizeof (word_t));
+   word_t   *domains = fiasco_calloc (wfa->states + 1, sizeof (word_t));
 
    for (state = 0, n = 0; state < wfa->states; state++)
       if (usedomain (state, wfa))
@@ -669,13 +669,13 @@ static void *
 rle_model_alloc (unsigned max_domains)
 {
    unsigned	m;
-   rle_model_t *model = Calloc (1, sizeof (rle_model_t));
+   rle_model_t *model = fiasco_calloc (1, sizeof (rle_model_t));
    
    for (m = model->total = 0; m < MAXEDGES + 1; m++, model->total++)
       model->count [m] = 1;
 
    model->domain_0    = qac_model_alloc (1);
-   model->states      = Calloc (max_domains, sizeof (word_t));
+   model->states      = fiasco_calloc (max_domains, sizeof (word_t));
    model->n	      = 0;
    model->y_index     = 0;
    model->max_domains = max_domains;
@@ -687,20 +687,20 @@ static void
 rle_model_free (void *model)
 {
    qac_model_free (((rle_model_t *) model)->domain_0);
-   Free (((rle_model_t *) model)->states);
-   Free (model);
+   fiasco_free (((rle_model_t *) model)->states);
+   fiasco_free (model);
 }
 
 static void *
 rle_model_duplicate (const void *src)
 {
    const rle_model_t *rle_src = (rle_model_t *) src;
-   rle_model_t	     *model   = Calloc (1, sizeof (rle_model_t));
+   rle_model_t	     *model   = fiasco_calloc (1, sizeof (rle_model_t));
 
    model->domain_0    = qac_model_duplicate (rle_src->domain_0);
    model->n	      = rle_src->n;
    model->max_domains = rle_src->max_domains;
-   model->states      = Calloc (model->max_domains, sizeof (word_t));
+   model->states      = fiasco_calloc (model->max_domains, sizeof (word_t));
    model->total       = rle_src->total;
    model->y_index     = rle_src->y_index;
    
@@ -723,7 +723,7 @@ rle_generate (unsigned level, int y_state, const wfa_t *wfa, const void *model)
    if (y_state >= 0 && !usedomain (y_state, wfa)) /* don't use y-state */
       y_state = -1;
    
-   domains = Calloc (rle_model->n + 2, sizeof (word_t));
+   domains = fiasco_calloc (rle_model->n + 2, sizeof (word_t));
 
    memcpy (domains, rle_model->states, rle_model->n * sizeof (word_t));
 
@@ -867,7 +867,7 @@ rle_chroma (unsigned max_domains, const wfa_t *wfa, void *model)
    if (max_domains < rle_model->n)	/* choose most probable domains */
    {
       unsigned  n;
-      word_t   *states  = Calloc (max_domains, sizeof (word_t));
+      word_t   *states  = fiasco_calloc (max_domains, sizeof (word_t));
       word_t   *domains = compute_hits (wfa->basis_states, wfa->states - 1,
 					max_domains, wfa);
       
@@ -876,9 +876,9 @@ rle_chroma (unsigned max_domains, const wfa_t *wfa, void *model)
 
       assert (states [0] == 0);
       max_domains = min (max_domains, n);
-      Free (domains);
+      fiasco_free (domains);
 
-      Free (rle_model->states);
+      fiasco_free (rle_model->states);
       rle_model->states = states;
       rle_model->n      = max_domains;
    }
@@ -915,7 +915,7 @@ default_alloc (void)
 {
    domain_pool_t *pool;
 
-   pool                  = Calloc (1, sizeof (domain_pool_t));
+   pool                  = fiasco_calloc (1, sizeof (domain_pool_t));
    pool->model           = NULL;
    pool->generate        = NULL;
    pool->bits            = NULL;
@@ -945,14 +945,14 @@ static void
 default_model_free (void *model)
 {
    if (model)
-      Free (model);
+      fiasco_free (model);
 }
 
 static void
 default_free (domain_pool_t *pool)
 {
    pool->model_free (pool->model);
-   Free (pool);
+   fiasco_free (pool);
 }
 
 static void
@@ -994,8 +994,8 @@ init_matrix_probabilities (void)
       unsigned index;			
       unsigned n, exp;
       
-      matrix_0 = Calloc (1 << (MAX_PROB + 1), sizeof (real_t));
-      matrix_1 = Calloc (1 << (MAX_PROB + 1), sizeof (real_t));
+      matrix_0 = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (real_t));
+      matrix_1 = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (real_t));
    
       for (index = 0, n = MIN_PROB; n <= MAX_PROB; n++)
 	 for (exp = 0; exp < (unsigned) 1 << n; exp++, index++)

@@ -79,7 +79,7 @@ main (int argc, char **argv)
       toptions_t *options;		
       int	  last_arg;		/* last processed cmdline parameter */
 
-      options = Calloc (1, sizeof (toptions_t));
+      options = fiasco_calloc (1, sizeof (toptions_t));
       
       last_arg = checkargs (argc, argv, options);
 
@@ -93,7 +93,7 @@ main (int argc, char **argv)
       if (options->frames_list)
 	 RemoveList (options->frames_list);
       
-      Free (options);
+      fiasco_free (options);
    }
    catch
    {
@@ -172,7 +172,7 @@ checkargs (int argc, char **argv, toptions_t *options)
       for (i = 1; i < argc; i++)
 	 size += strlen (argv [i]) + 1;
 
-      options->parameter_string = Calloc (size + 1, sizeof (char));
+      options->parameter_string = fiasco_calloc (size + 1, sizeof (char));
       
       for (i = 1; i < argc; i++)
       {
@@ -329,8 +329,8 @@ make_fig (const wfa_t *wfa, toptions_t *options, int frame, int color_image)
       depth = options->max_depth;
 
    /* allocate memory for same storage fields */
-   lwr         = Calloc (wfa->root_state + 1, sizeof (int));
-   color_field = Calloc (wfa->root_state + 1, sizeof(int));
+   lwr         = fiasco_calloc (wfa->root_state + 1, sizeof (int));
+   color_field = fiasco_calloc (wfa->root_state + 1, sizeof(int));
 
    /* calculate lrw_to_lwr-field */
    for (pos = 0; pos < wfa->basis_states; pos++)
@@ -355,7 +355,7 @@ make_fig (const wfa_t *wfa, toptions_t *options, int frame, int color_image)
       {
 	 char *basename, *suffix;
 	 
-	 filename = Calloc (strlen (options->output_name) + 4 + 4 + 1,
+	 filename = fiasco_calloc (strlen (options->output_name) + 4 + 4 + 1,
 			    sizeof (char));
 
 	 basename = options->output_name;
@@ -390,7 +390,7 @@ make_fig (const wfa_t *wfa, toptions_t *options, int frame, int color_image)
       if (!outfile)
 	 file_error (filename);
       
-      Free (filename);
+      fiasco_free (filename);
    }
    
    xfig_header (outfile);
@@ -416,8 +416,8 @@ make_fig (const wfa_t *wfa, toptions_t *options, int frame, int color_image)
 
    /* free memory */
    Remove_LCTree (&LCTree);
-   Free (lwr);
-   Free (color_field);
+   fiasco_free (lwr);
+   fiasco_free (color_field);
 }
 
 static void

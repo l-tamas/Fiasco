@@ -113,18 +113,18 @@ append_state (bool_t auxiliary_state, real_t final, unsigned level_of_state,
        */
       if (c->images_of_state [wfa->states] != NULL)
       {
-	 Free (c->images_of_state [wfa->states]);
+	 fiasco_free (c->images_of_state [wfa->states]);
 	 c->images_of_state [wfa->states] = NULL;
       }
       for (level = 0; level <= c->options.lc_max_level; level++)
 	 if (c->ip_states_state [wfa->states][level])
 	 {
-	    Free (c->ip_states_state [wfa->states][level]);
+	    fiasco_free (c->ip_states_state [wfa->states][level]);
 	    c->ip_states_state [wfa->states][level] = NULL;
 	 }
       if (c->ip_images_state [wfa->states])
       {
-	 Free (c->ip_images_state [wfa->states]);
+	 fiasco_free (c->ip_images_state [wfa->states]);
 	 c->ip_images_state [wfa->states] = NULL;
       }
    }
@@ -264,12 +264,12 @@ compute_images (unsigned from, unsigned to, const wfa_t *wfa, coding_t *c)
 static void 
 clear_or_alloc (real_t **ptr, size_t size)
 /*
- *  if *ptr == NULL 	allocate memory with Calloc 
+ *  if *ptr == NULL 	allocate memory with fiasco_calloc 
  *  otherwise 		fill the real_t-array ptr[] with 0
  */
 {
    if (*ptr == NULL) 
-      *ptr = Calloc (size, sizeof (real_t));
+      *ptr = fiasco_calloc (size, sizeof (real_t));
    else 
       memset (*ptr, 0, size * sizeof (real_t));
     

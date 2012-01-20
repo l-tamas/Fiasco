@@ -66,7 +66,7 @@ remove_comments (FILE *file);
 *****************************************************************************/
 
 void *
-Calloc (size_t n, size_t size)
+fiasco_calloc (size_t n, size_t size)
 /*
  *  Allocate memory like calloc ().
  *
@@ -81,22 +81,22 @@ Calloc (size_t n, size_t size)
 	     (int) n, (int) size);
 
    ptr = calloc (n, size);
-   if (!ptr)
+   if (ptr == NULL)
       error ("Out of memory!");
 
    return ptr;
 }
 
 void
-Free (void *memory)
+fiasco_free (void *ptr)
 /*
  *  Free memory given by the pointer 'memory'
  *
  *  No return value.
  */
 {
-   if (memory != NULL)
-      free (memory);
+   if (ptr != NULL)
+      free (ptr);
    else
       warning ("Can't free memory block <NULL>.");
 }
@@ -413,7 +413,7 @@ strdup (const char *s)
 {
    assert (s);
    
-   return strcpy (Calloc (strlen (s) + 1, sizeof (char)), s);
+   return strcpy (fiasco_calloc (strlen (s) + 1, sizeof (char)), s);
 }
 #endif /* not HAVE_STRDUP */
 
@@ -454,8 +454,8 @@ strcaseeq (const char *s1, const char *s2)
 
    matched = streq (ls1, ls2) ? YES : NO;
 
-   Free (ls1);
-   Free (ls2);
+   fiasco_free (ls1);
+   fiasco_free (ls2);
    
    return matched;
 }

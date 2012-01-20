@@ -105,13 +105,13 @@ delta_encoding (bool_t use_normal_domains, bool_t use_delta_domains,
     *  Generate a list of range blocks.
     *  The order is the same as in the coder.
     */
-   rs.range_state      = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_state      = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (u_word_t));
-   rs.range_label      = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_label      = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (byte_t));
-   rs.range_max_domain = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_max_domain = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (u_word_t));
-   rs.range_subdivided = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_subdivided = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (bool_t));
    rs.range_no	       = 0;
    max_domain 	       = wfa->basis_states - 1;
@@ -178,8 +178,8 @@ delta_encoding (bool_t use_normal_domains, bool_t use_delta_domains,
     */
    {
       unsigned	bits  	 = bits_processed (output);
-      u_word_t *mapping1 = Calloc (wfa->states, sizeof (u_word_t));
-      u_word_t *mapping2 = Calloc (wfa->states, sizeof (u_word_t));
+      u_word_t *mapping1 = fiasco_calloc (wfa->states, sizeof (u_word_t));
+      u_word_t *mapping2 = fiasco_calloc (wfa->states, sizeof (u_word_t));
       unsigned	range;
 
       put_bit (output, use_normal_domains);
@@ -251,14 +251,14 @@ delta_encoding (bool_t use_normal_domains, bool_t use_delta_domains,
 		     bits_processed (output) - bits, total,
 		     total > 0 ? ((bits_processed (output) - bits) /
 				  (double) total) : 0);
-      Free (mapping1);
-      Free (mapping2);
+      fiasco_free (mapping1);
+      fiasco_free (mapping2);
    }
    
-   Free (rs.range_state);
-   Free (rs.range_label);
-   Free (rs.range_max_domain);
-   Free (rs.range_subdivided);
+   fiasco_free (rs.range_state);
+   fiasco_free (rs.range_label);
+   fiasco_free (rs.range_max_domain);
+   fiasco_free (rs.range_subdivided);
 
    return total;
 }
@@ -293,7 +293,7 @@ column_0_encoding (const wfa_t *wfa, unsigned last_row, bitfile_t *output)
       unsigned n;
       unsigned exp;			/* current exponent */
       
-      prob = Calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
+      prob = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
    
       for (index = 0, n = MIN_PROB; n <= MAX_PROB; n++)
 	 for (exp = 0; exp < 1U << n; exp++, index++)
@@ -351,7 +351,7 @@ column_0_encoding (const wfa_t *wfa, unsigned last_row, bitfile_t *output)
    
    OUTPUT_BYTE_ALIGN (output);
 
-   Free (prob);
+   fiasco_free (prob);
 
    debug_message ("delta-state0: %5d bits. (%5d symbols => %5.2f bps)",
 		  bits_processed (output) - bits, total,
@@ -395,7 +395,7 @@ chroma_encoding (const wfa_t *wfa, bitfile_t *output)
       unsigned n;
       unsigned exp;			/* current exponent */
       
-      prob = Calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
+      prob = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
    
       for (index = 0, n = MIN_PROB; n <= MAX_PROB; n++)
 	 for (exp = 0; exp < 1U << n; exp++, index++)
@@ -531,8 +531,8 @@ chroma_encoding (const wfa_t *wfa, bitfile_t *output)
 		  total - count > 0 ? ((bits_processed (output) - bits) /
 				       (double) (total - count)) : 0);
 
-   Free (prob);
-   Free (y_domains);
+   fiasco_free (prob);
+   fiasco_free (y_domains);
    
    return total;
 }

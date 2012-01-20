@@ -40,7 +40,7 @@ alloc_encoder (bitfile_t *output)
  *	A pointer to the new coder structure
  */
 {
-   arith_t *arith = Calloc (1, sizeof (arith_t));
+   arith_t *arith = fiasco_calloc (1, sizeof (arith_t));
 
    assert (output);
    
@@ -80,7 +80,7 @@ free_encoder (arith_t *arith)
 
    OUTPUT_BYTE_ALIGN (output);
 
-   Free (arith);
+   fiasco_free (arith);
 }
 
 real_t
@@ -218,7 +218,7 @@ encode_array (bitfile_t *output, const unsigned *data, const unsigned *context,
    /*
     *  Allocate probability models, start with uniform distribution
     */
-   totals = Calloc (n_context, sizeof (u_word_t *));
+   totals = fiasco_calloc (n_context, sizeof (u_word_t *));
    {
       unsigned c;
       
@@ -226,7 +226,7 @@ encode_array (bitfile_t *output, const unsigned *data, const unsigned *context,
       {
 	 unsigned i;
       
-	 totals [c]    = Calloc (c_symbols [c] + 1, sizeof (u_word_t));
+	 totals [c]    = fiasco_calloc (c_symbols [c] + 1, sizeof (u_word_t));
 	 totals [c][0] = 0;
       
 	 for (i = 0; i < c_symbols [c]; i++)
@@ -299,8 +299,8 @@ encode_array (bitfile_t *output, const unsigned *data, const unsigned *context,
    {
       unsigned c;
       for (c = 0; c < n_context; c++)
-	 Free (totals [c]);
-      Free (totals);
+	 fiasco_free (totals [c]);
+      fiasco_free (totals);
    }
 }
 
@@ -316,7 +316,7 @@ alloc_decoder (bitfile_t *input)
  */
 
 {
-   arith_t *arith = Calloc (1, sizeof (arith_t));
+   arith_t *arith = fiasco_calloc (1, sizeof (arith_t));
    
    assert (input);
    
@@ -345,7 +345,7 @@ free_decoder (arith_t *arith)
 
    INPUT_BYTE_ALIGN (arith->file);
 
-   Free (arith);
+   fiasco_free (arith);
 }
 
 unsigned
@@ -494,12 +494,12 @@ decode_array (bitfile_t *input, const unsigned *context,
    assert (input && c_symbols);
    assert (n_context == 1 || context);
 
-   data = Calloc (n_data, sizeof (unsigned));
+   data = fiasco_calloc (n_data, sizeof (unsigned));
    
    /*
     *  Allocate probability models, start with uniform distribution
     */
-   totals = Calloc (n_context, sizeof (u_word_t *));
+   totals = fiasco_calloc (n_context, sizeof (u_word_t *));
    {
       unsigned c;
       
@@ -507,7 +507,7 @@ decode_array (bitfile_t *input, const unsigned *context,
       {
 	 unsigned i;
       
-	 totals [c]    = Calloc (c_symbols [c] + 1, sizeof (u_word_t));
+	 totals [c]    = fiasco_calloc (c_symbols [c] + 1, sizeof (u_word_t));
 	 totals [c][0] = 0;
       
 	 for (i = 0; i < c_symbols [c]; i++)
@@ -579,8 +579,8 @@ decode_array (bitfile_t *input, const unsigned *context,
       unsigned c;
       
       for (c = 0; c < n_context; c++)
-	 Free (totals [c]);
-      Free (totals);
+	 fiasco_free (totals [c]);
+      fiasco_free (totals);
    }
    
    return data;
@@ -615,11 +615,11 @@ alloc_model (unsigned m, unsigned scale, unsigned n, unsigned *totals)
    /*
     *  Allocate memory for the structure
     */
-   model          = Calloc (1, sizeof (model_t));
+   model          = fiasco_calloc (1, sizeof (model_t));
    model->symbols = m;
    model->scale   = scale;
    model->order   = n;
-   model->context = n > 0 ? Calloc (n, sizeof (unsigned)) : NULL;
+   model->context = n > 0 ? fiasco_calloc (n, sizeof (unsigned)) : NULL;
    /*
     *  Allocate memory for the probabilty model.
     *  Each of the m^n different contexts requires its own probability model.
@@ -627,7 +627,7 @@ alloc_model (unsigned m, unsigned scale, unsigned n, unsigned *totals)
    for (num = 1, i = 0; i < model->order; i++)
       num *= model->symbols;
 
-   model->totals = Calloc (num * (model->symbols + 1), sizeof (unsigned));
+   model->totals = fiasco_calloc (num * (model->symbols + 1), sizeof (unsigned));
 
    for (i = 0; i < model->order; i++)
       model->context[i] = 0;		/* start with context 0,0, .. ,0 */
@@ -699,9 +699,9 @@ free_model (model_t *model)
    if (model != NULL)
    {
       if (model->context != NULL)
-	 Free (model->context);
-      Free (model->totals);
-      Free (model);
+	 fiasco_free (model->context);
+      fiasco_free (model->totals);
+      fiasco_free (model);
    }
    else
       warning ("Can't free model <NULL>.");

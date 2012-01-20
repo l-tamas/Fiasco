@@ -54,7 +54,7 @@ Init_LCTree (const wfa_t *wfa, LCTree_t *LCTree, toptions_t *options,
    GetOrigin (wfa, &(LCTree->root_origin), options->root_state);
    
    /* initalize LCTree->states */
-   LCTree->states = Calloc (wfa->root_state + 1, sizeof (state_t));
+   LCTree->states = fiasco_calloc (wfa->root_state + 1, sizeof (state_t));
    for (i = 0; i <= wfa->root_state; i++)
    {
       LCTree->states[i].state_nr   = RANGE;
@@ -170,7 +170,7 @@ Remove_LCTree (LCTree_t *LCTree)
    }
 
    /* remove states */
-   Free (LCTree->states);
+   fiasco_free (LCTree->states);
 
    /* remove list containing the root's ancestors */
    if (LCTree->root_origin)
@@ -231,7 +231,7 @@ ReplaceTargetState (LCTree_t *LCTree, int local_root, int state, int motherstate
 	    tlist_t *tmp = pos->next;
 	    counter += pos->count;
 	    *pointer = pos->next;
-	    Free (pos);
+	    fiasco_free (pos);
 	    pos = tmp;
 	 }
 	 else
@@ -400,7 +400,7 @@ RemoveInternalLC (LCTree_t *LCTree, int state)
 	 {
 	    counter += pos->count;
 	    *pointer = pos->next;
-	    Free (pos);
+	    fiasco_free (pos);
 	    pos = *pointer;
 	 }
 	 else
@@ -445,7 +445,7 @@ RemoveLowerLC (LCTree_t* LCTree, int limit_state, int local_root)
 	 {
 	    counter += pos->count;
 	    *pointer = pos->next;
-	    Free (pos);
+	    fiasco_free (pos);
 	    pos = *pointer;
 	 }
 	 else

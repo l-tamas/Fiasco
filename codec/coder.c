@@ -240,7 +240,7 @@ alloc_coder (char const * const *inputname, const c_options_t *options,
 	    h = height;
 	    c = color;
 	 }
-	 Free (filename);
+	 fiasco_free (filename);
       }
       wi->frames = n;
       wi->width  = w;
@@ -260,7 +260,7 @@ alloc_coder (char const * const *inputname, const c_options_t *options,
       wi->level = max (lx, ly) * 2 - ((ly == lx + 1) ? 1 : 0);
    }
    
-   c = Calloc (1, sizeof (coding_t));
+   c = fiasco_calloc (1, sizeof (coding_t));
 
    c->options 	      	   = *options;
    c->options.lc_min_level = max (options->lc_min_level, 3);
@@ -299,11 +299,11 @@ alloc_coder (char const * const *inputname, const c_options_t *options,
    
    c->products_level  = max (0, (c->options.lc_max_level
 				 - c->options.images_level - 1));
-   c->pixels 	      = Calloc (size_of_level (c->options.lc_max_level),
+   c->pixels 	      = fiasco_calloc (size_of_level (c->options.lc_max_level),
 				sizeof (real_t));
-   c->images_of_state = Calloc (MAXSTATES, sizeof (real_t *));
-   c->ip_images_state = Calloc (MAXSTATES, sizeof (real_t *));
-   c->ip_states_state = Calloc (MAXSTATES * MAXLEVEL, sizeof (real_t *));
+   c->images_of_state = fiasco_calloc (MAXSTATES, sizeof (real_t *));
+   c->ip_images_state = fiasco_calloc (MAXSTATES, sizeof (real_t *));
+   c->ip_states_state = fiasco_calloc (MAXSTATES * MAXLEVEL, sizeof (real_t *));
    
    debug_message ("Imageslevel :%d, Productslevel :%d",
 		  c->options.images_level, c->products_level);
@@ -385,11 +385,11 @@ free_coder (coding_t *c)
    free_tiling (c->tiling);
    free_motion (c->mt);
    
-   Free (c->pixels);
-   Free (c->images_of_state);
-   Free (c->ip_images_state);
-   Free (c->ip_states_state);
-   Free (c);
+   fiasco_free (c->pixels);
+   fiasco_free (c->images_of_state);
+   fiasco_free (c->ip_images_state);
+   fiasco_free (c->ip_states_state);
+   fiasco_free (c);
 }
 
 static char *
@@ -859,12 +859,12 @@ frame_coder (wfa_t *wfa, coding_t *c, bitfile_t *output)
       
       if (c->images_of_state [state])
       {
-	 Free (c->images_of_state [state]);
+	 fiasco_free (c->images_of_state [state]);
 	 c->images_of_state [state] = NULL;
       }
       if (c->ip_images_state [state])
       {
-	 Free (c->ip_images_state [state]);
+	 fiasco_free (c->ip_images_state [state]);
 	 c->ip_images_state [state] = NULL;
       }
       for (level = c->options.images_level + 1;
@@ -872,7 +872,7 @@ frame_coder (wfa_t *wfa, coding_t *c, bitfile_t *output)
 	   level++)
 	 if (c->ip_states_state [state][level])
 	 {
-	    Free (c->ip_states_state [state][level]);
+	    fiasco_free (c->ip_states_state [state][level]);
 	    c->ip_states_state [state][level] = NULL;
 	 }
       

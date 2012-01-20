@@ -54,10 +54,10 @@ restore_mc (int enlarge_factor, image_t *image, const image_t *past,
 
 #define FX(v) ((image->format == FORMAT_4_2_0) && band != Y ? ((v) / 2) : v)
    
-   mcblock1 = Calloc (size_of_level (max ((int) wfa->wfainfo->p_max_level
+   mcblock1 = fiasco_calloc (size_of_level (max ((int) wfa->wfainfo->p_max_level
 					  + 2 * enlarge_factor, 0)),
 		      sizeof (word_t));
-   mcblock2 = Calloc (size_of_level (max ((int) wfa->wfainfo->p_max_level
+   mcblock2 = fiasco_calloc (size_of_level (max ((int) wfa->wfainfo->p_max_level
 					  + 2 * enlarge_factor, 0)),
 		      sizeof (word_t));
 
@@ -202,7 +202,7 @@ restore_mc (int enlarge_factor, image_t *image, const image_t *past,
       {
 	 int i;
 	    
-	 clipping = Calloc (256 * 3, sizeof (int));
+	 clipping = fiasco_calloc (256 * 3, sizeof (int));
 	 for (i = -128; i < 128; i++)
 	    clipping [256 + i + 128] = i;
 	 for (i = 0; i < 256; i++)
@@ -228,8 +228,8 @@ restore_mc (int enlarge_factor, image_t *image, const image_t *past,
 #endif /* not HAVE_SIGNED_SHIFT */
    }
    
-   Free (mcblock1);
-   Free (mcblock2);
+   fiasco_free (mcblock1);
+   fiasco_free (mcblock2);
 }
 
 void

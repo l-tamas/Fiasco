@@ -245,7 +245,7 @@ read_basis (const char *filename, wfa_t *wfa)
        !streq (wfa->wfainfo->basis_name, filename))
    {
       if (wfa->wfainfo->basis_name)
-	 Free (wfa->wfainfo->basis_name);
+	 fiasco_free (wfa->wfainfo->basis_name);
       wfa->wfainfo->basis_name = strdup (filename);
    }
    
@@ -424,7 +424,7 @@ read_next_wfa (wfa_t *wfa, bitfile_t *input)
    }
    
    if (tiling.exponent)
-      Free (tiling.vorder);
+      fiasco_free (tiling.vorder);
 
    if (get_bit (input))			/* nondeterministic prediction used */
       read_nd (wfa, input);
@@ -484,7 +484,7 @@ read_tiling (tiling_t *tiling, unsigned image_width, unsigned image_height,
       unsigned x0, y0;			/* NW corner of image tile */
       unsigned width, height;		/* size of image tile */
 
-      tiling->vorder = Calloc (1 << tiling->exponent, sizeof (int));
+      tiling->vorder = fiasco_calloc (1 << tiling->exponent, sizeof (int));
       for (tile = 0; tile <  1U << tiling->exponent; tile++)
       {
 	 locate_subimage (image_level, image_level - tiling->exponent, tile,
@@ -497,7 +497,7 @@ read_tiling (tiling_t *tiling, unsigned image_width, unsigned image_height,
    }
    else					/* spiral order */
    {
-      tiling->vorder = Calloc (1 << tiling->exponent, sizeof (int));
+      tiling->vorder = fiasco_calloc (1 << tiling->exponent, sizeof (int));
       compute_spiral (tiling->vorder, image_width, image_height,
 		      tiling->exponent, get_bit (input) ? YES : NO);
    }

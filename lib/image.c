@@ -73,7 +73,7 @@ fiasco_image_new (const char *filename)
 {
    try
    {
-      fiasco_image_t *image = Calloc (1, sizeof (fiasco_image_t));
+      fiasco_image_t *image = fiasco_calloc (1, sizeof (fiasco_image_t));
 
       image->private 	= read_image (filename);
       image->delete  	= fiasco_image_delete;
@@ -200,7 +200,7 @@ alloc_image (unsigned width, unsigned height, bool_t color, format_e format)
    if (!color)
       format = FORMAT_4_4_4;
 
-   image         	  = Calloc (1, sizeof (image_t));
+   image         	  = fiasco_calloc (1, sizeof (image_t));
    image->width  	  = width;
    image->height 	  = height;
    image->color  	  = color;
@@ -211,10 +211,10 @@ alloc_image (unsigned width, unsigned height, bool_t color, format_e format)
 
    for (band = first_band (color); band <= last_band (color); band++)
       if (format == FORMAT_4_2_0 && band != Y)
-	 image->pixels [band] = Calloc ((width * height) >> 2,
+	 image->pixels [band] = fiasco_calloc ((width * height) >> 2,
 					sizeof (word_t));
       else
-	 image->pixels [band] = Calloc (width * height, sizeof (word_t));
+	 image->pixels [band] = fiasco_calloc (width * height, sizeof (word_t));
    
    return image;
 }
@@ -273,8 +273,8 @@ free_image (image_t *image)
 	 for (band  = first_band (image->color);
 	      band <= last_band (image->color); band++)
 	    if (image->pixels [band])
-	       Free (image->pixels [band]);
-	 Free (image);
+	       fiasco_free (image->pixels [band]);
+	 fiasco_free (image);
       }
    }
    else
@@ -502,10 +502,10 @@ init_chroma_tables (void)
        Cb_g_tab != NULL || Cb_b_tab != NULL)
       return;
 
-   Cr_r_tab = Calloc (768, sizeof (int));
-   Cr_g_tab = Calloc (768, sizeof (int));
-   Cb_g_tab = Calloc (768, sizeof (int));
-   Cb_b_tab = Calloc (768, sizeof (int));
+   Cr_r_tab = fiasco_calloc (768, sizeof (int));
+   Cr_g_tab = fiasco_calloc (768, sizeof (int));
+   Cb_g_tab = fiasco_calloc (768, sizeof (int));
+   Cb_b_tab = fiasco_calloc (768, sizeof (int));
 
    for (i = 256; i < 512; i++)
    {

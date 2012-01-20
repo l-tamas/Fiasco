@@ -68,7 +68,7 @@ write_tree (const wfa_t *wfa, bitfile_t *output)
     *  The first element ('current') of this queue will get the new parent
     *  node. 
     */
-   tree_string = Calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
+   tree_string = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
    queue [0] = wfa->root_state;
    for (last = 1, current = 0; current < last; current++)
       for (label = 0; label < MAXLABELS; label++)
@@ -90,7 +90,7 @@ write_tree (const wfa_t *wfa, bitfile_t *output)
       encode_tree (output, tree_string, total, scale, 1, 11);
    }
 
-   Free (tree_string);
+   fiasco_free (tree_string);
    
    debug_message ("tree:         %5d bits. (%5d symbols => %5.2f bps)",
 		  bits_processed (output) - bits, total,

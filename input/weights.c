@@ -112,7 +112,7 @@ read_weights (unsigned total, wfa_t *wfa, bitfile_t *input)
       offset3 = offset2 + (max_level - min_level + 1);
       offset4 = offset3 + (d_max_level - d_min_level + 1);
 
-      lptr = level_array = Calloc (total, sizeof (int));
+      lptr = level_array = fiasco_calloc (total, sizeof (int));
       for (state = wfa->basis_states; state < wfa->states; state++)
 	 for (label = 0; label < MAXLABELS; label++)
 	    if (isrange (wfa->tree[state][label]))
@@ -141,7 +141,7 @@ read_weights (unsigned total, wfa_t *wfa, bitfile_t *input)
     */
    {
       unsigned	      i;
-      unsigned	     *c_symbols = Calloc (offset4, sizeof (unsigned));
+      unsigned	     *c_symbols = fiasco_calloc (offset4, sizeof (unsigned));
       const unsigned  scale 	= 500; 	/* scaling of probability model */
 
       c_symbols [0] = 1 << (wfa->wfainfo->dc_rpf->mantissa_bits + 1);
@@ -155,9 +155,9 @@ read_weights (unsigned total, wfa_t *wfa, bitfile_t *input)
       
       weights_array = decode_array (input, level_array, c_symbols,
 				    offset4, total, scale);
-      Free (c_symbols);
+      fiasco_free (c_symbols);
    }
-   Free (level_array);
+   fiasco_free (level_array);
 
    /*
     *  Update transitions with decoded weights
@@ -195,6 +195,6 @@ read_weights (unsigned total, wfa_t *wfa, bitfile_t *input)
 	       }
    }
    
-   Free (weights_array);
+   fiasco_free (weights_array);
 }
  

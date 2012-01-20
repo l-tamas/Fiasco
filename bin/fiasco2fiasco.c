@@ -144,14 +144,14 @@ main (int argc, char **argv)
 	 string = (char *) parameter_value (params, "title");
 	 if (strlen (string) > 0)
 	 {
-	    Free (wi_compare.title);
+	    fiasco_free (wi_compare.title);
 	    wi_compare.title = strdup (string);
 	 }
 	 
 	 string = (char *) parameter_value (params, "comment");
 	 if (strlen (string) > 0)
 	 {
-	    Free (wi_compare.comment);
+	    fiasco_free (wi_compare.comment);
 	    wi_compare.comment = strdup (string);
 	 }
       }
@@ -185,7 +185,7 @@ main (int argc, char **argv)
 	 /*
 	  *  Save file positions of frame `n' in array `positions [n]' 
 	  */
-	 position = Calloc (wfa->wfainfo->frames + 1, sizeof (unsigned));
+	 position = fiasco_calloc (wfa->wfainfo->frames + 1, sizeof (unsigned));
 	 for (n = 0; n < wfa->wfainfo->frames; n++)
 	 {
 	    image_t *frame;
@@ -239,7 +239,7 @@ main (int argc, char **argv)
 
 	 offset += wfa->wfainfo->frames;
 	 
-	 Free (position);
+	 fiasco_free (position);
 	 free_video (video);
 	 free_wfa (wfa);
       }

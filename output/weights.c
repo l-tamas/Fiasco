@@ -120,8 +120,8 @@ write_weights (unsigned total, const wfa_t *wfa, bitfile_t *output)
     *        sorted by domain number
     */
 
-   wptr = weights_array = Calloc (total, sizeof (unsigned));
-   lptr = level_array   = Calloc (total, sizeof (unsigned));
+   wptr = weights_array = fiasco_calloc (total, sizeof (unsigned));
+   lptr = level_array   = fiasco_calloc (total, sizeof (unsigned));
 
    for (state = wfa->basis_states; state < wfa->states; state++)
       for (label = 0; label < MAXLABELS; label++)
@@ -173,7 +173,7 @@ write_weights (unsigned total, const wfa_t *wfa, bitfile_t *output)
 
    {
       unsigned	 i;
-      unsigned	*c_symbols = Calloc (offset4, sizeof (int));
+      unsigned	*c_symbols = fiasco_calloc (offset4, sizeof (int));
       const int	 scale 	   = 500;	/* scaling of probability model */
 
       c_symbols [0] = 1 << (wfa->wfainfo->dc_rpf->mantissa_bits + 1);
@@ -187,7 +187,7 @@ write_weights (unsigned total, const wfa_t *wfa, bitfile_t *output)
       
       encode_array (output, weights_array, level_array, c_symbols, offset4,
 		    total, scale);
-      Free (c_symbols);
+      fiasco_free (c_symbols);
    }
    
    debug_message ("%d delta weights out of %d.", delta_count, total);
@@ -195,6 +195,6 @@ write_weights (unsigned total, const wfa_t *wfa, bitfile_t *output)
 		  bits_processed (output) - bits, total,
 		  (bits_processed (output) - bits) / (double) total);
 
-   Free (weights_array);
-   Free (level_array);
+   fiasco_free (weights_array);
+   fiasco_free (level_array);
 }

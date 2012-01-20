@@ -182,7 +182,7 @@ alloc_rpf (unsigned mantissa, fiasco_rpf_range_e range)
  *	pointer to the new rpf structure
  */
 {
-   rpf_t *rpf = Calloc (1, sizeof (rpf_t));
+   rpf_t *rpf = fiasco_calloc (1, sizeof (rpf_t));
    
    if (mantissa < 2)
    {

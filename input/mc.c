@@ -127,7 +127,7 @@ decode_mc_tree (frame_type_e frame_type, unsigned max_state,
     *  'wfa->wfainfo->p_max_level'). Use a queue to store the childs
     *  of each node ('last' is the next free queue element).  
     */
-   queue = Calloc (MAXSTATES, sizeof (unsigned));
+   queue = fiasco_calloc (MAXSTATES, sizeof (unsigned));
    for (last = 0, state = wfa->basis_states; state < max_state; state++)
       if (wfa->level_of_state [state] - 1 == (int) wfa->wfainfo->p_max_level)
 	 queue [last++] = state;	/* init level 'p_max_level' */
@@ -195,7 +195,7 @@ decode_mc_tree (frame_type_e frame_type, unsigned max_state,
    }
    
    INPUT_BYTE_ALIGN (input);
-   Free (queue);
+   fiasco_free (queue);
 }
 
 static void
@@ -286,7 +286,7 @@ create_huff_tree (void)
  */
 {
    unsigned	i;
-   huff_node_t *huff_root = Calloc (1, sizeof (huff_node_t));
+   huff_node_t *huff_root = fiasco_calloc (1, sizeof (huff_node_t));
    
    /*
     *  The nodes' index set contains indices of all codewords that are
@@ -319,8 +319,8 @@ create_huff_node (huff_node_t *hn, int bits_processed)
       hn->code_index = -2;		/* error */
       return;
    }
-   hn->left  = Calloc (1, sizeof (huff_node_t));
-   hn->right = Calloc (1, sizeof (huff_node_t));
+   hn->left  = fiasco_calloc (1, sizeof (huff_node_t));
+   hn->right = fiasco_calloc (1, sizeof (huff_node_t));
 
    for (i = 0; (ind = hn->index_set[i]) >= 0; i++)
    {
@@ -328,8 +328,8 @@ create_huff_node (huff_node_t *hn, int bits_processed)
       if (code_len == bits_processed)	/* generate leaf */
       {
 	 hn->code_index = ind;
-	 Free (hn->left); 
-	 Free (hn->right);
+	 fiasco_free (hn->left); 
+	 fiasco_free (hn->right);
 	 return;
       }
       if (mv_code_table[ind][0] & (1 << (code_len - 1 - bits_processed)))

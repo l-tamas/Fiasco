@@ -288,9 +288,9 @@ aac_model_alloc (const coeff_t *coeff)
 		       * (1 << (1 + coeff->rpf->mantissa_bits))
 		       + (1 << (1 + coeff->dc_rpf->mantissa_bits));
    
-   model 	 = Calloc (1, sizeof (aac_model_t));
-   model->counts = Calloc (size, sizeof (word_t));
-   model->totals = Calloc (coeff->max_level - coeff->min_level + 1 + 1,
+   model 	 = fiasco_calloc (1, sizeof (aac_model_t));
+   model->counts = fiasco_calloc (size, sizeof (word_t));
+   model->totals = fiasco_calloc (coeff->max_level - coeff->min_level + 1 + 1,
 			   sizeof (word_t));
    /*
     *  Initialize model
@@ -317,9 +317,9 @@ aac_model_free (void *model)
 
    if (aac_model)
    {
-      Free (aac_model->counts);
-      Free (aac_model->totals);
-      Free (aac_model);
+      fiasco_free (aac_model->counts);
+      fiasco_free (aac_model->totals);
+      fiasco_free (aac_model);
    }
 }
 
@@ -331,7 +331,7 @@ static coeff_t *
 default_alloc (rpf_t *rpf, rpf_t *dc_rpf,
 	       unsigned min_level, unsigned max_level)
 {
-   coeff_t *coeff = Calloc (1, sizeof (coeff_t));
+   coeff_t *coeff = fiasco_calloc (1, sizeof (coeff_t));
 
    coeff->rpf 	      	  = rpf;
    coeff->dc_rpf       	  = dc_rpf;
@@ -351,7 +351,7 @@ static void
 default_free (coeff_t *coeff)
 {
    coeff->model_free (coeff->model);
-   Free (coeff);
+   fiasco_free (coeff);
 }
 
 static void *
@@ -364,5 +364,5 @@ static void
 default_model_free (void *model)
 {
    if (model)
-      Free (model);
+      fiasco_free (model);
 }

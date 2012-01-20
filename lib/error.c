@@ -108,8 +108,8 @@ set_error (const char *format, ...)
    VA_START (args, format);
 
    if (error_message)
-      Free (error_message);
-   error_message = Calloc (len, sizeof (char));
+      fiasco_free (error_message);
+   error_message = fiasco_calloc (len, sizeof (char));
    
 #if HAVE_VPRINTF
    vsprintf (error_message, format, args);
@@ -167,8 +167,8 @@ error (const char *format, ...)
    VA_START (args, format);
 
    if (error_message)
-      Free (error_message);
-   error_message = Calloc (len, sizeof (char));
+      fiasco_free (error_message);
+   error_message = fiasco_calloc (len, sizeof (char));
    
 #if HAVE_VPRINTF
    vsprintf (error_message, format, args);

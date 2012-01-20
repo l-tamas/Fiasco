@@ -46,7 +46,7 @@ alloc_list (size_t size_of_element)
  *	pointer to an empty list
  */
 {
-   list_t *new_list = Calloc (1, sizeof (list_t));
+   list_t *new_list = fiasco_calloc (1, sizeof (list_t));
 
    assert (size_of_element > 0);
 
@@ -73,7 +73,7 @@ free_list (list_t *list)
    
    while (list_remove (list, HEAD, NULL))
       ;
-   Free (list);
+   fiasco_free (list);
 }
 
 void
@@ -95,8 +95,8 @@ list_insert (list_t *list, pos_e pos, const void *data)
 
    assert (list && data);
 
-   element 	  = Calloc (1, sizeof (node_t));
-   element->value = Calloc (1, list->size_of_element);
+   element 	  = fiasco_calloc (1, sizeof (node_t));
+   element->value = fiasco_calloc (1, list->size_of_element);
    memcpy (element->value, data, list->size_of_element);
 
    if (pos == TAIL)
@@ -149,7 +149,7 @@ list_remove (list_t *list, pos_e pos, void *data)
       {
 	 list->tail = element->prev;
 	 valueptr   = element->value;
-	 Free (element);
+	 fiasco_free (element);
       }
       else
 	 valueptr = NULL;
@@ -163,7 +163,7 @@ list_remove (list_t *list, pos_e pos, void *data)
       {
 	 list->head = element->next;
 	 valueptr   = element->value;
-	 Free (element);
+	 fiasco_free (element);
       }
       else
 	 valueptr = NULL;
@@ -175,7 +175,7 @@ list_remove (list_t *list, pos_e pos, void *data)
    {
       if (data)				
 	 memcpy (data, valueptr, list->size_of_element);
-      Free (valueptr);
+      fiasco_free (valueptr);
    }
    
    return valueptr ? TRUE : FALSE;

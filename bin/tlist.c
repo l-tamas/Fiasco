@@ -61,7 +61,7 @@ InsertAscList (tlist_t **head, int value, int count)
       pos->count += count;
    else                            /* else create new entry */
    {
-      tlist_t *tmp  = Calloc (1, sizeof (tlist_t));
+      tlist_t *tmp  = fiasco_calloc (1, sizeof (tlist_t));
       
       tmp->value = value;
       tmp->count = count;
@@ -94,7 +94,7 @@ InsertDesList (tlist_t **head, int value, int count)
       pos->count += count;
    else                            /* else create new entry */
    {
-      tlist_t *tmp  = Calloc (1, sizeof (tlist_t));
+      tlist_t *tmp  = fiasco_calloc (1, sizeof (tlist_t));
 
       tmp->value = value;
       tmp->count = count;
@@ -275,7 +275,7 @@ RemoveList (tlist_t *ListHead)
    {
       if (ListHead->next)
 	 RemoveList (ListHead->next);
-      Free (ListHead);
+      fiasco_free (ListHead);
    }
    else
       warning ("Can't free tlist <NULL>");

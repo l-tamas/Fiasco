@@ -233,5 +233,5 @@ decode_nd_coefficients (unsigned total, wfa_t *wfa, bitfile_t *input)
 		  = wfa->weight [state][label][0] * 512 + 0.5;
 	    }
    }
-   Free (coefficients);
+   fiasco_free (coefficients);
 }

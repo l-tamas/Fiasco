@@ -248,7 +248,7 @@ approximate_range (real_t max_costs, real_t price, int max_edges,
 			      range->level, y_state, wfa, domain_pool->model);
 	 coeff->update (mp.weight, mp.into, range->level, coeff);
 	 
-	 Free (domain_blocks);
+	 fiasco_free (domain_blocks);
       }
       
       for (edge = 0; isedge (mp.indices [edge]); edge++)
@@ -638,7 +638,7 @@ matching_pursuit (mp_t *mp, bool_t full_search, real_t price,
    mp->costs = (mp->matrix_bits + mp->weights_bits + additional_bits) * price
 	       + mp->err;
 
-   Free (domain_blocks);
+   fiasco_free (domain_blocks);
 }
 
 static void

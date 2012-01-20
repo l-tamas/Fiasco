@@ -109,13 +109,13 @@ delta_decoding (wfa_t *wfa, unsigned last_domain, bitfile_t *input)
     *  Generate a list of range blocks.
     *  The order is the same as in the coder.
     */
-   rs.range_state      = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_state      = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (u_word_t));
-   rs.range_label      = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_label      = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (byte_t));
-   rs.range_max_domain = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_max_domain = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (u_word_t));
-   rs.range_subdivided = Calloc ((last_domain + 1) * MAXLABELS,
+   rs.range_subdivided = fiasco_calloc ((last_domain + 1) * MAXLABELS,
 				 sizeof (bool_t));
    rs.range_no	       = 0;
    max_domain 	       = wfa->basis_states - 1;
@@ -148,7 +148,7 @@ delta_decoding (wfa_t *wfa, unsigned last_domain, bitfile_t *input)
       {
 	 unsigned row;
       
-	 n_edges = Calloc (wfa->states, sizeof (unsigned));
+	 n_edges = fiasco_calloc (wfa->states, sizeof (unsigned));
 	 decoder = alloc_decoder (input);
 	 for (row = range = 0; range < rs.range_no; range++)
 	    if (!rs.range_subdivided [range])
@@ -171,10 +171,10 @@ delta_decoding (wfa_t *wfa, unsigned last_domain, bitfile_t *input)
     */
    {
       unsigned row;
-      u_word_t *mapping1           = Calloc (wfa->states, sizeof (word_t));
-      u_word_t *mapping_coder1     = Calloc (wfa->states, sizeof (word_t));
-      u_word_t *mapping2           = Calloc (wfa->states, sizeof (word_t));
-      u_word_t *mapping_coder2     = Calloc (wfa->states, sizeof (word_t));
+      u_word_t *mapping1           = fiasco_calloc (wfa->states, sizeof (word_t));
+      u_word_t *mapping_coder1     = fiasco_calloc (wfa->states, sizeof (word_t));
+      u_word_t *mapping2           = fiasco_calloc (wfa->states, sizeof (word_t));
+      u_word_t *mapping_coder2     = fiasco_calloc (wfa->states, sizeof (word_t));
       bool_t	use_normal_domains = get_bit (input);
       bool_t	use_delta_domains  = get_bit (input);
 	  
@@ -244,17 +244,17 @@ delta_decoding (wfa_t *wfa, unsigned last_domain, bitfile_t *input)
 	    }
 	    row++;
 	 }
-      Free (mapping1);
-      Free (mapping_coder1);
-      Free (mapping2);
-      Free (mapping_coder2);
+      fiasco_free (mapping1);
+      fiasco_free (mapping_coder1);
+      fiasco_free (mapping2);
+      fiasco_free (mapping_coder2);
    }
       
-   Free (n_edges);
-   Free (rs.range_state);
-   Free (rs.range_label);
-   Free (rs.range_max_domain);
-   Free (rs.range_subdivided);
+   fiasco_free (n_edges);
+   fiasco_free (rs.range_state);
+   fiasco_free (rs.range_label);
+   fiasco_free (rs.range_max_domain);
+   fiasco_free (rs.range_subdivided);
 
    return total;
 }
@@ -295,7 +295,7 @@ column_0_decoding (wfa_t *wfa, unsigned last_row, bitfile_t *input)
       unsigned index;			/* probability index */
       unsigned exp;			/* current exponent */
       
-      prob = Calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
+      prob = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
    
       for (index = 0, n = MIN_PROB; n <= MAX_PROB; n++)
 	 for (exp = 0; exp < 1U << n; exp++, index++)
@@ -396,7 +396,7 @@ column_0_decoding (wfa_t *wfa, unsigned last_row, bitfile_t *input)
 
    INPUT_BYTE_ALIGN (input);
 
-   Free (prob);
+   fiasco_free (prob);
    
    return total;
 }
@@ -437,7 +437,7 @@ chroma_decoding (wfa_t *wfa, bitfile_t *input)
       unsigned index;			/* probability index */
       unsigned exp;			/* current exponent */
       
-      prob = Calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
+      prob = fiasco_calloc (1 << (MAX_PROB + 1), sizeof (unsigned));
    
       for (index = 0, n = MIN_PROB; n <= MAX_PROB; n++)
 	 for (exp = 0; exp < 1U << n; exp++, index++)
@@ -548,7 +548,7 @@ chroma_decoding (wfa_t *wfa, bitfile_t *input)
       }
    }
 
-   Free (y_domains);
+   fiasco_free (y_domains);
 
    compute_y_state (wfa->tree [wfa->tree [wfa->root_state][0]][1],
 		    wfa->tree [wfa->tree [wfa->root_state][0]][0], wfa);
@@ -608,7 +608,7 @@ chroma_decoding (wfa_t *wfa, bitfile_t *input)
 
    INPUT_BYTE_ALIGN (input);
 
-   Free (prob);
+   fiasco_free (prob);
 
    return total;
 }

@@ -48,8 +48,8 @@ fiasco_c_options_new (void)
  *	pointer to the new option structure
  */
 {
-   c_options_t 	      *options = Calloc (1, sizeof (c_options_t));
-   fiasco_c_options_t *public  = Calloc (1, sizeof (fiasco_c_options_t));
+   c_options_t 	      *options = fiasco_calloc (1, sizeof (c_options_t));
+   fiasco_c_options_t *public  = fiasco_calloc (1, sizeof (fiasco_c_options_t));
 
    public->private 	      = options;
    public->delete 	      = fiasco_c_options_delete;
@@ -133,15 +133,15 @@ fiasco_c_options_delete (fiasco_c_options_t *options)
    if (!this)
       return;
    
-   Free (this->id_domain_pool);
-   Free (this->id_d_domain_pool);
-   Free (this->id_rpf_model);
-   Free (this->id_d_rpf_model);
-   Free (this->pattern);
-   Free (this->comment);
-   Free (this->title);
+   fiasco_free (this->id_domain_pool);
+   fiasco_free (this->id_d_domain_pool);
+   fiasco_free (this->id_rpf_model);
+   fiasco_free (this->id_d_rpf_model);
+   fiasco_free (this->pattern);
+   fiasco_free (this->comment);
+   fiasco_free (this->title);
    
-   Free (this);
+   fiasco_free (this);
 
    return;
 }
@@ -248,7 +248,7 @@ fiasco_c_options_set_frame_pattern (fiasco_c_options_t *options,
       }
       else
       {
-	 Free (this->pattern);
+	 fiasco_free (this->pattern);
 	 this->pattern = strdup (pattern);
 
 	 return 1;
@@ -284,7 +284,7 @@ fiasco_c_options_set_basisfile (fiasco_c_options_t *options,
       if (file)
       {
 	 fclose (file);
-	 Free (this->basis_name);
+	 fiasco_free (this->basis_name);
 	 this->basis_name = strdup (filename);
 	 return 1;
       }
@@ -731,8 +731,8 @@ fiasco_d_options_new (void)
  *	pointer to the new option structure
  */
 {
-   d_options_t 	      *options = Calloc (1, sizeof (d_options_t));
-   fiasco_d_options_t *public  = Calloc (1, sizeof (fiasco_d_options_t));
+   d_options_t 	      *options = fiasco_calloc (1, sizeof (d_options_t));
+   fiasco_d_options_t *public  = fiasco_calloc (1, sizeof (fiasco_d_options_t));
 
    public->private 	      = options;
    public->delete 	      = fiasco_d_options_delete;
@@ -769,7 +769,7 @@ fiasco_d_options_delete (fiasco_d_options_t *options)
    if (!this)
       return;
    
-   Free (this);
+   fiasco_free (this);
 
    return;
 }

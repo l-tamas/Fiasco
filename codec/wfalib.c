@@ -60,28 +60,28 @@ alloc_wfa (bool_t coding)
  *	pointer to the new WFA structure
  */
 {
-   wfa_t *wfa = Calloc (1, sizeof (wfa_t));
+   wfa_t *wfa = fiasco_calloc (1, sizeof (wfa_t));
 		 
    /*
     *  Allocate memory
     */
-   wfa->final_distribution = Calloc (MAXSTATES, sizeof (real_t));
-   wfa->level_of_state     = Calloc (MAXSTATES, sizeof (byte_t));
-   wfa->domain_type        = Calloc (MAXSTATES, sizeof (byte_t));
-   wfa->delta_state        = Calloc (MAXSTATES, sizeof (bool_t));
-   wfa->tree               = Calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
-   wfa->x                  = Calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
-   wfa->y                  = Calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
-   wfa->mv_tree            = Calloc (MAXSTATES * MAXLABELS, sizeof (mv_t));
-   wfa->y_state            = Calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
-   wfa->into               = Calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
+   wfa->final_distribution = fiasco_calloc (MAXSTATES, sizeof (real_t));
+   wfa->level_of_state     = fiasco_calloc (MAXSTATES, sizeof (byte_t));
+   wfa->domain_type        = fiasco_calloc (MAXSTATES, sizeof (byte_t));
+   wfa->delta_state        = fiasco_calloc (MAXSTATES, sizeof (bool_t));
+   wfa->tree               = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
+   wfa->x                  = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
+   wfa->y                  = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
+   wfa->mv_tree            = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (mv_t));
+   wfa->y_state            = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (word_t));
+   wfa->into               = fiasco_calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
 				     sizeof (word_t));
-   wfa->weight             = Calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
+   wfa->weight             = fiasco_calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
 				     sizeof (real_t));
-   wfa->int_weight         = Calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
+   wfa->int_weight         = fiasco_calloc (MAXSTATES * MAXLABELS * (MAXEDGES + 1),
 				     sizeof (word_t));
-   wfa->wfainfo            = Calloc (1, sizeof (wfa_info_t));;
-   wfa->prediction         = Calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
+   wfa->wfainfo            = fiasco_calloc (1, sizeof (wfa_info_t));;
+   wfa->prediction         = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
 
    wfa->wfainfo->wfa_name   = NULL;
    wfa->wfainfo->basis_name = NULL;
@@ -111,7 +111,7 @@ alloc_wfa (bool_t coding)
    }
 
    if (coding)				/* initialize additional variables */
-      wfa->y_column = Calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
+      wfa->y_column = fiasco_calloc (MAXSTATES * MAXLABELS, sizeof (byte_t));
    else
       wfa->y_column = NULL;
    
@@ -131,31 +131,31 @@ free_wfa (wfa_t *wfa)
  */
 {
    if (wfa->wfainfo->wfa_name)
-      Free (wfa->wfainfo->wfa_name);
+      fiasco_free (wfa->wfainfo->wfa_name);
    if (wfa->wfainfo->basis_name)
-      Free (wfa->wfainfo->basis_name);
+      fiasco_free (wfa->wfainfo->basis_name);
    if (wfa->wfainfo->title)
-      Free (wfa->wfainfo->title);
+      fiasco_free (wfa->wfainfo->title);
    if (wfa->wfainfo->comment)
-      Free (wfa->wfainfo->comment);
+      fiasco_free (wfa->wfainfo->comment);
 
-   Free (wfa->final_distribution);
-   Free (wfa->level_of_state);
-   Free (wfa->domain_type);
-   Free (wfa->tree);
-   Free (wfa->x);
-   Free (wfa->y);
-   Free (wfa->mv_tree);
-   Free (wfa->y_state);
-   Free (wfa->into);
-   Free (wfa->weight);
-   Free (wfa->int_weight);
-   Free (wfa->wfainfo);
-   Free (wfa->prediction);
-   Free (wfa->delta_state);
+   fiasco_free (wfa->final_distribution);
+   fiasco_free (wfa->level_of_state);
+   fiasco_free (wfa->domain_type);
+   fiasco_free (wfa->tree);
+   fiasco_free (wfa->x);
+   fiasco_free (wfa->y);
+   fiasco_free (wfa->mv_tree);
+   fiasco_free (wfa->y_state);
+   fiasco_free (wfa->into);
+   fiasco_free (wfa->weight);
+   fiasco_free (wfa->int_weight);
+   fiasco_free (wfa->wfainfo);
+   fiasco_free (wfa->prediction);
+   fiasco_free (wfa->delta_state);
    if (wfa->y_column)
-      Free (wfa->y_column);
-   Free (wfa);
+      fiasco_free (wfa->y_column);
+   fiasco_free (wfa);
 }
 
 real_t 
@@ -203,7 +203,7 @@ compute_hits (unsigned from, unsigned to, unsigned n, const wfa_t *wfa)
    word_t   *domains;
    unsigned  state, label, edge;
    int       domain;
-   pair_t   *hits = Calloc (to, sizeof (pair_t));
+   pair_t   *hits = fiasco_calloc (to, sizeof (pair_t));
 
    for (domain = 0; domain < (int) to; domain++)
    {
@@ -220,7 +220,7 @@ compute_hits (unsigned from, unsigned to, unsigned n, const wfa_t *wfa)
    qsort (hits + 1, to - 1, sizeof (pair_t), sort_desc_pair);
 
    n       = min (to, n);
-   domains = Calloc (n + 1, sizeof (word_t));
+   domains = fiasco_calloc (n + 1, sizeof (word_t));
 
    for (domain = 0; domain < (int) n && (!domain || hits [domain].key);
 	domain++)
@@ -232,7 +232,7 @@ compute_hits (unsigned from, unsigned to, unsigned n, const wfa_t *wfa)
    qsort (domains, n, sizeof (word_t), sort_asc_word);
    domains [n] = -1;
    
-   Free (hits);
+   fiasco_free (hits);
    
    return domains;
 }

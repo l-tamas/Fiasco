@@ -79,7 +79,7 @@ fiasco_decoder_new (const char *filename, const fiasco_d_options_t *options)
       input = open_wfa (filename, wfa->wfainfo);
       read_basis (wfa->wfainfo->basis_name, wfa);
 
-      decoder 	       	   = Calloc (1, sizeof (fiasco_decoder_t));
+      decoder 	       	   = fiasco_calloc (1, sizeof (fiasco_decoder_t));
       decoder->delete  	   = fiasco_decoder_delete;
       decoder->write_frame = fiasco_decoder_write_frame;
       decoder->get_frame   = fiasco_decoder_get_frame;
@@ -178,7 +178,7 @@ fiasco_decoder_get_frame (fiasco_decoder_t *decoder)
    {
       try
       {
-	 fiasco_image_t *image = Calloc (1, sizeof (fiasco_image_t));
+	 fiasco_image_t *image = fiasco_calloc (1, sizeof (fiasco_image_t));
 	 image_t 	*frame = get_next_frame (NO, dfiasco->enlarge_factor,
 						 dfiasco->smoothing, NULL,
 						 dfiasco->image_format,
@@ -310,7 +310,7 @@ fiasco_decoder_delete (fiasco_decoder_t *decoder)
       free_video (dfiasco->video);
       close_bitfile (dfiasco->input);
       strcpy (dfiasco->id, " ");
-      Free (decoder);
+      fiasco_free (decoder);
    }
    catch
    {
@@ -337,7 +337,7 @@ alloc_dfiasco (wfa_t *wfa, video_t *video, bitfile_t *input,
  *	pointer to the new decoder structure
  */
 {
-   dfiasco_t *dfiasco = Calloc (1, sizeof (dfiasco_t));
+   dfiasco_t *dfiasco = fiasco_calloc (1, sizeof (dfiasco_t));
 
    strcpy (dfiasco->id, "DFIASCO");
    
@@ -363,7 +363,7 @@ free_dfiasco (dfiasco_t *dfiasco)
  *	'video' struct is discarded.
  */
 {
-   Free (dfiasco);
+   fiasco_free (dfiasco);
 }
 
 static dfiasco_t *

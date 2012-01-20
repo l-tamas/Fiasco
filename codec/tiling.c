@@ -67,7 +67,7 @@ alloc_tiling (fiasco_tiling_e method, unsigned tiling_exponent,
  *	pointer to the new tiling structure on success
  */
 {
-   tiling_t *tiling = Calloc (1, sizeof (tiling_t));
+   tiling_t *tiling = fiasco_calloc (1, sizeof (tiling_t));
 
    if ((int) image_level - (int) tiling_exponent < 6)
    {
@@ -106,8 +106,8 @@ free_tiling (tiling_t *tiling)
  */
 {
    if (tiling->vorder)
-      Free (tiling->vorder);
-   Free (tiling);
+      fiasco_free (tiling->vorder);
+   fiasco_free (tiling);
 }
 
 void
@@ -136,8 +136,8 @@ perform_tiling (const image_t *image, tiling_t *tiling)
       unsigned 	tiles = 1 << tiling->exponent; /* number of image tiles */
       bool_t   *tile_valid;		/* tile i is in valid range ? */
       
-      tiling->vorder = Calloc (tiles, sizeof (int));
-      tile_valid     = Calloc (tiles, sizeof (bool_t));
+      tiling->vorder = fiasco_calloc (tiles, sizeof (int));
+      tile_valid     = fiasco_calloc (tiles, sizeof (bool_t));
 
       if (tiling->method == FIASCO_TILING_VARIANCE_ASC
 	  || tiling->method == FIASCO_TILING_VARIANCE_DSC)
@@ -147,7 +147,7 @@ perform_tiling (const image_t *image, tiling_t *tiling)
 	 unsigned    lx       = log2 (image->width - 1) + 1; /* x level */
 	 unsigned    ly       = log2 (image->height - 1) + 1; /* y level */
 	 unsigned    level    = max (lx, ly) * 2 - ((ly == lx + 1) ? 1 : 0);
-	 var_list_t *var_list = Calloc (tiles, sizeof (var_list_t));
+	 var_list_t *var_list = fiasco_calloc (tiles, sizeof (var_list_t));
 	 
 	 /*
 	  *  Compute variances of image tiles
@@ -196,7 +196,7 @@ perform_tiling (const image_t *image, tiling_t *tiling)
 	    else
 	       tiling->vorder [address] = -1;
 
-	 Free (var_list);
+	 fiasco_free (var_list);
       }
       else if (tiling->method == FIASCO_TILING_SPIRAL_DSC
 	       || tiling->method == FIASCO_TILING_SPIRAL_ASC)
