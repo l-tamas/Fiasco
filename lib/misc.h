@@ -55,12 +55,6 @@ init_clipping (void);
 real_t
 variance (const word_t *pixels, unsigned x0, unsigned y0,
 	  unsigned width, unsigned height, unsigned cols);
-
-#ifndef HAVE_MEMMOVE
-void *
-memmove(void *dest, const void *src, size_t n);
-#endif /* not HAVE_MEMMOVE */
-
 double
 log2 (double x);
 #ifndef HAVE_STRDUP

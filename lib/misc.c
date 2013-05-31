@@ -349,41 +349,6 @@ init_clipping (void)
    return gray_clip;
 }
 
-#ifndef HAVE_MEMMOVE
-void *
-memmove (void *v_dst, const void *v_src, size_t n)
-/*
- *  Copy 'n' bytes from memory area 'src' to memory area 'dest'.
- *  The memory areas may overlap.
- *
- *  Return value:
- *	pointer 'dest'
- */
-{
-   byte_t	*to, *dst = (byte_t *) v_dst;
-   const byte_t	*from, *src = (byte_t *) v_src;
-   
-   assert (v_dst && v_src);
-   
-   if (dst <= src)
-   {
-      from = src;
-      to   = dst;
-      for (; n; n--)
-	 *to++ = *from++;
-   }
-   else
-   { 
-      from = src + (n - 1);
-      to   = dst + (n - 1);
-      for (; n; n--)
-	 *to-- = *from--;
-   }
-   
-   return v_dst;
-}
-#endif /* not HAVE_MEMMOVE */
-
 #ifndef HAVE_STRDUP
 char *
 strdup (const char *s)
