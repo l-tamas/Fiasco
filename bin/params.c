@@ -21,17 +21,9 @@
 #include <ctype.h>
 #include <math.h>			/* strtod() on SUN sparc */
 
-#if STDC_HEADERS
-#	include <stdlib.h>
-#	include <string.h>
-#else /* not STDC_HEADERS */
-#	if HAVE_STRING_H
-#		include <string.h>
-#	else /* not HAVE_STRING_H */
-#		include <strings.h>
-#	endif /* not HAVE_STRING_H */
-#endif /* not STDC_HEADERS */
- 
+#include <stdlib.h>
+#include <string.h>
+
 #include <getopt.h>			/* system or ../lib */
 
 #include "types.h"

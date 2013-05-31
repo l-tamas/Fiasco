@@ -21,27 +21,10 @@
 
 #include <math.h>
 #include <ctype.h>
+#include <time.h>
 
-#ifdef TIME_WITH_SYS_TIME
-#	include <sys/time.h>
-#	include <time.h>
-#else  /* not TIME_WITH_SYS_TIME */
-#	if HAVE_SYS_TIME_H
-#		include <sys/time.h>
-#	else /* not HAVE_SYS_TIME_H */
-#		include <time.h>
-#	endif /* not HAVE_SYS_TIME_H */
-#endif /* not TIME_WITH_SYS_TIME */
-
-#if STDC_HEADERS
-#	include <stdlib.h>
-#endif /* not STDC_HEADERS */
-
-#if HAVE_STRING_H
-#	include <string.h>
-#else /* not HAVE_STRING_H */
-#	include <strings.h>
-#endif /* not HAVE_STRING_H */
+#include <stdlib.h>
+#include <string.h>
 
 #include "types.h"
 #include "macros.h"

@@ -20,18 +20,9 @@
 
 #include "config.h"
 
-#if TIME_WITH_SYS_TIME
-#	include <sys/time.h>
-#	include <time.h>
-#else  /* not TIME_WITH_SYS_TIME */
-#	if HAVE_SYS_TIME_H
-#		include <sys/time.h>
-#	else /* not HAVE_SYS_TIME_H */
-#		include <time.h>
-#	endif /* not HAVE_SYS_TIME_H */
-#endif /* not TIME_WITH_SYS_TIME */
-
+#include <time.h>
 #include <stdio.h>
+
 #include "types.h"
 #include "bit-io.h"
 

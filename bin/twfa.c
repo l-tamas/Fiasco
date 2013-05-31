@@ -19,15 +19,8 @@
 #include "types.h"
 #include "macros.h"
 
-#if STDC_HEADERS
-#	include <stdlib.h>
-#endif /* not STDC_HEADERS */
-
-#if HAVE_STRING_H
-#	include <string.h>
-#else /* not HAVE_STRING_H */
-#	include <strings.h>
-#endif /* not HAVE_STRING_H */
+#include <stdlib.h>
+#include <string.h>
 
 #include <getopt.h>
 

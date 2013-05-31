@@ -31,12 +31,6 @@ if test $ac_cv_signed_shift = yes; then
   AC_DEFINE(HAVE_SIGNED_SHIFT)
 fi
 
-AC_CACHE_CHECK(whether CLOCKS_PER_SEC is defined,
-ac_cv_clocks_per_sec,
-[AC_TRY_COMPILE([#include <time.h>],[exit (CLOCKS_PER_SEC);], ac_cv_clocks_per_sec=yes, ac_cv_clocks_per_sec=no)])
-if test $ac_cv_clocks_per_sec = no; then
-  AC_DEFINE(CLOCKS_PER_SEC, 100)
-fi
 AC_C_BIGENDIAN
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)
@@ -69,7 +63,7 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(assert.h features.h setjmp.h string.h sys/time.h unistd.h)
+AC_CHECK_HEADERS(assert.h features.h setjmp.h string.h unistd.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

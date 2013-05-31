@@ -27,9 +27,7 @@
 
 #include "matrices.h"
 
-#if STDC_HEADERS
-#	include <stdlib.h>
-#endif /* not STDC_HEADERS */
+#include <stdlib.h>
 
 /*****************************************************************************
 

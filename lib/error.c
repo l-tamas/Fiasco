@@ -25,18 +25,10 @@
 #include <stdio.h>
 #include <errno.h>
 
-#if STDC_HEADERS
-#	include <stdarg.h>
-#	define VA_START(args, lastarg) va_start(args, lastarg)
-#else  /* not STDC_HEADERS */
-#	include <varargs.h>
-#	define VA_START(args, lastarg) va_start(args)
-#endif /* not STDC_HEADERS */
-#if HAVE_STRING_H
-#	include <string.h>
-#else /* not HAVE_STRING_H */
-#	include <strings.h>
-#endif /* not HAVE_STRING_H */
+#include <stdarg.h>
+#define VA_START(args, lastarg) va_start(args, lastarg)
+
+#include <string.h>
 
 #if HAVE_SETJMP_H
 #	include <setjmp.h>

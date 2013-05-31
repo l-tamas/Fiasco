@@ -18,12 +18,7 @@
 #include "config.h"
 
 #include <ctype.h>
-
-#if HAVE_STRING_H
-#	include <string.h>
-#else /* not HAVE_STRING_H */
-#	include <strings.h>
-#endif /* not HAVE_STRING_H */
+#include <string.h>
 
 #include "types.h"
 #include "macros.h"

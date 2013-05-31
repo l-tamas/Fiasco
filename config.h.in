@@ -15,9 +15,6 @@
 /* Define if you have the ANSI C header files.  */
 #undef STDC_HEADERS
 
-/* Define if you can safely include both <sys/time.h> and <time.h>.  */
-#undef TIME_WITH_SYS_TIME
-
 /* Define if your processor stores words with the most significant
    byte first (like Motorola and SPARC, unlike Intel and VAX).  */
 #undef WORDS_BIGENDIAN
@@ -27,9 +24,6 @@
 
 /* Define if shifting of signed integers works */
 #undef HAVE_SIGNED_SHIFT
-
-/* Define if you don't have the CLOCKS_PER_SEC define in <time.h>. */
-#undef CLOCKS_PER_SEC
 
 /* The number of bytes in a char.  */
 #undef SIZEOF_CHAR
@@ -66,9 +60,6 @@
 
 /* Define if you have the <string.h> header file.  */
 #undef HAVE_STRING_H
-
-/* Define if you have the <sys/time.h> header file.  */
-#undef HAVE_SYS_TIME_H
 
 /* Define if you have the <unistd.h> header file.  */
 #undef HAVE_UNISTD_H

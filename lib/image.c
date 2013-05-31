@@ -16,11 +16,7 @@
 
 #include "config.h"
 
-#if HAVE_STRING_H
-#	include <string.h>
-#else /* not HAVE_STRING_H */
-#	include <strings.h>
-#endif /* not HAVE_STRING_H */
+#include <string.h>
 
 #include "types.h"
 #include "macros.h"
@@ -207,7 +203,7 @@ alloc_image (unsigned width, unsigned height, bool_t color, format_e format)
    image->format 	  = format;
    image->reference_count = 1;
    
-   image->id = strdup ("IFIASCO");
+   strcpy (image->id, "IFIASCO");
 
    for (band = first_band (color); band <= last_band (color); band++)
       if (format == FORMAT_4_2_0 && band != Y)
