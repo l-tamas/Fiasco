@@ -24,10 +24,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
 #include <stdarg.h>
-#define VA_START(args, lastarg) va_start(args, lastarg)
-
 #include <string.h>
 
 #if HAVE_SETJMP_H
@@ -82,7 +79,7 @@ _error (const char *format, ...)
 {
    va_list	args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    fprintf (stderr, "%s: %s: line %d:\nError: ",
 	    executable, error_file, error_line);
@@ -122,7 +119,7 @@ _warning (const char *format, ...)
 {
    va_list args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    fprintf (stderr, "%s: %s: line %d:\nWarning: ",
 	    executable, error_file, error_line);

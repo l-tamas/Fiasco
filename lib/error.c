@@ -25,10 +25,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
-
 #include <stdarg.h>
-#define VA_START(args, lastarg) va_start(args, lastarg)
-
 #include <string.h>
 
 #if HAVE_SETJMP_H
@@ -71,7 +68,7 @@ set_error (const char *format, ...)
    unsigned    len = 0;
    const char *str = format;
    
-   VA_START (args, format);
+   va_start (args, format);
 
    len = strlen (format);
    while ((str = strchr (str, '%')))
@@ -98,7 +95,7 @@ set_error (const char *format, ...)
    }
    va_end(args);
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (error_message)
       fiasco_free (error_message);
@@ -123,7 +120,7 @@ error (const char *format, ...)
    unsigned    len = 0;
    const char *str = format;
    
-   VA_START (args, format);
+   va_start (args, format);
 
    len = strlen (format);
    while ((str = strchr (str, '%')))
@@ -157,7 +154,7 @@ error (const char *format, ...)
    }
    va_end(args);
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (error_message)
       fiasco_free (error_message);
@@ -217,7 +214,7 @@ warning (const char *format, ...)
 {
    va_list	args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (verboselevel == FIASCO_NO_VERBOSITY)
       return;
@@ -241,7 +238,7 @@ message (const char *format, ...)
 {
    va_list args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (verboselevel == FIASCO_NO_VERBOSITY)
       return;
@@ -263,7 +260,7 @@ debug_message (const char *format, ...)
 {
    va_list args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (verboselevel < FIASCO_ULTIMATE_VERBOSITY)
       return;
@@ -286,7 +283,7 @@ info (const char *format, ...)
 {
    va_list args;
 
-   VA_START (args, format);
+   va_start (args, format);
 
    if (verboselevel == FIASCO_NO_VERBOSITY)
       return;
