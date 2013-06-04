@@ -21,6 +21,7 @@
 #include <math.h>
 
 #include "types.h"
+#include "misc.h"
 #include "macros.h"
 #include "binerror.h"
 

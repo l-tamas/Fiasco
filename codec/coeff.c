@@ -16,6 +16,8 @@
 
 #include "config.h"
 
+#include <string.h>
+
 #include "types.h"
 #include "macros.h"
 #include "error.h"
