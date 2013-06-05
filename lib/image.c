@@ -262,8 +262,6 @@ free_image (image_t *image)
 	 return;			/* image is still referenced */
       else
       {
-	 fiasco_free (image->id);
-
 	 color_e band;
 
 	 for (band  = first_band (image->color);
