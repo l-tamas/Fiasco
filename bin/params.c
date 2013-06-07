@@ -639,12 +639,13 @@ usage (const param_t *params, const char *progname, const char *synopsis,
    fprintf (stderr, "Usage: %s [OPTION]...%s\n", progname,
 	    non_opt_string ? non_opt_string : " ");
    if (synopsis != NULL)
-      fprintf (stderr, synopsis);
-   fprintf (stderr, "\n\n");
-   fprintf (stderr, "Mandatory or optional arguments to long options "
-	    "are mandatory or optional\nfor short options too. "
-	    "Default values are surrounded by {}.\n");
+      fprintf (stderr, "%s\n", synopsis);
+   fputs ("\n"
+          "Mandatory or optional arguments to long options "
+	  "are mandatory or optional\nfor short options too. "
+	  "Default values are surrounded by {}.\n", stderr);
    for (i = 0; params [i].name != NULL; i++)
+   {
       if (params [i].optchar != '\0' || show_all_options)
       {
 	 if (params [i].type == POSTR)
@@ -656,8 +657,9 @@ usage (const param_t *params, const char *progname, const char *synopsis,
 	 else
 	    width = max (width, (strlen (params [i].name)) - 1);
       }
-   
+   }
    for (i = 0; params [i].name != NULL; i++)
+   {
       if (params [i].optchar != '\0' || show_all_options)
       {
 	 if (params [i].optchar != '\0')
@@ -700,14 +702,13 @@ usage (const param_t *params, const char *progname, const char *synopsis,
 	 }
 	 fprintf (stderr, "\n");
       }
-   fprintf (stderr, "\n");
-   fprintf (stderr, "Parameter initialization order:\n");
+   }
+   fputs ("\nParameter initialization order:\n", stderr);
    fprintf (stderr,
-	    "1.) %s\n2.) $HOME/%s\t 3.) command line\t 4.) --config=file",
+	    "1.) %s\n2.) $HOME/%s\t 3.) command line\t 4.) --config=file\n",
 	    sys_file_name, usr_file_name);
-   fprintf (stderr, "\n\n");
    if (comment != NULL)
-      fprintf (stderr, "%s\n", comment);
+      fprintf (stderr, "\n%s\n", comment);
 
    exit (1);
 }
